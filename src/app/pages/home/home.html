@@ -1,0 +1,19 @@
+<section class="container mx-auto p-4">
+    <!-- 🏷️ Título -->
+    <h1 class="text-3xl font-bold mb-6">Catálogo de productos</h1>
+
+    <!-- 🔄 Si hay productos, mostramos el grid -->
+    @if (productsService.products().length > 0) {
+    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- 🔁 Bucle con sintaxis exacta: “product of …; track product.id” -->
+        @for (product of productsService.products(); track product.id) {
+        <app-product-card [product]="product"></app-product-card>
+        }
+    </div>
+    } @else {
+    <!-- ⏳ Fallback mientras carga -->
+    <p class="text-center text-gray-500 animate-pulse">
+        Cargando productos...
+    </p>
+    }
+</section>

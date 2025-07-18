@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+/* 1️⃣ Import básico de Tailwind */
+@import "tailwindcss";
+
+/* 2️⃣ Definición de variables temáticas */
+@theme {
+    /* 🔵 Primarios */
+    --color-primary: #2563eb;
+    /* azul 600 */
+    --color-primary-foreground: #ffffff;
+
+    /* 🟣 Secundarios */
+    --color-secondary: #7c3aed;
+    /* violeta 600 */
+    --color-secondary-foreground: #ffffff;
+
+    /* ⚪ Neutros / Muted */
+    --color-muted: #f3f4f6;
+    /* gris 100 */
+    --color-muted-foreground: #374151;
+    /* gris 700 */
+
+    /* ✅ Éxito */
+    --color-success: #16a34a;
+    /* verde 600 */
+    --color-success-foreground: #ffffff;
+
+    /* ❌ Error */
+    --color-error: #dc2626;
+    /* rojo 600 */
+    --color-error-foreground: #ffffff;
+
+    /* ⚠️ Advertencia */
+    --color-warning: #f59e0b;
+    /* ámbar 500 */
+    --color-warning-foreground: #1f2937;
+    /* gris 800 */
+
+    /* ℹ️ Información */
+    --color-info: #0ea5e9;
+    /* cian 500 */
+    --color-info-foreground: #ffffff;
+}
+
+/* 3️⃣ Opcional: estilos globales o overrides */
+body {
+    background-color: var(--color-muted);
+    color: var(--color-muted-foreground);
+}
