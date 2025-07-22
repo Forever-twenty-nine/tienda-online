@@ -25,16 +25,23 @@
         </div>
 
         <!-- URL Imagen -->
+        <!-- input de archivo -->
         <div>
-            <label class="block font-medium mb-1">URL Imagen</label>
-            <input formControlName="imagen" class="w-full border rounded px-3 py-2" />
+            <label class="block font-medium mb-1">Archivo de imagen</label>
+            <input type="file" (change)="onFileSelected($event)" [disabled]="uploading()" />
+            @if (uploading()) {
+            <p>Subiendo imagen…</p>
+            }
+
         </div>
+
 
         <!-- Botones -->
         <div class="flex gap-2 pt-4">
-            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">
+            <button type="submit" [disabled]="form.invalid || uploading()" class="bg-green-600 text-white px-4 py-2 rounded">
                 💾 Guardar
             </button>
+
             <button type="button" (click)="onCancel()" class="bg-gray-300 px-4 py-2 rounded">
                 ↩️ Cancelar
             </button>

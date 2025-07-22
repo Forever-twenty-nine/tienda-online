@@ -13,7 +13,6 @@ import { Product } from '../../models/product.model';
   selector: 'app-product-form',
   imports: [ ReactiveFormsModule],
   templateUrl: './product-form.html',
-  styles: ``
 })
 export class ProductForm {
 
@@ -22,6 +21,10 @@ export class ProductForm {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private service = inject(ProductsService);
+
+  /** alias público para la señal de uploading */
+  public readonly uploading = this.service.uploading;
+
 
   // 🆔 Ruta param “id” como señal
   id = signal<string | null>(this.route.snapshot.paramMap.get('id'));
@@ -59,10 +62,20 @@ export class ProductForm {
     } else {
       this.service.addProduct(data); 
     }
-    this.router.navigate(['products']);
+    this.router.navigate(['/admin', 'products']);
+
   }
   // ↩️ Cancelar y volver al listado
   onCancel() {
     this.router.navigate(['/admin', 'products']);
   }
+
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
+    const url = await this.service.uploadImage(file);
+    this.form.patchValue({ imagen: url });
+  }
+
 }

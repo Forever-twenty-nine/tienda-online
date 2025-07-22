@@ -37,7 +37,7 @@ export class AdminProducts {
   // ✅ Confirmar y ejecutar borrado
   onConfirmDelete() {
     if (this.deletingId) {
-      this.productsService.delete(this.deletingId);
+      this.productsService.deleteProduct(this.deletingId);
     }
     this.showConfirm = false;
     this.deletingId = null;
