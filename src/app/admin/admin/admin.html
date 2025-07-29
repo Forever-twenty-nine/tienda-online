@@ -1,25 +1,54 @@
 <main class="flex min-h-screen bg-muted">
     <!-- 🟣 SIDEBAR -->
     <aside class="w-64 bg-primary text-primary-foreground p-6">
-        <h2 class="text-2xl font-semibold mb-6">⚙️ Panel de Administración</h2>
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-2">⚙️ Panel Admin</h2>
+            <p class="text-sm text-primary-foreground/70">Gestiona tu tienda</p>
+        </div>
 
         <nav aria-label="Administración">
-            <ul class="space-y-3">
+            <ul class="space-y-2">
                 <li>
-                    <a routerLink="/admin/products" routerLinkActive="font-bold underline"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                        class="block px-4 py-2 rounded hover:bg-primary-foreground hover:text-primary transition">
-                        Productos
+                    <a routerLink="/admin/products" 
+                       routerLinkActive="bg-primary-foreground text-primary font-semibold shadow-md" 
+                       [routerLinkActiveOptions]="{ exact: false }"
+                       class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary-foreground/10 transition-all duration-200 group">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                        <span>Productos</span>
                     </a>
                 </li>
-                <!-- ✨ aquí más enlaces de admin -->
+                <li>
+                    <a routerLink="/" 
+                       class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary-foreground/10 transition-all duration-200 group">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        <span>Volver a Tienda</span>
+                    </a>
+                </li>
             </ul>
         </nav>
+
+        <!-- 📊 Estadísticas rápidas -->
+        <div class="mt-8 pt-6 border-t border-primary-foreground/20">
+            <h3 class="text-sm font-medium text-primary-foreground/70 mb-3">Estado Rápido</h3>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span>Productos:</span>
+                    <span class="font-semibold">12</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Categorías:</span>
+                    <span class="font-semibold">4</span>
+                </div>
+            </div>
+        </div>
     </aside>
 
     <!-- ⚪ CONTENIDO PRINCIPAL -->
     <section class="flex-1 p-8 bg-white">
-        <!-- Ahora cada hijo (listado, formulario) pone su propio <h1> -->
         <router-outlet></router-outlet>
     </section>
 </main>

@@ -1,19 +1,33 @@
-<section class="container mx-auto p-4">
-    <!-- 🏷️ Título -->
-    <h1 class="text-3xl font-bold mb-6">Catálogo de productos</h1>
+<app-header></app-header>
 
-    <!-- 🔄 Si hay productos, mostramos el grid -->
-    @if (productsService.products().length > 0) {
-    <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- 🔁 Bucle con sintaxis exacta: “product of …; track product.id” -->
-        @for (product of productsService.products(); track product.id) {
-        <app-product-card [product]="product"></app-product-card>
-        }
-    </div>
-    } @else {
-    <!-- ⏳ Fallback mientras carga -->
-    <p class="text-center text-gray-500 animate-pulse">
-        Cargando productos...
-    </p>
-    }
-</section>
+<main class="min-h-screen bg-gray-50">
+  <section class="container mx-auto p-6">
+      <!-- 🏷️ Título con mejor diseño -->
+      <div class="text-center mb-8">
+          <h1 class="text-4xl font-bold text-gray-900 mb-2">Catálogo de productos</h1>
+          <p class="text-gray-600">Descubre nuestros productos más populares</p>
+          <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <!-- 🔄 Si hay productos, mostramos el grid -->
+      @if (productsService.products().length > 0) {
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <!-- 🔁 Bucle con sintaxis exacta: "product of …; track product.id" -->
+          @for (product of productsService.products(); track product.id) {
+          <app-product-card [product]="product"></app-product-card>
+          }
+      </div>
+      } @else {
+      <!-- ⏳ Fallback mientras carga con mejor diseño -->
+      <div class="flex flex-col items-center justify-center py-20">
+          <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50 mb-4"></div>
+          <p class="text-center text-gray-500 text-lg">
+              Cargando productos...
+          </p>
+          <p class="text-center text-gray-400 text-sm mt-2">
+              Esto puede tomar unos segundos
+          </p>
+      </div>
+      }
+  </section>
+</main>

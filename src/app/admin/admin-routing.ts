@@ -3,6 +3,7 @@ import { AdminProducts } from './admin-products/admin-products';
 import { ProductForm } from './product-form/product-form';
 
 export const adminRoutes: Routes = [
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
   { path: 'products', component: AdminProducts },
   { path: 'products/new', component: ProductForm },
   { path: 'products/:id', component: ProductForm }

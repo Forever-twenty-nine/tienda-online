@@ -1,0 +1,110 @@
+<header class="bg-white shadow-lg border-b-2 border-primary sticky top-0 z-50 backdrop-blur-md">
+  <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo y nombre de la tienda -->
+      <div class="flex items-center space-x-3">
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-md hover:scale-105 transition-transform">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-muted-foreground">TiendaOnline</h1>
+          <p class="text-xs text-muted-foreground/70">Tu tienda de confianza</p>
+        </div>
+      </div>
+
+      <!-- Navegación desktop -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a routerLink="/" 
+             routerLinkActive="bg-primary/10 text-primary border border-primary/20" 
+             [routerLinkActiveOptions]="{exact: true}"
+             class="text-muted-foreground hover:bg-muted hover:text-muted-foreground px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:scale-105">
+            🏠 Inicio
+          </a>
+          <a routerLink="/admin" 
+             routerLinkActive="bg-primary/10 text-primary border border-primary/20"
+             class="text-muted-foreground hover:bg-muted hover:text-muted-foreground px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:scale-105">
+            ⚙️ Admin
+          </a>
+        </div>
+      </div>
+
+      <!-- Acciones del header (carrito, búsqueda, etc.) -->
+      <div class="hidden md:flex items-center space-x-4">
+        <!-- Barra de búsqueda -->
+        <div class="relative">
+          <input type="search" 
+                 placeholder="Buscar productos..." 
+                 class="w-64 pl-10 pr-4 py-2 border border-muted-foreground/20 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white text-muted-foreground placeholder:text-muted-foreground/50 transition-all">
+          <svg class="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+
+        <!-- Botón del carrito -->
+        <button class="relative p-2 text-muted-foreground hover:text-primary hover:bg-muted rounded-lg transition-all duration-200 hover:scale-105">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5H17M7 13v8a2 2 0 002 2h2a2 2 0 002-2v-8"></path>
+          </svg>
+          <span class="absolute -top-1 -right-1 bg-error text-error-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">3</span>
+        </button>
+      </div>
+
+      <!-- Botón de menú móvil -->
+      <div class="md:hidden">
+        <button (click)="toggleMenu()" 
+                class="text-muted-foreground hover:text-primary hover:bg-muted p-2 rounded-md transition-all duration-200 hover:scale-105">
+          <svg class="w-6 h-6" [class.hidden]="isMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg class="w-6 h-6" [class.hidden]="!isMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <div class="md:hidden" [class.hidden]="!isMenuOpen">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-muted/50 backdrop-blur-sm rounded-lg mt-2 border border-muted-foreground/10">
+        <a routerLink="/" 
+           (click)="closeMenu()"
+           routerLinkActive="bg-primary/10 text-primary border border-primary/20" 
+           [routerLinkActiveOptions]="{exact: true}"
+           class="text-muted-foreground hover:bg-muted hover:text-muted-foreground block px-3 py-2 rounded-md text-base font-medium transition-all">
+          🏠 Inicio
+        </a>
+        <a routerLink="/admin" 
+           (click)="closeMenu()"
+           routerLinkActive="bg-primary/10 text-primary border border-primary/20"
+           class="text-muted-foreground hover:bg-muted hover:text-muted-foreground block px-3 py-2 rounded-md text-base font-medium transition-all">
+          ⚙️ Admin
+        </a>
+        
+        <!-- Barra de búsqueda móvil -->
+        <div class="px-3 py-2">
+          <div class="relative">
+            <input type="search" 
+                   placeholder="Buscar productos..." 
+                   class="w-full pl-10 pr-4 py-2 border border-muted-foreground/20 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white text-muted-foreground placeholder:text-muted-foreground/50">
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-muted-foreground/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Carrito móvil -->
+        <button class="w-full text-left px-3 py-2 text-muted-foreground hover:bg-muted hover:text-primary rounded-md text-base font-medium flex items-center space-x-2 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5H17M7 13v8a2 2 0 002 2h2a2 2 0 002-2v-8"></path>
+          </svg>
+          <span>Carrito (3)</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
