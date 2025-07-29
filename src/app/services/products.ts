@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore';
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { Product } from '../models/product.model';
+import { catchError, of } from 'rxjs';
 
 // 🔄 1️⃣ Convertidor FirestoreDataConverter<Product>
 const productConverter: FirestoreDataConverter<Product> = {
@@ -34,11 +35,16 @@ export class ProductsService {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
 
-  // 🌟 2️⃣ Señal reactiva basada en el Observable de Firestore
+  // 🌟 2️⃣ Señal reactiva basada en el Observable de Firestore con manejo de errores
   products = toSignal(
     collectionData(
       collection(this.firestore, 'products').withConverter(productConverter),
       { idField: 'id' }
+    ).pipe(
+      catchError(error => {
+        console.error('Error al cargar productos:', error);
+        return of([]); // Retorna array vacío en caso de error
+      })
     ) as import('rxjs').Observable<Product[]>,
     { initialValue: [] }
   );
@@ -54,10 +60,15 @@ export class ProductsService {
    * @param newProduct Objeto Omit<Product,'id'>; Firestore generará el ID.
    * @returns Promise<DocumentReference<Product>> con la referencia al doc creado.
    */
-  addProduct(newProduct: Omit<Product, 'id'>): Promise<DocumentReference<Product>> {
-    const productsColl = collection(this.firestore, 'products')
-      .withConverter(productConverter);
-    return addDoc(productsColl, newProduct) as Promise<DocumentReference<Product>>;
+  async addProduct(newProduct: Omit<Product, 'id'>): Promise<DocumentReference<any>> {
+    try {
+      const productsColl = collection(this.firestore, 'products')
+        .withConverter(productConverter);
+      return await addDoc(productsColl, newProduct);
+    } catch (error) {
+      console.error('Error al agregar producto:', error);
+      throw error;
+    }
   }
 
   /**

@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Permitir lectura de productos para todos los usuarios
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if true; // En producción, esto debería ser más restrictivo
+    }
+    
+    // Regla por defecto para otros documentos
+    match /{document=**} {
+      allow read, write: if true; // En producción, esto debería ser más restrictivo
+    }
+  }
+}

@@ -46,3 +46,98 @@ body {
     background-color: var(--color-muted);
     color: var(--color-muted-foreground);
 }
+
+/* 🎭 Animaciones para el footer */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+}
+
+/* 🎭 Animaciones para el header */
+@keyframes pulse-custom {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* 🎨 Estilos específicos del header */
+.header-backdrop {
+    backdrop-filter: blur(8px);
+}
+
+.header-logo {
+    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+}
+
+.header-cart-badge {
+    animation: pulse-custom 2s infinite;
+}
+
+.header-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.header-mobile-menu {
+    animation: fade-in 0.3s ease-out;
+}
+
+/* 🎯 Estados activos para navegación */
+.router-link-active {
+    background-color: #dbeafe !important;
+    color: #1d4ed8 !important;
+    border-radius: 0.375rem;
+}
+
+/* � Estilos para el modal de login */
+.login-modal-backdrop {
+    backdrop-filter: blur(4px);
+    animation: fade-in 0.2s ease-out;
+}
+
+.login-modal-content {
+    animation: modal-slide-in 0.3s ease-out;
+}
+
+@keyframes modal-slide-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 🔄 Animación de carga */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* �📱 Mejoras responsive para el header */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

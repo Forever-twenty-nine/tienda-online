@@ -1,0 +1,111 @@
+<footer class="bg-muted-foreground text-white mt-16">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <!-- Logo y descripción -->
+      <div class="col-span-1 md:col-span-2">
+        <div class="flex items-center space-x-3 mb-4 cursor-pointer hover:scale-105 transition-transform duration-200" (click)="onLogoClick()">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-md">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">TiendaOnline</h3>
+            <p class="text-sm text-gray-300">Tu tienda de confianza</p>
+          </div>
+        </div>
+        <p class="text-gray-200 text-sm leading-relaxed mb-6">
+          Ofrecemos los mejores productos con la calidad que mereces. 
+          Compra seguro y recibe tus productos en la comodidad de tu hogar.
+        </p>
+        
+        <!-- Acceso de administrador oculto -->
+        @if (showAdminAccess) {
+        <div class="animate-fade-in">
+          <button (click)="onAdminClick()"
+             class="inline-flex items-center px-3 py-2 text-xs bg-gradient-to-r from-secondary to-primary text-white rounded-lg hover:from-secondary/80 hover:to-primary/80 transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+            Acceso Administrador
+          </button>
+        </div>
+        }
+      </div>
+
+      <!-- Enlaces rápidos -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-white">Enlaces Rápidos</h4>
+        <ul class="space-y-2">
+          <li><a routerLink="/about" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Sobre Nosotros</a></li>
+          <li><a routerLink="/terms" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Términos y Condiciones</a></li>
+          <li><a routerLink="/privacy" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Política de Privacidad</a></li>
+          <li><a routerLink="/returns" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Devoluciones</a></li>
+        </ul>
+      </div>
+
+      <!-- Contacto -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4 text-white">Contacto</h4>
+        <ul class="space-y-2 text-sm text-gray-200">
+          <li class="flex items-center hover:text-white transition-colors duration-200">
+            <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            info&#64;tiendaonline.com
+          </li>
+          <li class="flex items-center hover:text-white transition-colors duration-200">
+            <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+            </svg>
+            +54 11 1234-5678
+          </li>
+          <li class="flex items-start hover:text-white transition-colors duration-200">
+            <svg class="w-4 h-4 mr-2 mt-0.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            Buenos Aires, Argentina
+          </li>
+        </ul>
+        
+        <!-- Redes sociales -->
+        <div class="flex space-x-4 mt-4">
+          <a href="#" class="text-gray-300 hover:text-primary hover:scale-110 transition-all duration-200">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+            </svg>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-primary hover:scale-110 transition-all duration-200">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+            </svg>
+          </a>
+          <a href="#" class="text-gray-300 hover:text-primary hover:scale-110 transition-all duration-200">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.219-5.175 1.219-5.175s-.311-.623-.311-1.544c0-1.446.839-2.525 1.883-2.525.888 0 1.317.666 1.317 1.466 0 .893-.568 2.229-.861 3.467-.245 1.04.522 1.887 1.548 1.887 1.858 0 3.283-1.958 3.283-4.789 0-2.503-1.799-4.253-4.369-4.253-2.977 0-4.727 2.234-4.727 4.546 0 .9.347 1.863.78 2.388.085.103.097.194.072.299-.079.33-.254 1.037-.288 1.183-.046.189-.15.229-.346.138-1.279-.595-2.077-2.466-2.077-3.967 0-3.299 2.397-6.327 6.913-6.327 3.631 0 6.451 2.588 6.451 6.044 0 3.608-2.274 6.511-5.431 6.511-1.06 0-2.057-.552-2.396-1.209 0 0-.524 1.998-.651 2.488-.236.908-.872 2.046-1.297 2.74.977.302 2.008.463 3.071.463 6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Línea divisoria y copyright -->
+    <div class="border-t border-gray-600 mt-8 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-300 text-sm">
+          © 2025 TiendaOnline. Todos los derechos reservados.
+        </p>
+        <p class="text-gray-400 text-xs mt-2 md:mt-0">
+          Hecho con ❤️ para una mejor experiencia de compra
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de login -->
+  @if (showLoginModal) {
+    <app-login-modal (closeModalEvent)="closeLoginModal()"></app-login-modal>
+  }
+</footer>

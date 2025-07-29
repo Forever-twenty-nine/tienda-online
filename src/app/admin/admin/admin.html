@@ -1,8 +1,88 @@
-<main class="flex min-h-screen bg-muted">
-    <!-- 🟣 SIDEBAR -->
-    <aside class="w-64 bg-primary text-primary-foreground p-6">
+<main class="flex flex-col md:flex-row min-h-screen bg-muted">
+    <!-- 🟣 NAVBAR MÓVIL CON MENÚ HAMBURGUESA -->
+    <header class="md:hidden bg-primary text-primary-foreground p-4 shadow-lg relative z-50">
+        <div class="flex items-center justify-between">
+            <div>
+                <a routerLink="/admin" class="text-lg font-semibold hover:text-primary-foreground/80 transition-colors duration-200">
+                    Panel Administrativo
+                </a>
+            </div>
+            <!-- Botón Hamburguesa -->
+            <button (click)="toggleMenu()" 
+                   class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-all duration-200"
+                   [class.rotate-90]="isMenuOpen">
+                <svg class="w-6 h-6 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          [attr.d]="isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- 🍔 MENÚ LATERAL MÓVIL (Overlay) -->
+    <div class="md:hidden">
+        <!-- Overlay de fondo -->
+        <div *ngIf="isMenuOpen" 
+             (click)="closeMenu()"
+             class="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300">
+        </div>
+        
+        <!-- Panel del menú -->
+        <nav class="fixed top-0 right-0 h-full w-64 bg-primary text-primary-foreground transform transition-transform duration-300 z-50 shadow-2xl"
+             [class.translate-x-0]="isMenuOpen"
+             [class.translate-x-full]="!isMenuOpen">
+            
+            <!-- Header del menú -->
+            <div class="p-6 border-b border-primary-foreground/20">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold">Menú</h2>
+                    <button (click)="closeMenu()" 
+                           class="w-8 h-8 rounded-lg hover:bg-primary-foreground/10 flex items-center justify-center transition-all duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Enlaces de navegación -->
+            <div class="p-6">
+                <ul class="space-y-3">
+                    <li>
+                        <a routerLink="/admin/products" 
+                           (click)="closeMenu()"
+                           routerLinkActive="bg-primary-foreground text-primary font-semibold shadow-md" 
+                           [routerLinkActiveOptions]="{ exact: false }"
+                           class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary-foreground/10 transition-all duration-200 group">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                            </svg>
+                            <span>Productos</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Botón de logout -->
+                <div class="mt-8 pt-6 border-t border-primary-foreground/20">
+                    <button (click)="logout()"
+                           class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-error/20 text-error hover:bg-error/30 transition-all duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Cerrar Sesión</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- 🟣 SIDEBAR (Solo visible en escritorio) -->
+    <aside class="hidden md:block w-64 bg-primary text-primary-foreground p-6">
         <div class="mb-8">
-            <h2 class="text-2xl font-semibold mb-2">⚙️ Panel Admin</h2>
+            <a routerLink="/admin" class="block">
+                <h2 class="text-2xl font-semibold mb-2 hover:text-primary-foreground/80 transition-colors duration-200">⚙️ Panel Admin</h2>
+            </a>
             <p class="text-sm text-primary-foreground/70">Gestiona tu tienda</p>
         </div>
 
@@ -20,35 +100,20 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLink="/" 
-                       class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-primary-foreground/10 transition-all duration-200 group">
+                    <button (click)="logout()"
+                       class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-error/20 text-error hover:text-error transition-all duration-200 group">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
-                        <span>Volver a Tienda</span>
-                    </a>
+                        <span>Cerrar Sesión</span>
+                    </button>
                 </li>
             </ul>
         </nav>
-
-        <!-- 📊 Estadísticas rápidas -->
-        <div class="mt-8 pt-6 border-t border-primary-foreground/20">
-            <h3 class="text-sm font-medium text-primary-foreground/70 mb-3">Estado Rápido</h3>
-            <div class="space-y-2 text-sm">
-                <div class="flex justify-between">
-                    <span>Productos:</span>
-                    <span class="font-semibold">12</span>
-                </div>
-                <div class="flex justify-between">
-                    <span>Categorías:</span>
-                    <span class="font-semibold">4</span>
-                </div>
-            </div>
-        </div>
     </aside>
 
     <!-- ⚪ CONTENIDO PRINCIPAL -->
-    <section class="flex-1 p-8 bg-white">
+    <section class="flex-1 p-4 md:p-8 bg-white">
         <router-outlet></router-outlet>
     </section>
 </main>
