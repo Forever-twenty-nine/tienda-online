@@ -1,5 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
+import { Router } from '@angular/router';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -9,5 +10,10 @@ import { Product } from '../../models/product.model';
   templateUrl: './product-card.html'
 })
 export class ProductCard {
-  @Input() product!: Product;  
+  @Input() product!: Product;
+  private router = inject(Router);
+
+  navigateToDetail() {
+    this.router.navigate(['/product', this.product.id]);
+  }
 }

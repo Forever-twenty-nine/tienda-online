@@ -1,5 +1,5 @@
 // 🎉 1️⃣ Importaciones esenciales
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, effect } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Storage } from '@angular/fire/storage';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -35,8 +35,11 @@ export class ProductsService {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
 
+  // 🔍 Señal para el término de búsqueda
+  searchTerm = signal('');
+
   // 🌟 2️⃣ Señal reactiva basada en el Observable de Firestore con manejo de errores
-  products = toSignal(
+  private allProducts = toSignal(
     collectionData(
       collection(this.firestore, 'products').withConverter(productConverter),
       { idField: 'id' }
@@ -49,11 +52,45 @@ export class ProductsService {
     { initialValue: [] }
   );
 
+  // 🔍 Productos filtrados basados en el término de búsqueda
+  products = signal<Product[]>([]);
+
   // ⚡ Estado de la subida de imagen
   uploading = signal(false);
 
   // Ya no necesitamos suscripciones manuales en el constructor
-  constructor() { }
+  constructor() {
+    // 🔍 Effect para filtrar productos cuando cambia el término de búsqueda o los productos
+    effect(() => {
+      const term = this.searchTerm().toLowerCase().trim();
+      const allProds = this.allProducts();
+      
+      if (!term) {
+        this.products.set(allProds);
+      } else {
+        const filtered = allProds.filter(product => 
+          product.nombre.toLowerCase().includes(term) ||
+          product.descripcion.toLowerCase().includes(term)
+        );
+        this.products.set(filtered);
+      }
+    });
+  }
+
+  /**
+   * 🔍 Método para actualizar el término de búsqueda
+   * @param term Término de búsqueda
+   */
+  setSearchTerm(term: string): void {
+    this.searchTerm.set(term);
+  }
+
+  /**
+   * 🔍 Método para limpiar la búsqueda
+   */
+  clearSearch(): void {
+    this.searchTerm.set('');
+  }
 
   /**
    * ➕ Agrega un nuevo producto (sin ID).

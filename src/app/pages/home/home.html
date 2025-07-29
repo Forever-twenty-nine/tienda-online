@@ -4,22 +4,47 @@
   <section class="container mx-auto p-6">
       <!-- 🏷️ Título con mejor diseño -->
       <div class="text-center mb-8">
+          @if (productsService.searchTerm()) {
+          <h1 class="text-4xl font-bold text-gray-900 mb-2">
+            Resultados para "{{ productsService.searchTerm() }}"
+          </h1>
+          <p class="text-gray-600">
+            {{ productsService.products().length }} productos encontrados
+          </p>
+          } @else {
           <h1 class="text-4xl font-bold text-gray-900 mb-2">Catálogo de productos</h1>
           <p class="text-gray-600">Descubre nuestros productos más populares</p>
+          }
           <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-4 rounded-full"></div>
       </div>
 
       <!-- 🔄 Si hay productos, mostramos el grid -->
       @if (productsService.products().length > 0) {
-      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-fr">
           <!-- 🔁 Bucle con sintaxis exacta: "product of …; track product.id" -->
           @for (product of productsService.products(); track product.id) {
           <app-product-card [product]="product"></app-product-card>
           }
       </div>
       } @else {
-      <!-- ⏳ Fallback mientras carga con mejor diseño -->
-      <div class="flex flex-col items-center justify-center py-20">
+      <!-- ⏳ Fallback mientras carga o sin resultados -->
+      @if (productsService.searchTerm()) {
+        <!-- 🔍 Sin resultados de búsqueda -->
+        <div class="flex flex-col items-center justify-center py-20">
+          <div class="text-6xl mb-4">🔍</div>
+          <h3 class="text-xl font-semibold text-gray-700 mb-2">
+            No se encontraron productos
+          </h3>
+          <p class="text-center text-gray-500 text-lg mb-4">
+            No hay productos que coincidan con "{{ productsService.searchTerm() }}"
+          </p>
+          <p class="text-center text-gray-400 text-sm">
+            Intenta con otros términos de búsqueda
+          </p>
+        </div>
+      } @else {
+        <!-- ⏳ Cargando productos -->
+        <div class="flex flex-col items-center justify-center py-20">
           <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50 mb-4"></div>
           <p class="text-center text-gray-500 text-lg">
               Cargando productos...
@@ -27,7 +52,8 @@
           <p class="text-center text-gray-400 text-sm mt-2">
               Esto puede tomar unos segundos
           </p>
-      </div>
+        </div>
+      }
       }
   </section>
 </main>

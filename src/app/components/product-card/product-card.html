@@ -1,16 +1,33 @@
 <!-- src/app/components/product-card/product-card.html -->
-<div class="bg-white rounded-2xl shadow p-4 hover:shadow-lg transition">
-    <img ngOptimizedImage [ngSrc]="product.imagen && product.imagen.trim() ? product.imagen : 'https://picsum.photos/400/300'" width="400" height="300" alt="{{ product.nombre }}" class="w-full h-auto object-cover rounded-xl mb-4" priority />
+<div class="bg-white rounded-2xl shadow hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden cursor-pointer group"
+     (click)="navigateToDetail()">
+    
+    <!-- 🖼️ Contenedor de imagen con altura fija -->
+    <div class="w-full h-48 bg-gray-100 flex-shrink-0 relative overflow-hidden">
+        <img ngOptimizedImage 
+             [ngSrc]="product.imagen && product.imagen.trim() ? product.imagen : 'https://picsum.photos/400/300'" 
+             fill
+             alt="{{ product.nombre }}" 
+             class="object-cover group-hover:scale-105 transition-transform duration-300" 
+             priority />
+    </div>
 
+    <!-- 📄 Contenido de la tarjeta -->
+    <div class="p-4 flex flex-col flex-grow">
+        <!-- 🏷️ Nombre del producto -->
+        <h2 class="text-xl font-semibold mb-2 group-hover:text-blue-600 transition-colors">{{ product.nombre }}</h2>
 
-    <!-- 🏷️ Nombre del producto -->
-    <h2 class="text-xl font-semibold">{{ product.nombre }}</h2>
+        <!-- 📝 Descripción -->
+        <p class="text-gray-700 mb-4 flex-grow">{{ product.descripcion }}</p>
 
-    <!-- 📝 Descripción -->
-    <p class="text-gray-700 mb-2">{{ product.descripcion }}</p>
-
-    <!-- 💲 Precio formateado -->
-    <p class="text-lg font-bold text-sky-600">
-        {{ product.precio | currency:'USD' }}
-    </p>
+        <!-- 💲 Precio formateado -->
+        <div class="flex items-center justify-between">
+            <p class="text-lg font-bold text-sky-600">
+                {{ product.precio | currency:'USD' }}
+            </p>
+            <span class="text-blue-600 font-medium group-hover:translate-x-1 transition-transform">
+                Ver más →
+            </span>
+        </div>
+    </div>
 </div>

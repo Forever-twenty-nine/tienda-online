@@ -5,11 +5,13 @@ import { AboutComponent } from './pages/about/about';
 import { TermsComponent } from './pages/terms/terms';
 import { PrivacyComponent } from './pages/privacy/privacy';
 import { ReturnsComponent } from './pages/returns/returns';
+import { ProductDetailComponent } from './pages/product-detail/product-detail';
 import { adminRoutes } from './admin/admin-routing';
 import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     {path: '', component: Home},
+    {path: 'product/:id', component: ProductDetailComponent},
     {path: 'about', component: AboutComponent},
     {path: 'terms', component: TermsComponent},
     {path: 'privacy', component: PrivacyComponent},
