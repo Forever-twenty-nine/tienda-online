@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Ignorar archivo de configuración de entorno (contiene secrets)
-/src/environments/enviroment.ts
+/src/environments/environment.ts
