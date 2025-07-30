@@ -23,7 +23,7 @@
         <!-- 💲 Precio formateado -->
         <div class="flex items-center justify-between">
             <p class="text-lg font-bold text-sky-600">
-                {{ product.precio | currency:'USD' }}
+                {{ product.precio | currency:'ARS':'symbol':'1.0-0':'es-AR' }}
             </p>
             <span class="text-blue-600 font-medium group-hover:translate-x-1 transition-transform">
                 Ver más →
