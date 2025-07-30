@@ -3,13 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgOptimizedImage, CurrencyPipe, CommonModule } from '@angular/common';
 import { ProductsService } from '../../services/products';
 import { Product } from '../../models/product.model';
-import { HeaderComponent } from '../../components/header/header';
-import { FooterComponent } from '../../components/footer/footer';
 
 @Component({
     selector: 'app-product-detail',
     standalone: true,
-    imports: [HeaderComponent, FooterComponent, CommonModule, NgOptimizedImage, CurrencyPipe],
+    imports: [CommonModule, NgOptimizedImage, CurrencyPipe],
     templateUrl: './product-detail.html'
 })
 export class ProductDetailComponent implements OnInit {

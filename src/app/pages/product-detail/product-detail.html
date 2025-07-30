@@ -1,106 +1,97 @@
-<app-header></app-header>
+@if (loading()) {
+<!-- ⏳ Estado de carga -->
+<div class="flex flex-col items-center justify-center py-20">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50 mb-4"></div>
+  <p class="text-center text-gray-500 text-lg">Cargando producto...</p>
+</div>
+} @else if (error()) {
+<!-- ❌ Estado de error -->
+<div class="container mx-auto p-6">
+  <div class="flex flex-col items-center justify-center py-20">
+    <div class="text-6xl mb-4">❌</div>
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Producto no encontrado</h2>
+    <p class="text-gray-600 mb-6">El producto que buscas no existe o ha sido eliminado.</p>
+    <button (click)="goBack()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+      Volver al catálogo
+    </button>
+  </div>
+</div>
+} @else if (product()) {
+<!-- 📱 Detalle del producto -->
+<div class="container mx-auto p-6">
+  <!-- 🔙 Botón de volver -->
+  <div class="mb-6">
+    <button (click)="goBack()" class="flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+      </svg>
+      Volver al catálogo
+    </button>
+  </div>
 
-<main class="min-h-screen bg-gray-50">
-  @if (loading()) {
-    <!-- ⏳ Estado de carga -->
-    <div class="flex flex-col items-center justify-center py-20">
-      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50 mb-4"></div>
-      <p class="text-center text-gray-500 text-lg">Cargando producto...</p>
-    </div>
-  } @else if (error()) {
-    <!-- ❌ Estado de error -->
-    <div class="container mx-auto p-6">
-      <div class="flex flex-col items-center justify-center py-20">
-        <div class="text-6xl mb-4">❌</div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Producto no encontrado</h2>
-        <p class="text-gray-600 mb-6">El producto que buscas no existe o ha sido eliminado.</p>
-        <button (click)="goBack()" 
-                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-          Volver al catálogo
-        </button>
-      </div>
-    </div>
-  } @else if (product()) {
-    <!-- 📱 Detalle del producto -->
-    <div class="container mx-auto p-6">
-      <!-- 🔙 Botón de volver -->
-      <div class="mb-6">
-        <button (click)="goBack()" 
-                class="flex items-center text-blue-600 hover:text-blue-800 transition-colors">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Volver al catálogo
-        </button>
+  <!-- 📄 Contenido principal -->
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div class="grid md:grid-cols-2 gap-8 p-6">
+
+      <!-- 🖼️ Imagen del producto -->
+      <div class="space-y-4">
+        <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden relative">
+          <img ngOptimizedImage
+            [ngSrc]="product()!.imagen && product()!.imagen!.trim() ? product()!.imagen! : 'https://picsum.photos/600/600'"
+            fill alt="{{ product()!.nombre }}" class="object-cover hover:scale-105 transition-transform duration-300"
+            priority />
+        </div>
       </div>
 
-      <!-- 📄 Contenido principal -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div class="grid md:grid-cols-2 gap-8 p-6">
-          
-          <!-- 🖼️ Imagen del producto -->
-          <div class="space-y-4">
-            <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden relative">
-              <img ngOptimizedImage 
-                   [ngSrc]="product()!.imagen && product()!.imagen!.trim() ? product()!.imagen! : 'https://picsum.photos/600/600'" 
-                   fill
-                   alt="{{ product()!.nombre }}" 
-                   class="object-cover hover:scale-105 transition-transform duration-300" 
-                   priority />
-            </div>
+      <!-- 📝 Información del producto -->
+      <div class="flex flex-col justify-between">
+        <div>
+          <!-- 🏷️ Nombre del producto -->
+          <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product()!.nombre }}</h1>
+
+          <!-- 💲 Precio -->
+          <div class="mb-6">
+            <p class="text-3xl font-bold text-blue-600">
+              {{ product()!.precio | currency:'ARS':'symbol':'1.0-0':'es-AR' }}
+            </p>
           </div>
 
-          <!-- 📝 Información del producto -->
-          <div class="flex flex-col justify-between">
-            <div>
-              <!-- 🏷️ Nombre del producto -->
-              <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product()!.nombre }}</h1>
-              
-              <!-- 💲 Precio -->
-              <div class="mb-6">
-                <p class="text-3xl font-bold text-blue-600">
-                  {{ product()!.precio | currency:'ARS':'symbol':'1.0-0':'es-AR' }}
-                </p>
-              </div>
+          <!-- 📝 Descripción -->
+          <div class="mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Descripción</h3>
+            <p class="text-gray-700 leading-relaxed">{{ product()!.descripcion }}</p>
+          </div>
 
-              <!-- 📝 Descripción -->
-              <div class="mb-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Descripción</h3>
-                <p class="text-gray-700 leading-relaxed">{{ product()!.descripcion }}</p>
-              </div>
-
-              <!-- 📊 Información adicional -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <div class="bg-gray-50 p-4 rounded-lg">
-                  <h4 class="font-semibold text-gray-800 mb-1">ID del Producto</h4>
-                  <p class="text-gray-600 text-sm">{{ product()!.id }}</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                  <h4 class="font-semibold text-gray-800 mb-1">Disponibilidad</h4>
-                  <p class="text-green-600 font-medium">✅ En stock</p>
-                </div>
-              </div>
+          <!-- 📊 Información adicional -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-800 mb-1">ID del Producto</h4>
+              <p class="text-gray-600 text-sm">{{ product()!.id }}</p>
             </div>
-
-            <!-- � Contacto por WhatsApp -->
-            <div class="space-y-4">
-              <button (click)="contactWhatsApp()" 
-                      class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-md flex items-center justify-center space-x-2">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                </svg>
-                <span>💬 Consultar por WhatsApp</span>
-              </button>
-              
-              <p class="text-center text-gray-500 text-sm">
-                Te contactaremos para ayudarte con tu consulta
-              </p>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-800 mb-1">Disponibilidad</h4>
+              <p class="text-green-600 font-medium">✅ En stock</p>
             </div>
           </div>
         </div>
+
+        <!-- � Contacto por WhatsApp -->
+        <div class="space-y-4">
+          <button (click)="contactWhatsApp()"
+            class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-md flex items-center justify-center space-x-2">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+            </svg>
+            <span>💬 Consultar por WhatsApp</span>
+          </button>
+
+          <p class="text-center text-gray-500 text-sm">
+            Te contactaremos para ayudarte con tu consulta
+          </p>
+        </div>
       </div>
     </div>
-  }
-</main>
-
-<app-footer></app-footer>
+  </div>
+</div>
+}

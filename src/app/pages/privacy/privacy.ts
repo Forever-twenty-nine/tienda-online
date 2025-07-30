@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../../components/header/header';
-import { FooterComponent } from '../../components/footer/footer';
 
 @Component({
   selector: 'app-privacy',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  // imports limpios, header/footer van en layout
   templateUrl: './privacy.html'
 })
 export class PrivacyComponent {

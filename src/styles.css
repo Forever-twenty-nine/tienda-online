@@ -1,3 +1,51 @@
+/* Estilos para el modal de detalle de producto */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 41, 59, 0.7);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInBg 0.3s;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: scaleIn 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+.modal-close:hover {
+  color: #1e293b;
+}
+
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
 /* 1️⃣ Import básico de Tailwind */
 @import "tailwindcss";
 
@@ -143,22 +191,26 @@ body {
 }
 
 /* 📝 Utilidades para limitar líneas de texto */
+
 .line-clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.5;
-    max-height: 3em; /* 2 líneas * 1.5 line-height */
+    max-height: 3em; 
 }
+
 
 .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.5;
-    max-height: 4.5em; /* 3 líneas * 1.5 line-height */
+    max-height: 4.5em; 
 }
 
 /* 🎨 Mejoras adicionales para las tarjetas de productos */
