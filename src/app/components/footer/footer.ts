@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginModalComponent } from '../../shared/login-modal/login-modal';
 import { AuthService } from '../../services/auth.service';
@@ -17,16 +17,19 @@ export class FooterComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   onLogoClick() {
     this.clickCount++;
     if (this.clickCount >= 5) {
       this.showAdminAccess = true;
+      this.cdr.detectChanges();
       setTimeout(() => {
         this.showAdminAccess = false;
         this.clickCount = 0;
+        this.cdr.detectChanges();
       }, 10000); // Se oculta después de 10 segundos
     }
   }

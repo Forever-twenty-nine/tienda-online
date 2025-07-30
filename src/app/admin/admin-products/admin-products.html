@@ -84,7 +84,8 @@
                     [ngSrc]="(product.imagen && product.imagen.trim()) ? product.imagen : 'https://picsum.photos/300/300'" 
                     width="300" height="300" 
                     alt="{{ product.nombre }}" 
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    priority />
                 
                 <!-- Overlay con acciones -->
                 <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">

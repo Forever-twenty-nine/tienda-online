@@ -106,6 +106,6 @@
 
   <!-- Modal de login -->
   @if (showLoginModal) {
-    <app-login-modal (closeModalEvent)="closeLoginModal()"></app-login-modal>
+    <app-login-modal [open]="showLoginModal" (closeModalEvent)="closeLoginModal()"></app-login-modal>
   }
 </footer>

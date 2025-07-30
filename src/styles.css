@@ -1,117 +1,30 @@
-/* Estilos para el modal de detalle de producto */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(30, 41, 59, 0.7);
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: fadeInBg 0.3s;
-}
 
-.modal-content {
-  background: white;
-  border-radius: 1.5rem;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-  max-width: 700px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  animation: scaleIn 0.3s cubic-bezier(.4,0,.2,1);
-}
-
-.modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 2rem;
-  color: #64748b;
-  cursor: pointer;
-  transition: color 0.2s;
-  z-index: 10;
-}
-.modal-close:hover {
-  color: #1e293b;
-}
-
-@keyframes fadeInBg {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes scaleIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-/* 1️⃣ Import básico de Tailwind */
 @import "tailwindcss";
 
-/* 2️⃣ Definición de variables temáticas */
 @theme {
-    /* 🔵 Primarios */
     --color-primary: #2563eb;
-    /* azul 600 */
     --color-primary-foreground: #ffffff;
-
-    /* 🟣 Secundarios */
     --color-secondary: #7c3aed;
-    /* violeta 600 */
     --color-secondary-foreground: #ffffff;
-
-    /* ⚪ Neutros / Muted */
     --color-muted: #f3f4f6;
-    /* gris 100 */
     --color-muted-foreground: #374151;
-    /* gris 700 */
-
-    /* ✅ Éxito */
     --color-success: #16a34a;
-    /* verde 600 */
     --color-success-foreground: #ffffff;
-
-    /* ❌ Error */
     --color-error: #dc2626;
-    /* rojo 600 */
     --color-error-foreground: #ffffff;
-
-    /* ⚠️ Advertencia */
     --color-warning: #f59e0b;
-    /* ámbar 500 */
     --color-warning-foreground: #1f2937;
-    /* gris 800 */
-
-    /* ℹ️ Información */
     --color-info: #0ea5e9;
-    /* cian 500 */
     --color-info-foreground: #ffffff;
 }
 
-/* 3️⃣ Opcional: estilos globales o overrides */
+
 body {
-    background-color: var(--color-muted);
-    color: var(--color-muted-foreground);
+    background-color: #f3f4f6;
+    color: #374151;
 }
 
-/* 🎭 Animaciones para el footer */
-@keyframes fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-.animate-fade-in {
-    animation: fade-in 0.3s ease-out;
-}
-
-/* 🎭 Animaciones para el header */
 @keyframes pulse-custom {
     0%, 100% {
         opacity: 1;
@@ -121,7 +34,6 @@ body {
     }
 }
 
-/* 🎨 Estilos específicos del header */
 .header-backdrop {
     backdrop-filter: blur(8px);
 }
@@ -139,85 +51,12 @@ body {
     box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
 }
 
-.header-mobile-menu {
-    animation: fade-in 0.3s ease-out;
-}
-
-/* 🎯 Estados activos para navegación */
 .router-link-active {
     background-color: #dbeafe !important;
     color: #1d4ed8 !important;
     border-radius: 0.375rem;
 }
 
-/* 🔐 Estilos para el modal de login */
 .login-modal-backdrop {
     backdrop-filter: blur(4px);
-    animation: fade-in 0.2s ease-out;
-}
-
-.login-modal-content {
-    animation: modal-slide-in 0.3s ease-out;
-}
-
-@keyframes modal-slide-in {
-    from {
-        opacity: 0;
-        transform: scale(0.95) translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-/* 🔄 Animación de carga */
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.animate-spin {
-    animation: spin 1s linear infinite;
-}
-
-/* 📱 Mejoras responsive para el header */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-}
-
-/* 📝 Utilidades para limitar líneas de texto */
-
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.5;
-    max-height: 3em; 
-}
-
-
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.5;
-    max-height: 4.5em; 
-}
-
-/* 🎨 Mejoras adicionales para las tarjetas de productos */
-.product-card-image {
-    transition: transform 0.3s ease-in-out;
-}
-
-.product-card-image:hover {
-    transform: scale(1.05);
 }

@@ -1,43 +1,28 @@
-<!-- src/app/shared/confirm-dialog/confirm-dialog.component.html -->
-
 @if (open) {
-<div class="fixed inset-0 z-50 flex items-center justify-center">
-    <!-- 🖤 Overlay semitransparente -->
-    <div class="absolute inset-0 bg-black bg-opacity-50" (click)="cancel.emit()"></div>
-
-    <!-- 📦 Modal contenedor -->
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative" (click)="$event.stopPropagation()">
-        <!-- 📌 CABECERA -->
-        <h3 class="text-xl font-semibold mb-4 text-primary">
-            {{ title }}
-        </h3>
-
-        <!-- 📄 MENSAJE -->
-        <p class="mb-6 text-muted-foreground">
-            {{ message }}
-        </p>
-
-        <!-- 🎛️ BOTONES -->
-        <div class="flex justify-end gap-2">
-            <!-- Cancelar -->
-            <button (click)="cancel.emit()" class="
-            bg-muted text-muted-foreground 
-            px-4 py-2 rounded
-            hover:bg-muted-foreground hover:text-muted
-            transition
-          ">
-                {{ cancelText }}
-            </button>
-            <!-- Confirmar (destructivo) -->
-            <button (click)="confirm.emit()" class="
-            bg-error text-error-foreground 
-            px-4 py-2 rounded
-            hover:bg-error-foreground hover:text-error
-            transition
-          ">
-                {{ confirmText }}
-            </button>
-        </div>
+  <app-modal [open]="open" (close)="cancel.emit()">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+      <h3 class="text-xl font-semibold mb-4 text-primary">
+        {{ title }}
+      </h3>
+      <p class="mb-6 text-muted-foreground">
+        {{ message }}
+      </p>
+      <div class="flex justify-end gap-2">
+        <button (click)="cancel.emit()" class="
+          bg-muted text-muted-foreground 
+          px-4 py-2 rounded
+          hover:bg-muted-foreground hover:text-muted
+          transition">
+          {{ cancelText }}
+        </button>
+        <button (click)="confirm.emit()" class="
+          bg-error text-error-foreground 
+          px-4 py-2 rounded
+          hover:bg-error-foreground hover:text-error
+          transition">
+          {{ confirmText }}
+        </button>
+      </div>
     </div>
-</div>
+  </app-modal>
 }
