@@ -1,0 +1,97 @@
+<div class="space-y-6 lg:space-y-8">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Panel de Control</h1>
+    <span class="inline-flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs lg:text-sm font-medium border border-primary/20 w-fit">
+      Bienvenido, Administrador
+    </span>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+    <div class="bg-white p-6 lg:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 lg:gap-6 hover:shadow-md transition-shadow cursor-pointer" routerLink="/admin/products">
+      <div class="flex-shrink-0 w-12 h-12 lg:w-16 lg:h-16 bg-blue-100 rounded-xl lg:rounded-2xl flex items-center justify-center text-blue-600">
+        <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+        </svg>
+      </div>
+      <div>
+        <p class="text-xs lg:text-sm font-medium text-gray-500 uppercase tracking-wider">Total Productos</p>
+        <p class="text-2xl lg:text-4xl font-extrabold text-gray-900">{{ totalProducts() }}</p>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 lg:p-8 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4 lg:gap-6 hover:shadow-md transition-shadow cursor-pointer" routerLink="/admin/categories">
+      <div class="flex-shrink-0 w-12 h-12 lg:w-16 lg:h-16 bg-purple-100 rounded-xl lg:rounded-2xl flex items-center justify-center text-purple-600">
+        <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+        </svg>
+      </div>
+      <div>
+        <p class="text-xs lg:text-sm font-medium text-gray-500 uppercase tracking-wider">Categorías</p>
+        <p class="text-2xl lg:text-4xl font-extrabold text-gray-900">{{ totalCategories() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+    <!-- Categories Breakdown -->
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="px-6 py-5 border-b border-gray-100">
+        <h3 class="font-bold text-gray-800">Distribución por Categorías</h3>
+      </div>
+      <div class="p-6">
+        <div class="space-y-4">
+          @for (cat of productsByCategory(); track cat.nombre) {
+            <div>
+              <div class="flex justify-between text-xs lg:text-sm mb-1">
+                <span class="font-medium text-gray-700">{{ cat.nombre }}</span>
+                <span class="text-gray-500">{{ cat.count }} productos</span>
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-1.5 lg:h-2">
+                <div class="bg-primary h-1.5 lg:h-2 rounded-full transition-all duration-500" 
+                     [style.width.%]="totalProducts() > 0 ? (cat.count / totalProducts() * 100) : 0">
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <p class="text-center py-8 text-gray-500 italic">No hay categorías registradas</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="space-y-4 lg:space-y-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-gray-800 mb-4">Acciones Rápidas</h3>
+        <div class="space-y-3">
+          <button routerLink="/admin/products/new" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors font-medium text-sm lg:text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Nuevo Producto
+          </button>
+          <button routerLink="/admin/categories" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border-2 border-primary/20 text-primary rounded-xl hover:bg-primary/5 transition-colors font-medium text-sm lg:text-base">
+            Gestionar Categorías
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 text-white shadow-lg overflow-hidden relative">
+        <div class="relative z-10">
+          <h3 class="font-bold text-lg mb-2">Consejo</h3>
+          <p class="text-xs lg:text-sm opacity-90 leading-relaxed">
+            Mantén tu inventario actualizado para ofrecer siempre la mejor experiencia a tus clientes.
+          </p>
+        </div>
+        <svg class="absolute -right-4 -bottom-4 w-20 h-20 lg:w-24 lg:h-24 opacity-20 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Spacer for Mobile visibility -->
+  <div class="h-4 lg:hidden"></div>
+</div>

@@ -1,0 +1,217 @@
+<!-- src/app/admin/admin-products/admin-products.html -->
+
+<!-- 1️⃣ Dialogo de confirmación -->
+<app-confirm-dialog [open]="showConfirm" title="Eliminar producto" message="¿Deseas eliminar este producto?"
+    confirmText="Sí, eliminar" cancelText="Cancelar" (confirm)="onConfirmDelete()"
+    (cancel)="onCancelDelete()"></app-confirm-dialog>
+
+<section class="container mx-auto p-6">
+    <!-- 🎨 Cabecera mejorada -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+        <div>
+            <h1 class="text-2xl lg:text-4xl font-bold text-primary mb-2">🛠️ Gestión de Productos</h1>
+            <p class="text-sm lg:text-base text-muted-foreground">Administra tu catálogo de productos</p>
+        </div>
+        <button (click)="onNew()" class="
+            w-full sm:w-auto
+            bg-gradient-to-r from-secondary to-primary 
+            text-white font-semibold
+            px-6 py-3 rounded-xl
+            hover:scale-105 hover:shadow-lg
+            transition-all duration-300
+            flex items-center justify-center space-x-2
+            shadow-md
+        ">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span>Nuevo Producto</span>
+        </button>
+    </div>
+
+    <!-- 📊 Estadísticas rápidas -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-muted-foreground/10">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-primary/10 rounded-lg">
+                    <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm text-muted-foreground">Total Productos</p>
+                    <p class="text-2xl font-bold text-primary">{{ productsService.products().length }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-muted-foreground/10">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-success/10 rounded-lg">
+                    <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm text-muted-foreground">Activos</p>
+                    <p class="text-2xl font-bold text-success">{{ productsService.products().length }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-muted-foreground/10">
+            <div class="flex items-center space-x-4">
+                <div class="p-3 bg-secondary/10 rounded-lg">
+                    <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm text-muted-foreground">En Venta</p>
+                    <p class="text-2xl font-bold text-secondary">{{ productsService.products().length }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🛍️ Grid de productos moderno -->
+    @if (productsService.products().length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @for (product of productsService.products(); track product.id) {
+        <div class="bg-white rounded-xl shadow-sm border border-muted-foreground/10 overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 group">
+            <!-- 🖼️ Imagen del producto con overlay -->
+            <div class="relative aspect-square overflow-hidden bg-muted">
+                <img ngOptimizedImage
+                    [ngSrc]="(product.imagen && product.imagen.trim()) ? product.imagen : 'https://picsum.photos/300/300'" 
+                    width="300" height="300" 
+                    alt="{{ product.nombre }}" 
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    priority />
+                
+                <!-- Overlay con acciones -->
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
+                    <!-- Botón Editar -->
+                    <button (click)="onEdit(product.id)" class="
+                        p-3 rounded-full 
+                        bg-white/20 backdrop-blur-sm text-white
+                        hover:bg-secondary hover:scale-110
+                        transition-all duration-200
+                        border border-white/30
+                    " aria-label="Editar producto">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Botón Eliminar -->
+                    <button (click)="onDelete(product.id)" class="
+                        p-3 rounded-full 
+                        bg-white/20 backdrop-blur-sm text-white
+                        hover:bg-error hover:scale-110
+                        transition-all duration-200
+                        border border-white/30
+                    " aria-label="Eliminar producto">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Badge de estado -->
+                <div class="absolute top-3 left-3 flex flex-col gap-1">
+                    <span class="bg-success text-success-foreground text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                        Activo
+                    </span>
+                    @if (product.destacado) {
+                    <span class="bg-secondary text-secondary-foreground text-xs font-semibold px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                        </svg>
+                        Destacado
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <!-- 📝 Información del producto -->
+            <div class="p-4">
+            <h3 class="font-semibold text-muted-foreground text-lg mb-1 truncate group-hover:text-primary transition-colors duration-200">
+                {{ product.nombre }}
+            </h3>
+            <p class="text-xs text-muted-foreground/70 mb-2 font-medium uppercase tracking-wider">
+                {{ getCategoryName(product.categoriaId) }}
+            </p>
+            <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl font-bold text-primary">
+                            {{ product.precio | currency:'ARS':'symbol':'1.0-0':'es-AR' }}
+                        </span>
+                    </div>
+                    
+                    <!-- Acciones rápidas -->
+                    <div class="flex space-x-1">
+                        <button (click)="onEdit(product.id)" class="
+                            p-2 rounded-lg
+                            text-muted-foreground hover:text-secondary hover:bg-secondary/10
+                            transition-all duration-200
+                        " aria-label="Editar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        
+                        <button (click)="onDelete(product.id)" class="
+                            p-2 rounded-lg
+                            text-muted-foreground hover:text-error hover:bg-error/10
+                            transition-all duration-200
+                        " aria-label="Eliminar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información adicional -->
+                <div class="mt-3 pt-3 border-t border-muted-foreground/10">
+                    <div class="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>ID: {{ product.id.slice(0, 8) }}...</span>
+                        <span class="flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                            <span>Ver detalles</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    } @else {
+    <!-- 🚫 Estado vacío mejorado -->
+    <div class="text-center py-16">
+        <div class="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
+            <svg class="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-muted-foreground mb-2">No hay productos registrados</h3>
+        <p class="text-muted-foreground/70 mb-6">Comienza agregando tu primer producto al catálogo</p>
+        <button (click)="onNew()" class="
+            bg-gradient-to-r from-secondary to-primary 
+            text-white font-semibold
+            px-6 py-3 rounded-xl
+            hover:scale-105 hover:shadow-lg
+            transition-all duration-300
+            inline-flex items-center space-x-2
+        ">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span>Agregar Producto</span>
+        </button>
+    </div>
+    }
+</section>

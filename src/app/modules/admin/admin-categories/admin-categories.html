@@ -1,0 +1,124 @@
+<app-confirm-dialog 
+  [open]="showConfirm" 
+  title="Eliminar categoría" 
+  message="¿Deseas eliminar esta categoría? Esto no eliminará los productos asociados, pero podrían quedar sin categoría."
+  confirmText="Sí, eliminar" 
+  cancelText="Cancelar" 
+  (confirm)="onConfirmDelete()"
+  (cancel)="onCancelDelete()">
+</app-confirm-dialog>
+
+<section class="container mx-auto p-4 lg:p-6 max-w-4xl">
+  <div class="mb-8">
+    <h1 class="text-2xl lg:text-4xl font-bold text-primary mb-2">📂 Gestión de Categorías</h1>
+    <p class="text-sm lg:text-base text-muted-foreground">Crea y organiza las categorías de tu tienda</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Formulario de Categoría -->
+    <div class="md:col-span-1">
+      <div class="bg-white rounded-xl p-6 shadow-sm border border-muted-foreground/10 sticky top-6">
+        <h3 class="text-xl font-bold text-primary mb-4">
+          {{ isEditing() ? '✏️ Editar Categoría' : '🆕 Nueva Categoría' }}
+        </h3>
+        <form (ngSubmit)="onSubmit()" class="space-y-4">
+          <div>
+            <label class="block font-medium text-muted-foreground mb-2">Nombre</label>
+            <input 
+              type="text" 
+              [(ngModel)]="categoryName" 
+              name="categoryName"
+              placeholder="Ej: Electrónica"
+              class="w-full border border-muted-foreground/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+              required />
+          </div>
+          <div class="flex flex-col gap-2">
+            <button 
+              type="submit" 
+              [disabled]="!categoryName().trim()"
+              class="w-full bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300 disabled:opacity-50">
+              {{ isEditing() ? 'Guardar Cambios' : 'Crear Categoría' }}
+            </button>
+            @if (isEditing()) {
+              <button 
+                type="button" 
+                (click)="resetForm()"
+                class="w-full bg-muted text-muted-foreground font-semibold px-6 py-3 rounded-xl hover:bg-muted-foreground hover:text-white transition-all duration-300">
+                Cancelar
+              </button>
+            }
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lista de Categorías -->
+    <div class="md:col-span-2">
+      <div class="bg-white rounded-xl shadow-sm border border-muted-foreground/10 overflow-hidden">
+        <!-- Desktop Table -->
+        <table class="hidden sm:table w-full text-left border-collapse">
+          <thead class="bg-muted/50 border-b border-muted-foreground/10">
+            <tr>
+              <th class="px-6 py-4 font-bold text-muted-foreground">Nombre</th>
+              <th class="px-6 py-4 font-bold text-muted-foreground text-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-muted-foreground/10">
+            @for (cat of categoriesService.categories(); track cat.id) {
+              <tr class="hover:bg-muted/20 transition-colors">
+                <td class="px-6 py-4 font-medium text-gray-900">{{ cat.nombre }}</td>
+                <td class="px-6 py-4 text-right">
+                  <div class="flex justify-end space-x-2">
+                    <button 
+                      (click)="onEdit(cat)"
+                      class="p-2 text-muted-foreground hover:text-secondary hover:bg-secondary/10 rounded-lg transition-all"
+                      title="Editar">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                    </button>
+                    <button 
+                      (click)="onDelete(cat.id)"
+                      class="p-2 text-muted-foreground hover:text-error hover:bg-error/10 rounded-lg transition-all"
+                      title="Eliminar">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <!-- Mobile List -->
+        <div class="sm:hidden divide-y divide-muted-foreground/10">
+          @for (cat of categoriesService.categories(); track cat.id) {
+            <div class="p-4 flex items-center justify-between hover:bg-muted/10">
+              <span class="font-medium text-gray-900">{{ cat.nombre }}</span>
+              <div class="flex space-x-2">
+                <button (click)="onEdit(cat)" class="p-2 text-secondary bg-secondary/10 rounded-lg">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  </svg>
+                </button>
+                <button (click)="onDelete(cat.id)" class="p-2 text-error bg-error/10 rounded-lg">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (categoriesService.categories().length === 0) {
+          <div class="px-6 py-12 text-center text-muted-foreground italic">
+            No hay categorías creadas todavía.
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
