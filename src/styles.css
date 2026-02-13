@@ -1,7 +1,53 @@
 
 @import "tailwindcss";
 
+/* === FUENTES PERSONALIZADAS === */
+@font-face {
+  font-family: "GothamSSm-Light";
+  src: url("/fonts/GothamSSm-Light.woff2") format("woff2"),
+    url("/fonts/GothamSSm-Light.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GothamSSm-Medium";
+  src: url("/fonts/GothamSSm-Medium.woff2") format("woff2"),
+  url("/fonts/GothamSSm-Medium.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GothamSSm-Bold";
+  src: url("/fonts/GothamSSm-Bold.woff2") format("woff2"),
+       url("/fonts/GothamSSm-Bold.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+
+
+/* === TOKEN PRIMITIVOS === */
+:root {
+  /* === Light Mode === */
+
+  /* = 1. Brand = */
+
+  /* = 2. Fonts = */
+
+  --font-ftn-light: "GothamSSm-Light", sans-serif;
+  --font-ftn-medium: "GothamSSm-Medium", sans-serif;
+  --font-ftn-bold: "GothamSSm-Bold", sans-serif;
+
+}
+
 @theme {
+
+  --font-ftn-light: var(--font-ftn-light);
+  --font-ftn-medium: var(--font-ftn-medium);
+  --font-ftn-bold: var(--font-ftn-bold);
+
+  /* A REVISAR VARIABLES!! */
     --color-primary: #2563eb;
     --color-primary-foreground: #ffffff;
     --color-secondary: #7c3aed;
@@ -35,7 +81,7 @@ body {
 }
 
 .header-backdrop {
-    backdrop-filter: blur(8px);
+    /* backdrop-filter: blur(8px); */
 }
 
 .header-logo {
@@ -58,5 +104,5 @@ body {
 }
 
 .login-modal-backdrop {
-    backdrop-filter: blur(4px);
+    /* backdrop-filter: blur(4px); */
 }
