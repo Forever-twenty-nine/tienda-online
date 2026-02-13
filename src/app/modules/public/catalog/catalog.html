@@ -9,29 +9,30 @@
       {{ productsService.products().length }} productos encontrados
     </p>
     } @else {
-    <h1 class="text-4xl font-bold text-gray-900 mb-2">Catálogo de productos</h1>
-    <p class="text-gray-600">Descubre nuestros productos más populares</p>
+    <h1 class="text-4xl font-ftn-bold text-gray-900 mb-6 mt-6">Catálogo de productos</h1>
+    <p class="text-gray-600">Nuevos looks ideales para ti. Encuentra las joyas perfectas para completar tu colección.
+</p>
     }
-    <div class="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-4 rounded-full"></div>
+    <div class="w-24 h-1 bg-gradient-to-r from-brand-pink to-brand-pink-dark mx-auto mt-4 rounded-full"></div>
   </div>
 
   <!-- 🔍 Buscador de productos -->
   <div class="max-w-2xl mx-auto mb-10">
     <div class="relative group">
-      <input 
-        type="search" 
+      <input
+        type="search"
         [(ngModel)]="searchTerm"
         (input)="onSearchChange()"
-        placeholder="¿Qué estás buscando hoy?..." 
-        class="w-full pl-12 pr-12 py-4 bg-white border-2 border-gray-100 rounded-2xl shadow-sm focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 text-lg"
+        placeholder="¿Qué estás buscando hoy?..."
+        class="w-full pl-12 pr-12 py-4 bg-white border-2 border-brand-gray/80 rounded-2xl focus:border-brand-pink-dark focus:ring-4 focus:ring-brand-pink-dark/10 transition-all duration-300 text-lg"
       >
-      <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+      <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-pink-dark transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
       </div>
       @if (searchTerm) {
-        <button 
+        <button
           (click)="clearSearch()"
           class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
         >
@@ -45,20 +46,20 @@
 
   <!--  Categorías -->
   <div class="flex flex-wrap justify-center gap-2 mb-8">
-    <button 
+    <button
       (click)="setCategory(null)"
-      [class.bg-primary]="productsService.categoryFilter() === null"
+      [class.bg-brand-pink-dark]="productsService.categoryFilter() === null"
       [class.text-white]="productsService.categoryFilter() === null"
-      class="px-4 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+      class="px-4 py-2 rounded-full border border-brand-pink-dark text-brand-pink-dark hover:bg-brand-pink hover:text-white transition-colors cursor-pointer"
     >
       Todas
     </button>
     @for (cat of categoriesService.categories(); track cat.id) {
-      <button 
+      <button
         (click)="setCategory(cat.id)"
-        [class.bg-primary]="productsService.categoryFilter() === cat.id"
+        [class.bg-brand-pink-dark]="productsService.categoryFilter() === cat.id"
         [class.text-white]="productsService.categoryFilter() === cat.id"
-        class="px-4 py-2 rounded-full border border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+        class="px-4 py-2 rounded-full border border-brand-pink-dark text-brand-pink-dark hover:bg-brand-pink hover:text-white transition-colors cursor-pointer"
       >
         {{ cat.nombre }}
       </button>
@@ -99,7 +100,7 @@
   } @else {
   <!-- ⏳ Cargando productos -->
   <div class="flex flex-col items-center justify-center py-20">
-    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50 mb-4"></div>
+    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-e-brand-gray border-opacity-50 mb-4"></div>
     <p class="text-center text-gray-500 text-lg">
       Cargando productos...
     </p>

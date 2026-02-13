@@ -42,7 +42,7 @@ export class ProductForm {
   );
   // 📝 Título dinámico según si es edición o creación
   title = computed(() =>
-    this.id() ? '✏️ Editar producto' : '🆕 Nuevo producto'
+    this.id() ? 'Editar producto' : '🆕 Nuevo producto'
   );
   // 🖊️ Formulario reactivo
   form: FormGroup = this.fb.group({
@@ -73,9 +73,9 @@ export class ProductForm {
     if (this.form.invalid) return;
     const data = { ...(this.form.value as Omit<Product, 'id'>), id: this.id()! };
     if (this.id()) {
-      this.service.updateProduct(data); 
+      this.service.updateProduct(data);
     } else {
-      this.service.addProduct(data); 
+      this.service.addProduct(data);
     }
     this.router.navigate(['/admin', 'products']);
   }
@@ -88,16 +88,16 @@ export class ProductForm {
   async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
-    
+
     const file = input.files[0];
-    
+
     // Crear vista previa inmediata usando FileReader
     const reader = new FileReader();
     reader.onload = (e) => {
       this.imagePreview.set(e.target?.result as string);
     };
     reader.readAsDataURL(file);
-    
+
     // Subir imagen y actualizar formulario
     const url = await this.service.uploadImage(file);
     this.form.patchValue({ imagen: url });

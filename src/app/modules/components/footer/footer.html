@@ -1,11 +1,11 @@
-<footer class="bg-muted-foreground text-white mt-16">
+<footer class="bg-brand-gray/20 mt-16">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      
+
       <!-- Logo y descripción -->
       <div class="col-span-1 md:col-span-2">
-        <div class="flex items-center space-x-3 mb-4 cursor-pointer hover:scale-105 transition-transform duration-200" (click)="onLogoClick()">
-          <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-md">
+        <div class="" (click)="onLogoClick()">
+          <!-- <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-md">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
             </svg>
@@ -13,13 +13,14 @@
           <div>
             <h3 class="text-xl font-bold text-white">TiendaOnline</h3>
             <p class="text-sm text-gray-300">Tu tienda de confianza</p>
-          </div>
+          </div> -->
+          <img src="brand-regalarte.png" alt="" class="w-auto h-20">
         </div>
-        <p class="text-gray-200 text-sm leading-relaxed mb-6">
-          Ofrecemos los mejores productos con la calidad que mereces. 
-          Compra seguro y recibe tus productos en la comodidad de tu hogar.
+        <p class="text-brand-gray-dark text-sm leading-relaxed mb-6">
+          🎁 Regalos con intención <br>
+✨ Accesorios y detalles para sorprender
         </p>
-        
+
         <!-- Acceso de administrador oculto -->
         @if (showAdminAccess) {
         <div class="animate-fade-in">
@@ -36,40 +37,40 @@
 
       <!-- Enlaces rápidos -->
       <div>
-        <h4 class="text-lg font-semibold mb-4 text-white">Enlaces Rápidos</h4>
-        <ul class="space-y-2">
-          <li><a routerLink="/about" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Sobre Nosotros</a></li>
-          <li><a routerLink="/terms" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Términos y Condiciones</a></li>
-          <li><a routerLink="/privacy" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Política de Privacidad</a></li>
-          <li><a routerLink="/returns" class="text-gray-200 hover:text-white hover:translate-x-1 transition-all duration-200 text-sm">Devoluciones</a></li>
+        <h4 class="text-base font-ftn-medium mb-4 text-brand-gray-dark">Enlaces Rápidos</h4>
+        <ul class="space-y-1">
+          <li><a routerLink="/about" class="text-brand-gray-dark hover:underline transition-all duration-200 text-sm">Sobre Nosotros</a></li>
+          <li><a routerLink="/terms" class="text-brand-gray-dark hover:underline transition-all duration-200 text-sm">Términos y Condiciones</a></li>
+          <li><a routerLink="/privacy" class="text-brand-gray-dark hover:underline transition-all duration-200 text-sm">Política de Privacidad</a></li>
+          <li><a routerLink="/returns" class="text-brand-gray-dark hover:underline transition-all duration-200 text-sm">Devoluciones</a></li>
         </ul>
       </div>
 
       <!-- Contacto -->
       <div>
-        <h4 class="text-lg font-semibold mb-4 text-white">Contacto</h4>
-        <ul class="space-y-2 text-sm text-gray-200">
-          <li class="flex items-center hover:text-white transition-colors duration-200">
-            <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <h4 class="text-base font-ftn-medium mb-4 text-brand-gray-dark">Contacto</h4>
+        <ul class="space-y-1 text-sm text-brand-gray-dark">
+          <li class="flex items-center ">
+            <svg class="w-4 h-4 mr-2 text-brand-pink-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
             </svg>
             info&#64;tiendaonline.com
           </li>
-          <li class="flex items-center hover:text-white transition-colors duration-200">
-            <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-center ">
+            <svg class="w-4 h-4 mr-2 text-brand-pink-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
             </svg>
             +54 11 1234-5678
           </li>
-          <li class="flex items-start hover:text-white transition-colors duration-200">
-            <svg class="w-4 h-4 mr-2 mt-0.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <li class="flex items-start ">
+            <svg class="w-4 h-4 mr-2 mt-0.5 text-brand-pink-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
-            Buenos Aires, Argentina
+            Mendoza, Argentina
           </li>
         </ul>
-        
+
         <!-- Redes sociales -->
         <div class="flex space-x-4 mt-4">
           <a href="#" class="text-gray-300 hover:text-primary hover:scale-110 transition-all duration-200">
@@ -92,12 +93,12 @@
     </div>
 
     <!-- Línea divisoria y copyright -->
-    <div class="border-t border-gray-600 mt-8 pt-8">
+    <div class="border-t border-brand-gray-dark mt-8 pt-8">
       <div class="flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-300 text-sm">
+        <p class="text-brand-gray-dark text-xs">
           © 2025 TiendaOnline. Todos los derechos reservados.
         </p>
-        <p class="text-gray-400 text-xs mt-2 md:mt-0">
+        <p class="text-brand-gray-dark text-xs mt-2 md:mt-0">
           Hecho con ❤️ para una mejor experiencia de compra
         </p>
       </div>

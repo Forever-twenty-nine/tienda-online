@@ -32,6 +32,10 @@
   /* === Light Mode === */
 
   /* = 1. Brand = */
+  --color-brand-pink: #fb95ab;
+  --color-brand-pink-dark: #e84266;
+  --color-brand-gray: #d5d3d4;
+  --color-brand-gray-dark: #7d7d7d;
 
   /* = 2. Fonts = */
 
@@ -46,6 +50,11 @@
   --font-ftn-light: var(--font-ftn-light);
   --font-ftn-medium: var(--font-ftn-medium);
   --font-ftn-bold: var(--font-ftn-bold);
+
+  --color-brand-pink: var(--color-brand-pink);
+  --color-brand-pink-dark: var(--color-brand-pink-dark);
+  --color-brand-gray: var(--color-brand-gray);
+  --color-brand-gray-dark: var(--color-brand-gray-dark);
 
   /* A REVISAR VARIABLES!! */
     --color-primary: #2563eb;
@@ -66,7 +75,6 @@
 
 
 body {
-    background-color: #f3f4f6;
     color: #374151;
 }
 

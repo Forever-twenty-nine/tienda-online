@@ -1,20 +1,9 @@
-<header class="bg-white shadow-lg border-b-2 border-primary sticky top-0 z-50 header-backdrop">
+<header class="bg-white border-b-2 border-brand-pink sticky top-0 z-50 header-backdrop">
   <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
-      <!-- Logo y nombre de la tienda - Enlace a home -->
-      <a routerLink="/" class="flex items-center space-x-3 hover:opacity-80 transition-all duration-200">
-        <div class="flex-shrink-0">
-          <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-md hover:scale-105 transition-all duration-200 header-logo">
-            <svg class="w-6 h-6 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9l3 3 3-3"></path>
-            </svg>
-          </div>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold text-muted-foreground">TiendaOnline</h1>
-          <p class="text-xs text-muted-foreground/70">Tu tienda de confianza</p>
-        </div>
+      <!-- Logo - Nombre de la tienda - Enlace a home -->
+      <a routerLink="/" class="">
+        <img src="brand-regalarte.png" alt="" class="w-auto h-14">
       </a>
 
       <!-- Espaciador para empujar la navegación a la derecha -->
@@ -22,28 +11,28 @@
 
       <!-- Navegación Desktop (Movida a la derecha) -->
       <div class="hidden md:flex items-center space-x-8">
-        <a routerLink="/" 
-           routerLinkActive="text-primary font-semibold" 
+        <a routerLink="/"
+           routerLinkActive="text-brand-pink font-semibold"
            [routerLinkActiveOptions]="{exact: true}"
-           class="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+           class=" hover:text-brand-pink transition-colors text-sm font-medium">
           Inicio
         </a>
-        <a routerLink="/catalogo" 
-           routerLinkActive="text-primary font-semibold" 
-           class="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+        <a routerLink="/catalogo"
+           routerLinkActive="text-brand-pink font-semibold"
+           class=" hover:text-brand-pink transition-colors text-sm font-medium">
           Catálogo
         </a>
-        <a routerLink="/about" 
-           routerLinkActive="text-primary font-semibold" 
-           class="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
+        <a routerLink="/about"
+           routerLinkActive="text-brand-pink font-semibold"
+           class="hover:text-brand-pink transition-colors text-sm font-medium">
           Nosotros
         </a>
       </div>
 
       <!-- Botón de menú móvil -->
       <div class="md:hidden ml-auto">
-        <button (click)="toggleMenu()" 
-                class="text-muted-foreground hover:text-primary hover:bg-muted p-2 rounded-md transition-all duration-200 hover:scale-105 header-menu-btn">
+        <button (click)="toggleMenu()"
+                class="hover:text-brand-pink hover:bg-muted p-2 rounded-md transition-all duration-200 hover:scale-105 header-menu-btn">
           <svg class="w-6 h-6" [class.hidden]="isMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
@@ -57,22 +46,22 @@
     <!-- Menú móvil -->
     <div class="md:hidden" [class.hidden]="!isMenuOpen">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-muted/50 backdrop-blur-sm rounded-lg mt-2 border border-muted-foreground/10 header-mobile-menu">
-        <a routerLink="/" 
+        <a routerLink="/"
            (click)="closeMenu()"
-           routerLinkActive="bg-primary/10 text-primary font-semibold" 
+           routerLinkActive="bg-primary/10 text-primary font-semibold"
            [routerLinkActiveOptions]="{exact: true}"
            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition-all">
           Inicio
         </a>
-        <a routerLink="/catalogo" 
+        <a routerLink="/catalogo"
            (click)="closeMenu()"
-           routerLinkActive="bg-primary/10 text-primary font-semibold" 
+           routerLinkActive="bg-primary/10 text-primary font-semibold"
            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition-all">
           Catálogo
         </a>
-        <a routerLink="/about" 
+        <a routerLink="/about"
            (click)="closeMenu()"
-           routerLinkActive="bg-primary/10 text-primary font-semibold" 
+           routerLinkActive="bg-primary/10 text-primary font-semibold"
            class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition-all">
           Nosotros
         </a>
