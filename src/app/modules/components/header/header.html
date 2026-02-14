@@ -1,38 +1,38 @@
-<header class="bg-white border-b-2 border-brand-pink sticky top-0 z-50 header-backdrop">
+<header class="bg-white border-b-2 border-brand-light sticky top-0 z-50 header-backdrop">
   <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <!-- Logo - Nombre de la tienda - Enlace a home -->
       <a routerLink="/" class="">
-        <img src="brand-regalarte.png" alt="" class="w-auto h-14">
+        <img src="brand-ftn-tienda-online.svg" alt="" class="w-auto h-10">
       </a>
 
       <!-- Espaciador para empujar la navegación a la derecha -->
       <div class="hidden md:block flex-grow"></div>
 
       <!-- Navegación Desktop (Movida a la derecha) -->
-      <div class="hidden md:flex items-center space-x-8">
+      <div class="hidden md:flex items-center space-x-4">
         <a routerLink="/"
-           routerLinkActive="text-brand-pink font-semibold"
+           routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
            [routerLinkActiveOptions]="{exact: true}"
-           class=" hover:text-brand-pink transition-colors text-sm font-medium">
+           class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
           Inicio
         </a>
         <a routerLink="/catalogo"
-           routerLinkActive="text-brand-pink font-semibold"
-           class=" hover:text-brand-pink transition-colors text-sm font-medium">
+           routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
+           class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
           Catálogo
         </a>
-        <a routerLink="/about"
-           routerLinkActive="text-brand-pink font-semibold"
-           class="hover:text-brand-pink transition-colors text-sm font-medium">
+        <!-- <a routerLink="/about"
+           routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
+           class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
           Nosotros
-        </a>
+        </a> -->
       </div>
 
       <!-- Botón de menú móvil -->
       <div class="md:hidden ml-auto">
         <button (click)="toggleMenu()"
-                class="hover:text-brand-pink hover:bg-muted p-2 rounded-md transition-all duration-200 hover:scale-105 header-menu-btn">
+                class="hover:text-brand-primary hover:bg-muted p-2 rounded-md transition-all duration-200 hover:scale-105 header-menu-btn">
           <svg class="w-6 h-6" [class.hidden]="isMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
@@ -45,26 +45,26 @@
 
     <!-- Menú móvil -->
     <div class="md:hidden" [class.hidden]="!isMenuOpen">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-muted/50 backdrop-blur-sm rounded-lg mt-2 border border-muted-foreground/10 header-mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 backdrop-blur-sm rounded-lg transition-all mt-2 header-mobile-menu">
         <a routerLink="/"
            (click)="closeMenu()"
-           routerLinkActive="bg-primary/10 text-primary font-semibold"
+           routerLinkActive="bg-brand-dark text-white font-ftn-bold"
            [routerLinkActiveOptions]="{exact: true}"
-           class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition-all">
+           class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
           Inicio
         </a>
         <a routerLink="/catalogo"
            (click)="closeMenu()"
-           routerLinkActive="bg-primary/10 text-primary font-semibold"
-           class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition-all">
+           routerLinkActive="bg-brand-dark text-white font-ftn-bold"
+           class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
           Catálogo
         </a>
-        <a routerLink="/about"
+        <!-- <a routerLink="/about"
            (click)="closeMenu()"
-           routerLinkActive="bg-primary/10 text-primary font-semibold"
-           class="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-primary hover:bg-muted transition-all">
+           routerLinkActive="bg-brand-dark text-white font-ftn-bold"
+           class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
           Nosotros
-        </a>
+        </a> -->
       </div>
     </div>
   </nav>

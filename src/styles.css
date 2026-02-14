@@ -32,6 +32,15 @@
   /* === Light Mode === */
 
   /* = 1. Brand = */
+  --color-brand-primary: #afde41;
+  --color-brand-primary-dark: #92c434;
+  --color-brand-secondary: #6f2eeb;
+  --color-brand-tertiary: #dd592d;
+  --color-brand-light: #e8e9ea;
+  --color-brand-dark: #1c1d20;
+
+
+
   --color-brand-pink: #fb95ab;
   --color-brand-pink-dark: #e84266;
   --color-brand-gray: #d5d3d4;
@@ -45,11 +54,29 @@
 
 }
 
+.dark {
+  --color-brand-primary: #b8e848;
+  --color-brand-primary-dark: #92c434;
+  --color-brand-secondary: #723fef;
+  --color-brand-tertiary: #e5613e;
+  --color-brand-light: #e8e9ea;
+  --color-brand-dark: #1c1d20;
+}
+
 @theme {
 
   --font-ftn-light: var(--font-ftn-light);
   --font-ftn-medium: var(--font-ftn-medium);
   --font-ftn-bold: var(--font-ftn-bold);
+
+  --color-brand-primary: var(--color-brand-primary);
+  --color-brand-primary-dark: var(--color-brand-primary-dark);
+  --color-brand-secondary: var(--color-brand-secondary);
+  --color-brand-tertiary: var(--color-brand-tertiary);
+  --color-brand-dark: var(--color-brand-dark);
+  --color-brand-light: var(--color-brand-light);
+
+
 
   --color-brand-pink: var(--color-brand-pink);
   --color-brand-pink-dark: var(--color-brand-pink-dark);
@@ -74,10 +101,6 @@
 }
 
 
-body {
-    color: #374151;
-}
-
 
 @keyframes pulse-custom {
     0%, 100% {
@@ -88,13 +111,8 @@ body {
     }
 }
 
-.header-backdrop {
-    /* backdrop-filter: blur(8px); */
-}
 
-.header-logo {
-    background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-}
+
 
 .header-cart-badge {
     animation: pulse-custom 2s infinite;
@@ -135,4 +153,7 @@ body {
 .cdk-drop-list-dragging tr:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+
+
 

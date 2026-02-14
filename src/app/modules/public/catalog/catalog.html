@@ -2,31 +2,34 @@
   <!-- 🏷️ Título con mejor diseño -->
   <div class="text-center mb-8">
     @if (productsService.searchTerm()) {
-    <h1 class="text-4xl font-bold text-gray-900 mb-2">
-      Resultados para "{{ productsService.searchTerm() }}"
+    <h1 class="text-5xl font-ftn-bold text-brand-dark mb-6 mt-6">
+      Resultados para:
     </h1>
-    <p class="text-gray-600">
+    <p class="text-5xl font-ftn-bold text-brand-tertiary mb-6 mt-6">
+      "{{ productsService.searchTerm() }}
+    </p>
+    <p class="text-brand-dark/50">
       {{ productsService.products().length }} productos encontrados
     </p>
     } @else {
-    <h1 class="text-4xl font-ftn-bold text-gray-900 mb-6 mt-6">Catálogo de productos</h1>
-    <p class="text-gray-600">Nuevos looks ideales para ti. Encuentra las joyas perfectas para completar tu colección.
+    <h1 class="text-5xl font-ftn-bold text-brand-dark mb-6 mt-6">Catálogo de productos</h1>
+    <p class="text-brand-dark/50 max-w-xl mx-auto mb-10">Nuevos looks ideales para ti. Encuentra las joyas perfectas para completar tu colección.
 </p>
     }
-    <div class="w-24 h-1 bg-gradient-to-r from-brand-pink to-brand-pink-dark mx-auto mt-4 rounded-full"></div>
+    <!-- <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-primary mx-auto mt-4 rounded-full"></div> -->
   </div>
 
   <!-- 🔍 Buscador de productos -->
-  <div class="max-w-2xl mx-auto mb-10">
+  <div class="max-w-2xl mx-auto mb-14">
     <div class="relative group">
       <input
         type="search"
         [(ngModel)]="searchTerm"
         (input)="onSearchChange()"
         placeholder="¿Qué estás buscando hoy?..."
-        class="w-full pl-12 pr-12 py-4 bg-white border-2 border-brand-gray/80 rounded-2xl focus:border-brand-pink-dark focus:ring-4 focus:ring-brand-pink-dark/10 transition-all duration-300 text-lg"
+        class="w-full pl-12 pr-12 py-4 bg-white border-2 border-brand-dark/20 rounded-xl focus:border-brand-primary outline-0  transition-all duration-300 text-lg placeholder:text-gray-400"
       >
-      <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-pink-dark transition-colors">
+      <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-brand-dark transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
@@ -34,7 +37,7 @@
       @if (searchTerm) {
         <button
           (click)="clearSearch()"
-          class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1"
+          class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 cursor-pointer"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -48,18 +51,18 @@
   <div class="flex flex-wrap justify-center gap-2 mb-8">
     <button
       (click)="setCategory(null)"
-      [class.bg-brand-pink-dark]="productsService.categoryFilter() === null"
-      [class.text-white]="productsService.categoryFilter() === null"
-      class="px-4 py-2 rounded-full border border-brand-pink-dark text-brand-pink-dark hover:bg-brand-pink hover:text-white transition-colors cursor-pointer"
+      [class.bg-brand-primary]="productsService.categoryFilter() === null"
+      [class.text-brand-dark]="productsService.categoryFilter() === null"
+      class="px-4 py-2 rounded-full border-2 border-brand-primary text-brand- hover:bg-brand-primary/20 transition-colors cursor-pointer"
     >
       Todas
     </button>
     @for (cat of categoriesService.categories(); track cat.id) {
       <button
         (click)="setCategory(cat.id)"
-        [class.bg-brand-pink-dark]="productsService.categoryFilter() === cat.id"
-        [class.text-white]="productsService.categoryFilter() === cat.id"
-        class="px-4 py-2 rounded-full border border-brand-pink-dark text-brand-pink-dark hover:bg-brand-pink hover:text-white transition-colors cursor-pointer"
+        [class.bg-brand-primary]="productsService.categoryFilter() === cat.id"
+        [class.text-brand-dark]="productsService.categoryFilter() === cat.id"
+        class="px-4 py-2 rounded-full border-2 border-brand-primary text-brand-dark hover:bg-brand-primary/20 transition-colors cursor-pointer"
       >
         {{ cat.nombre }}
       </button>
@@ -92,16 +95,13 @@
   <!-- ⏳ Fallback mientras carga o sin resultados -->
   @if (productsService.searchTerm()) {
   <!-- 🔍 Sin resultados de búsqueda -->
-  <div class="flex flex-col items-center justify-center py-20">
+  <div class="flex flex-col items-center justify-center py-10">
     <div class="text-6xl mb-4">🔍</div>
-    <h3 class="text-xl font-semibold text-gray-700 mb-2">
+    <h3 class="text-2xl font-ftn-bold text-brand-dark mb-2">
       No se encontraron productos
     </h3>
-    <p class="text-center text-gray-500 text-lg mb-4">
-      No hay productos que coincidan con "{{ productsService.searchTerm() }}"
-    </p>
-    <p class="text-center text-gray-400 text-sm">
-      Intenta con otros términos de búsqueda
+    <p class="text-center text-brand-dark/50 text-base mb-4 max-w-2xl mx-auto">
+      No hay productos que coincidan con <span class="font-ftn-bold">"{{ productsService.searchTerm() }}"</span> <br> por favor intenta con otros términos de búsqueda.
     </p>
   </div>
   } @else {

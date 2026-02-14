@@ -1,7 +1,7 @@
 @if (loading()) {
 <!-- ⏳ Estado de carga -->
 <div class="flex flex-col items-center justify-center py-20">
-  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-brand-pink border-opacity-50 mb-4"></div>
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-brand-dark border-opacity-50 mb-4"></div>
   <p class="text-center text-gray-500 text-lg">Cargando producto...</p>
 </div>
 } @else if (error()) {
@@ -11,7 +11,7 @@
     <div class="text-6xl mb-4">❌</div>
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Producto no encontrado</h2>
     <p class="text-gray-600 mb-6">El producto que buscas no existe o ha sido eliminado.</p>
-    <button (click)="goBack()" class="bg-brand-pink text-white px-6 py-2 rounded-lg hover:bg-brand-pink-dark transition-colors">
+    <button (click)="goBack()" class="cursor-pointer bg-brand-dark text-white px-6 py-2 rounded-lg hover:bg-brand-dark transition-colors">
       Volver al catálogo
     </button>
   </div>
@@ -21,7 +21,7 @@
 <div class="container mx-auto px-6 md:px-12 lg:px-20 py-6">
   <!-- 🔙 Botón de volver -->
   <div class="mb-6">
-    <button (click)="goBack()" class="flex items-center text-brand-pink-dark hover:text-brand-pink transition-colors">
+    <button (click)="goBack()" class="cursor-pointer flex items-center text-brand-primary-dark hover:bg-brand-primary/20 transition-colors px-4 py-2 rounded-lg">
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
       </svg>
@@ -30,7 +30,7 @@
   </div>
 
   <!-- 📄 Contenido principal -->
-  <div class="bg-white rounded-2xl shadow-lg shadow-brand-pink/5 overflow-hidden">
+  <div class="overflow-hidden">
     <div class="grid md:grid-cols-2 gap-8 p-6">
 
       <!-- 🖼️ Imagen del producto -->
@@ -46,12 +46,11 @@
         @if (product()!.imagenes && product()!.imagenes!.length > 1) {
           <div class="grid grid-cols-4 sm:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
             @for (img of product()!.imagenes; track img) {
-              <div 
+              <div
                 (click)="selectImage(img)"
                 class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300"
-                [class.border-brand-pink]="selectedImage() === img"
+                [class.border-brand-primary]="selectedImage() === img"
                 [class.border-transparent]="selectedImage() !== img"
-                [class.shadow-md]="selectedImage() === img"
                 [class.opacity-60]="selectedImage() !== img"
                 [class.hover:opacity-100]="selectedImage() !== img">
                 <img [src]="img" class="w-full h-full object-cover" [alt]="product()!.nombre" loading="lazy">
@@ -62,29 +61,29 @@
       </div>
 
       <!-- 📝 Información del producto -->
-      <div class="flex flex-col justify-between">
+      <div class="flex flex-col">
         <div>
           <!-- 🏷️ Nombre del producto -->
-          <h1 class="text-3xl font-ftn-bold text-gray-900 mb-4 uppercase">{{ product()!.nombre }}</h1>
+          <h1 class="text-2xl font-ftn-bold  mb-4 uppercase">{{ product()!.nombre }}</h1>
 
           <!-- 💲 Precio -->
-          <div class="mb-6">
+          <div class="mb-10">
             @if (product()?.descuento && product()!.descuento! > 0) {
-              <div class="flex items-center gap-3">
-                <p class="text-4xl font-extrabold text-red-600">
+              <div class="flex items-center gap-6">
+                <p class="text-2xl">
                   $ {{ (product()!.precio * (1 - product()!.descuento! / 100)).toFixed(2) }}
                 </p>
-                <div class="flex flex-col">
-                  <span class="text-lg text-gray-400 line-through">
+                <div class="flex flex-row gap-2 items-baseline">
+                  <span class="text-lg text-brand-dark/50 line-through">
                     $ {{ product()!.precio }}
                   </span>
-                  <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">
+                  <span class="bg-brand-secondary text-white text-xs px-2 font-ftn-medium py-0.5 rounded-full">
                     {{ product()!.descuento }}% OFF
                   </span>
                 </div>
               </div>
             } @else {
-              <p class="text-4xl font-extrabold text-red-600">
+              <p class="text-lg text-brand-dark/50 line-through">
                 $ {{ product()!.precio }}
               </p>
             }
@@ -92,41 +91,55 @@
 
           <!-- 📝 Descripción -->
           <div class="mb-8">
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">Descripción</h3>
+            <h3 class="text-xs font-ftn-bold text-brand-dark/50 uppercase mb-3">Descripción</h3>
             <p class="text-gray-700 leading-relaxed">{{ product()!.descripcion }}</p>
           </div>
 
           <!-- 📊 Información adicional -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div class="bg-gray-50 p-4 rounded-lg">
-              <h4 class="font-semibold text-gray-800 mb-1">Disponibilidad</h4>
+            <div class="">
+              <h3 class="text-xs font-ftn-bold text-brand-dark/50 uppercase mb-3">Disponibilidad</h3>
               @if (product()!.disponibilidad) {
-                <p class="text-green-600 font-medium">✅ En stock</p>
+                <p class="text-green-500 uppercase font-ftn-bold">En stock</p>
               } @else {
-                <p class="text-red-500 font-medium">❌ Sin stock</p>
+                <p class="text-red-500 uppercase font-ftn-bold">Sin stock</p>
               }
             </div>
           </div>
+
+          <!-- 📊 Información adicional -->
+          <div class="mb-8">
+            <div class="bg-brand-dark/6 rounded-2xl px-6 py-8">
+              <h3 class="text-xs font-ftn-bold text-brand-dark/50 uppercase mb-3 flex items-center gap-2">
+                <svg viewBox="0 0 20 20" focusable="false" class="w-6 h-6"><path d="M13.2238 4.9337C13.1504 1.68636 9.32745 -0.0329918 6.56564 1.94201C3.42904 4.18502 3.42047 8.70116 5.85008 11.9883L10.4891 18.2647C12.0567 16.4701 14.5046 12.9513 15.7745 10.3471C16.5453 8.76617 16.9721 7.00668 16.5525 5.43291C16.4586 5.08077 16.3151 4.73487 16.1039 4.4181L17.0303 3.80052C17.3202 4.23531 17.5086 4.69733 17.6283 5.14605C18.1468 7.09056 17.6002 9.14313 16.7752 10.8351C15.3297 13.7995 12.4381 17.8735 10.8443 19.5261L10.3873 20L4.95474 12.6501C2.3006 9.05915 2.09757 3.76842 5.91802 1.03638C9.28618 -1.37222 14.24 0.621738 14.3369 4.90856C14.3392 5.01323 14.3404 5.11795 14.3404 5.22267C14.3404 7.6345 12.809 9.67611 10.722 9.67611C10.6154 9.67611 10.5052 9.66845 10.394 9.65515C8.64738 9.44629 7.59034 8.12336 7.39053 6.72797C7.18968 5.32541 7.85018 3.79067 9.53285 3.20839C9.91859 3.07491 10.3204 2.99595 10.722 2.99595V4.10931C10.4653 4.10931 10.1872 4.1601 9.89694 4.26053C8.78915 4.64388 8.35627 5.61781 8.49264 6.57015C8.63005 7.52968 9.34083 8.40792 10.5262 8.54966C10.6024 8.55878 10.6677 8.56275 10.722 8.56275C11.9751 8.56275 13.227 7.26428 13.227 5.22267C13.227 5.12633 13.226 5.02998 13.2238 4.9337Z" fill="currentColor"></path></svg>
+                Retirar en Tienda
+              </h3>
+              <div class="flex gap-2 pl-8">
+
+                <p>Contáctanos por WhatsApp, haz tu reserva y retira el producto en nuestra tienda ubicada en calle Sarmiento 111, Mendoza, Argentina </p>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
         <!-- � Contacto por WhatsApp -->
-        <div class="space-y-4">
+        <div class="mt-8">
           <button (click)="contactWhatsApp()"
-            class="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-md flex items-center justify-center space-x-2">
+            class="w-auto cursor-pointer bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors  flex items-center justify-center space-x-2">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
               <path
                 d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
             </svg>
             @if (product()?.descuento && product()!.descuento! > 0) {
-              <span>💬 Consultar por WhatsApp: $ {{ (product()!.precio * (1 - product()!.descuento! / 100)).toFixed(2) }}</span>
+              <span>Consultar por WhatsApp</span>
             } @else {
-              <span>💬 Consultar por WhatsApp: $ {{ product()?.precio }}</span>
+              <span>Consultar por WhatsApp</span>
             }
           </button>
 
-          <p class="text-center text-gray-500 text-sm">
-            Te contactaremos para ayudarte con tu consulta
-          </p>
+
         </div>
       </div>
     </div>
