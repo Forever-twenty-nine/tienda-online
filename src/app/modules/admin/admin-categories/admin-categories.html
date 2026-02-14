@@ -59,13 +59,22 @@
         <table class="hidden sm:table w-full text-left border-collapse">
           <thead class="bg-muted/50 border-b border-muted-foreground/10">
             <tr>
+              <th class="px-6 py-4 font-bold text-muted-foreground w-12"></th>
               <th class="px-6 py-4 font-bold text-muted-foreground">Nombre</th>
               <th class="px-6 py-4 font-bold text-muted-foreground text-right">Acciones</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-muted-foreground/10">
+          <tbody 
+            class="divide-y divide-muted-foreground/10"
+            cdkDropList
+            (cdkDropListDropped)="onDrop($event)">
             @for (cat of categoriesService.categories(); track cat.id) {
-              <tr class="hover:bg-muted/20 transition-colors">
+              <tr class="hover:bg-muted/20 transition-colors bg-white group" cdkDrag>
+                <td class="px-6 py-4 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors cursor-move" cdkDragHandle>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </td>
                 <td class="px-6 py-4 font-medium text-gray-900">{{ cat.nombre }}</td>
                 <td class="px-6 py-4 text-right">
                   <div class="flex justify-end space-x-2">
@@ -87,28 +96,47 @@
                     </button>
                   </div>
                 </td>
+                
+                <!-- Placeholder para el drag -->
+                <div *cdkDragPlaceholder class="bg-primary/5 h-16"></div>
               </tr>
             }
           </tbody>
         </table>
 
         <!-- Mobile List -->
-        <div class="sm:hidden divide-y divide-muted-foreground/10">
+        <div class="sm:hidden divide-y divide-muted-foreground/10"
+             cdkDropList
+             (cdkDropListDropped)="onDrop($event)">
           @for (cat of categoriesService.categories(); track cat.id) {
-            <div class="p-4 flex items-center justify-between hover:bg-muted/10">
-              <span class="font-medium text-gray-900">{{ cat.nombre }}</span>
+            <div class="p-4 flex items-center justify-between hover:bg-muted/10 bg-white" cdkDrag>
+              <div class="flex items-center gap-3">
+                <div class="text-muted-foreground/40 cursor-move" cdkDragHandle>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <span class="font-medium text-gray-900">{{ cat.nombre }}</span>
+              </div>
               <div class="flex space-x-2">
-                <button (click)="onEdit(cat)" class="p-2 text-secondary bg-secondary/10 rounded-lg">
+                <button
+                  (click)="onEdit(cat)"
+                  class="p-2 text-muted-foreground hover:text-secondary rounded-lg"
+                  title="Editar">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                   </svg>
                 </button>
-                <button (click)="onDelete(cat.id)" class="p-2 text-error bg-error/10 rounded-lg">
+                <button
+                  (click)="onDelete(cat.id)"
+                  class="p-2 text-muted-foreground hover:text-primary rounded-lg"
+                  title="Eliminar">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                   </svg>
                 </button>
               </div>
+              <div *cdkDragPlaceholder class="bg-primary/5 h-16"></div>
             </div>
           }
         </div>

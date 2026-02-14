@@ -25,6 +25,11 @@
                 Sin Stock
             </div>
             }
+            @if (product.descuento && product.descuento > 0) {
+            <div class="bg-error text-error-foreground text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                {{ product.descuento }}% OFF
+            </div>
+            }
         </div>
 
         @if (product.destacado) {
@@ -46,9 +51,20 @@
         </h2>
         
         <div class="py-1">
-            <span class="text-2xl font-bold text-red-600">
-                $ {{ product.precio }}
-            </span>
+            <div class="flex flex-col items-center">
+                @if (product.descuento && product.descuento > 0) {
+                    <span class="text-2xl font-bold text-red-600">
+                        $ {{ (product.precio * (1 - product.descuento / 100)).toFixed(2) }}
+                    </span>
+                    <span class="text-xs text-gray-400 line-through">
+                        $ {{ product.precio }}
+                    </span>
+                } @else {
+                    <span class="text-2xl font-bold text-red-600">
+                        $ {{ product.precio }}
+                    </span>
+                }
+            </div>
         </div>
     </div>
 </div>

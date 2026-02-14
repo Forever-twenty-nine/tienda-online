@@ -4,9 +4,11 @@ export interface Product {
     slug?: string;
     descripcion: string;
     precio: number;
-    imagen?: string;
+    imagen?: string; // Imagen principal
+    imagenes?: string[]; // Lista de hasta 3 imágenes
     categoriaId?: string;
     destacado?: boolean;
+    descuento?: number;
     disponibilidad: boolean;
     publicado: boolean;
 }

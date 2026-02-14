@@ -48,19 +48,44 @@ import { ContactService } from '../../../core/services/contact.service';
 })
 export class ProductDetailModalComponent {
   private contactService = inject(ContactService);
-  @Input() product: Product | null = null;
+  @Input() set product(value: Product | null) {
+    this._product = value;
+    if (value) {
+      const mainImage = value.imagen || (value.imagenes && value.imagenes.length > 0 ? value.imagenes[0] : null);
+      this.selectedImage.set(mainImage);
+    }
+  }
+  get product() { return this._product; }
+  private _product: Product | null = null;
+  
   @Input() loading = false;
   @Input() error = false;
   @Output() close = new EventEmitter<void>();
   
+  selectedImage = signal<string | null>(null);
+
   // Estado de animación para el componente completo
   animationState = 'visible';
+
+  selectImage(url: string) {
+    this.selectedImage.set(url);
+  }
 
   contactWhatsApp() {
     if (!this.product) return;
     const contactInfo = this.contactService.contactInfo();
     const phoneNumber = contactInfo?.whatsapp || '5492615564713';
-    const message = `Hola!\n\nEstoy interesado/a en el siguiente producto de su tienda:\n\n*${this.product.nombre}*\nPrecio: ${this.product.precio.toLocaleString('es-AR', { style: 'currency', currency: 'USD' })}\n\n${this.product.descripcion}\n\nPodrian darme mas informacion sobre este producto?\n\nGracias!`;
+    
+    const hasDiscount = this.product.descuento && this.product.descuento > 0;
+    const finalPrice = hasDiscount 
+        ? this.product.precio * (1 - this.product.descuento! / 100)
+        : this.product.precio;
+
+    const priceText = hasDiscount
+        ? `*${finalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}* (Oferta ${this.product.descuento}% OFF, antes ${this.product.precio.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })})`
+        : `*${this.product.precio.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}*`;
+
+    const message = `Hola!\n\nEstoy interesado/a en el siguiente producto de su tienda:\n\n*${this.product.nombre}*\nPrecio: ${priceText}\n\n${this.product.descripcion}\n\nPodrian darme mas informacion sobre este producto?\n\nGracias!`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');

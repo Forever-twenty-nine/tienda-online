@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -9,10 +10,11 @@ import {
   FormGroup
 } from '@angular/forms';
 import { Product } from '../../../core/models/product.model';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-product-form',
-  imports: [ ReactiveFormsModule],
+  imports: [ ReactiveFormsModule, ConfirmDialog, NgClass],
   templateUrl: './product-form.html',
 })
 export class ProductForm {
@@ -30,13 +32,16 @@ export class ProductForm {
   /** Señal para las categorías */
   public readonly categories = this.categoriesService.categories;
 
-  /** Señal para la vista previa de la imagen */
-  imagePreview = signal<string | null>(null);
+  /** Señal para las imágenes del producto */
+  images = signal<string[]>([]);
 
   // 🆔 Ruta param "id" como señal
   id = signal<string | null>(this.route.snapshot.paramMap.get('id'));
 
-  // �� Computed: buscamos en el servicio el producto actual (si estamos editando)
+  // ⚠️ estado del modal de confirmación
+  showConfirm = false;
+
+  // 🔍 Computed: buscamos en el servicio el producto actual (si estamos editando)
   current = computed(() =>
     this.service.products().find(p => p.id === this.id())
   );
@@ -49,7 +54,9 @@ export class ProductForm {
     nombre: ['', Validators.required],
     descripcion: [''],
     precio: [0, Validators.required],
+    descuento: [0, [Validators.min(0), Validators.max(100)]],
     imagen: [''],
+    imagenes: [[]],
     categoriaId: [''],
     destacado: [false],
     disponibilidad: [true],
@@ -62,9 +69,12 @@ export class ProductForm {
       const prod = this.current();
       if (this.id() && prod) {
         this.form.patchValue(prod);
-        // Establecer vista previa si hay imagen
-        if (prod.imagen) {
-          this.imagePreview.set(prod.imagen);
+        // Establecer imágenes si existen
+        if (prod.imagenes) {
+          this.images.set(prod.imagenes);
+        } else if (prod.imagen) {
+          // Si solo tiene la imagen principal antigua, la ponemos en la lista
+          this.images.set([prod.imagen]);
         }
       }
     });
@@ -87,29 +97,64 @@ export class ProductForm {
     this.router.navigate(['/admin', 'products']);
   }
 
+  // 🗑️ Métodos para eliminar
+  onDelete() {
+    this.showConfirm = true;
+  }
+
+  onConfirmDelete() {
+    const productId = this.id();
+    if (productId) {
+      this.service.deleteProduct(productId);
+      this.showConfirm = false;
+      this.router.navigate(['/admin', 'products']);
+    }
+  }
+
+  onCancelDelete() {
+    this.showConfirm = false;
+  }
+
   async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
+    if (this.images().length >= 3) {
+      alert('Solo se permiten hasta 3 imágenes');
+      return;
+    }
 
     const file = input.files[0];
 
-    // Crear vista previa inmediata usando FileReader
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.imagePreview.set(e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-
-    // Subir imagen y actualizar formulario
+    // Subir imagen y obtener URL
     const url = await this.service.uploadImage(file);
-    this.form.patchValue({ imagen: url });
-    // Actualizar vista previa con la URL final
-    this.imagePreview.set(url);
+    
+    // Actualizar lista de imágenes
+    const currentImages = [...this.images(), url];
+    this.images.set(currentImages);
+    this.form.patchValue({ imagenes: currentImages });
+
+    // Si es la primera imagen, ponerla como principal automáticamente
+    if (currentImages.length === 1) {
+      this.form.patchValue({ imagen: url });
+    }
   }
 
   // Método para remover imagen
-  removeImage() {
-    this.imagePreview.set(null);
-    this.form.patchValue({ imagen: '' });
+  removeImage(index: number) {
+    const currentImages = this.images().filter((_, i) => i !== index);
+    const removedUrl = this.images()[index];
+    const currentMainImage = this.form.get('imagen')?.value;
+
+    this.images.set(currentImages);
+    this.form.patchValue({ imagenes: currentImages });
+
+    // Si la imagen eliminada era la principal, actualizar
+    if (currentMainImage === removedUrl) {
+      this.form.patchValue({ imagen: currentImages[0] || '' });
+    }
+  }
+
+  setMainImage(url: string) {
+    this.form.patchValue({ imagen: url });
   }
 }

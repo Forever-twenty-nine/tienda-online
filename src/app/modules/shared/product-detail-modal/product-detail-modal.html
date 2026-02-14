@@ -35,20 +35,54 @@
       <div class="bg-white overflow-hidden">
         <div class="grid md:grid-cols-2 gap-8 p-6">
           <div class="space-y-4">
-            <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden relative">
+            <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden relative border border-gray-100">
               <img ngOptimizedImage
-                [ngSrc]="product.imagen && product.imagen.trim() ? product.imagen : 'https://picsum.photos/600/600'"
-                fill alt="{{ product.nombre }}" class="object-cover hover:scale-105 transition-transform duration-300"
+                [ngSrc]="selectedImage() ? selectedImage()! : 'https://picsum.photos/600/600'"
+                fill alt="{{ product.nombre }}" class="object-cover transition-all duration-500"
                 priority />
             </div>
+
+            <!-- Miniaturas -->
+            @if (product.imagenes && product.imagenes.length > 1) {
+              <div class="grid grid-cols-4 gap-2 mt-4">
+                @for (img of product.imagenes; track img) {
+                  <div 
+                    (click)="selectImage(img)"
+                    class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300"
+                    [class.border-brand-pink]="selectedImage() === img"
+                    [class.border-transparent]="selectedImage() !== img"
+                    [class.shadow-sm]="selectedImage() === img"
+                    [class.opacity-60]="selectedImage() !== img"
+                    [class.hover:opacity-100]="selectedImage() !== img">
+                    <img [src]="img" class="w-full h-full object-cover" [alt]="product.nombre" loading="lazy">
+                  </div>
+                }
+              </div>
+            }
           </div>
           <div class="flex flex-col">
             <div>
               <h1 class="text-xl font-bold text-gray-900 mb-4">{{ product.nombre }}</h1>
               <div class="mb-8">
-                <p class="text-3xl font-extrabold text-red-600">
-                  $ {{ product.precio }}
-                </p>
+                @if (product.descuento && product.descuento > 0) {
+                  <div class="flex items-center gap-3">
+                    <p class="text-3xl font-extrabold text-red-600">
+                      $ {{ (product.precio * (1 - product.descuento / 100)).toFixed(2) }}
+                    </p>
+                    <div class="flex flex-col">
+                      <span class="text-sm text-gray-400 line-through">
+                        $ {{ product.precio }}
+                      </span>
+                      <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        {{ product.descuento }}% OFF
+                      </span>
+                    </div>
+                  </div>
+                } @else {
+                  <p class="text-3xl font-extrabold text-red-600">
+                    $ {{ product.precio }}
+                  </p>
+                }
               </div>
               <div class="mb-8">
                 <h3 class="text-xs uppercase text-brand-gray-dark mb-2">Descripción</h3>

@@ -41,6 +41,7 @@ const productConverter: FirestoreDataConverter<Product> = {
     return { 
       id: snapshot.id, 
       ...data,
+      descuento: data.descuento ?? 0,
       disponibilidad: data.disponibilidad ?? true,
       publicado: data.publicado ?? true,
       slug: createSlug(data.nombre)
@@ -66,6 +67,15 @@ export class ProductsService {
    */
   searchTerm = signal('');
   categoryFilter = signal<string | null>(null);
+  featuredFilter = signal<boolean | null>(null);
+  publishedFilter = signal<boolean | null>(null);
+  stockFilter = signal<boolean | null>(null);
+  discountFilter = signal<boolean | null>(null);
+
+  // 📄 Paginación / Scroll Infinito
+  private readonly itemsPerPage = 8;
+  visibleCount = signal(this.itemsPerPage);
+
   allProducts = toSignal(
     collectionData(
       collection(this.firestore, 'products').withConverter(productConverter),
@@ -104,6 +114,10 @@ export class ProductsService {
   adminProducts = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
     const catId = this.categoryFilter();
+    const featured = this.featuredFilter();
+    const published = this.publishedFilter();
+    const stock = this.stockFilter();
+    const discount = this.discountFilter();
     const allProds = this.allProducts();
 
     return allProds.filter(product => {
@@ -111,12 +125,42 @@ export class ProductsService {
       const matchesTerm = !term ||
         product.nombre.toLowerCase().includes(term) ||
         product.descripcion.toLowerCase().includes(term);
+      const matchesFeatured = featured === null || product.destacado === featured;
+      const matchesPublished = published === null || product.publicado === published;
+      const matchesStock = stock === null || product.disponibilidad === stock;
+      const matchesDiscount = discount === null || (discount ? (product.descuento ?? 0) > 0 : (product.descuento ?? 0) === 0);
 
-      return matchesCategory && matchesTerm;
+      return matchesCategory && matchesTerm && matchesFeatured && matchesPublished && matchesStock && matchesDiscount;
     });
   });
 
   uploading = signal(false);
+
+  /**
+   * Productos visibles (paginados) para la parte pública y admin.
+   */
+  displayedProducts = computed(() => {
+    return this.products().slice(0, this.visibleCount());
+  });
+
+  displayedAdminProducts = computed(() => {
+    return this.adminProducts().slice(0, this.visibleCount());
+  });
+
+  hasMore = computed(() => {
+    // Verifica si hay más en el contexto actual (público o admin)
+    // Usamos el máximo de ambos para simplificar el servicio
+    const total = Math.max(this.products().length, this.adminProducts().length);
+    return this.visibleCount() < total;
+  });
+
+  loadMore() {
+    this.visibleCount.update(v => v + this.itemsPerPage);
+  }
+
+  resetPagination() {
+    this.visibleCount.set(this.itemsPerPage);
+  }
 
   /**
    * Inicializa el servicio.
@@ -129,6 +173,7 @@ export class ProductsService {
    */
   setSearchTerm(term: string): void {
     this.searchTerm.set(term);
+    this.resetPagination();
   }
 
   /**
@@ -136,6 +181,12 @@ export class ProductsService {
    */
   clearSearch(): void {
     this.searchTerm.set('');
+    this.resetPagination();
+  }
+
+  setCategory(catId: string | null): void {
+    this.categoryFilter.set(catId);
+    this.resetPagination();
   }
 
   /**

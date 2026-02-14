@@ -18,6 +18,7 @@ export class ProductDetailComponent implements OnInit {
     private contactService = inject(ContactService);
 
     product = signal<Product | null>(null);
+    selectedImage = signal<string | null>(null);
     loading = signal(true);
     error = signal(false);
 
@@ -31,6 +32,9 @@ export class ProductDetailComponent implements OnInit {
                 const foundProduct = allProducts.find(p => p.slug === slug);
                 if (foundProduct && foundProduct.publicado !== false) {
                     this.product.set(foundProduct);
+                    // Priorizar imagen principal, luego la primera de la lista, luego null
+                    const mainImage = foundProduct.imagen || (foundProduct.imagenes && foundProduct.imagenes.length > 0 ? foundProduct.imagenes[0] : null);
+                    this.selectedImage.set(mainImage);
                     this.loading.set(false);
                     this.error.set(false);
                 } else {
@@ -39,6 +43,10 @@ export class ProductDetailComponent implements OnInit {
                 }
             }
         });
+    }
+
+    selectImage(url: string) {
+        this.selectedImage.set(url);
     }
 
     ngOnInit() {
@@ -58,12 +66,22 @@ export class ProductDetailComponent implements OnInit {
         if (!currentProduct) return;
         const contactInfo = this.contactService.contactInfo();
         const phoneNumber = contactInfo?.whatsapp || '5492615564713'; 
+
+        const hasDiscount = currentProduct.descuento && currentProduct.descuento > 0;
+        const finalPrice = hasDiscount 
+            ? currentProduct.precio * (1 - currentProduct.descuento! / 100)
+            : currentProduct.precio;
+
+        const priceText = hasDiscount
+            ? `*${finalPrice.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}* (Oferta ${currentProduct.descuento}% OFF, antes ${currentProduct.precio.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })})`
+            : `*${currentProduct.precio.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}*`;
+
         const message = `Hola! 
 
 Estoy interesado/a en el siguiente producto de su tienda:
 
 *${currentProduct.nombre}*
-Precio: ${currentProduct.precio.toLocaleString('es-AR', { style: 'currency', currency: 'USD' })}
+Precio: ${priceText}
 
 ${currentProduct.descripcion}
 

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
 import { ProductCard } from '../../components/product-card/product-card';
@@ -11,6 +11,19 @@ import { ProductCard } from '../../components/product-card/product-card';
 })
 export class Home {
   productsService = inject(ProductsService);
+
+  heroProduct = computed(() => {
+    const products = this.productsService.products();
+    if (products.length === 0) return null;
+
+    // Productos con descuento
+    const discounted = products.filter(p => (p.descuento ?? 0) > 0);
+    const pool = discounted.length > 0 ? discounted : products.filter(p => p.destacado);
+    
+    if (pool.length === 0) return products[0];
+
+    return pool[Math.floor(Math.random() * pool.length)];
+  });
 
   get featuredProducts() {
     return this.productsService.products().filter(p => p.destacado).slice(0, 4);
