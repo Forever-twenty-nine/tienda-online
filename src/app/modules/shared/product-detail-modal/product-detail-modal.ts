@@ -7,7 +7,7 @@ import { ContactService } from '../../../core/services/contact.service';
 @Component({
   selector: 'app-product-detail-modal',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage, CurrencyPipe],
+  imports: [CommonModule, NgOptimizedImage],
   templateUrl: './product-detail-modal.html',
   animations: [
     trigger('modalState', [

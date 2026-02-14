@@ -1,4 +1,4 @@
-import { ApplicationConfig,provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig,provideZonelessChangeDetection, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { registerLocaleData } from '@angular/common';
@@ -12,13 +12,14 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 
 // Registrar localización argentina
-registerLocaleData(localeEs);
+registerLocaleData(localeEs, 'es-AR');
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideZonelessChangeDetection(),
     provideAnimations(),
+    { provide: LOCALE_ID, useValue: 'es-AR' },
 
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),

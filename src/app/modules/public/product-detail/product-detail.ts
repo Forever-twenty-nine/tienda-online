@@ -8,7 +8,7 @@ import { ContactService } from '../../../core/services/contact.service';
 @Component({
     selector: 'app-product-detail',
     standalone: true,
-    imports: [CommonModule, NgOptimizedImage, CurrencyPipe],
+    imports: [CommonModule, NgOptimizedImage],
     templateUrl: './product-detail.html'
 })
 export class ProductDetailComponent implements OnInit {
