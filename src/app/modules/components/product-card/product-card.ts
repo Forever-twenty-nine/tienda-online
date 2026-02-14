@@ -1,11 +1,13 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Product } from '../../../core/models/product.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-product-card',
-  imports: [NgOptimizedImage, CurrencyPipe],
+  standalone: true,
+  imports: [NgOptimizedImage, CurrencyPipe, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './product-card.html',
   animations: [
@@ -32,10 +34,5 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 })
 export class ProductCard {
   @Input() product!: Product;
-  @Output() openDetail = new EventEmitter<Product>();
   hoverState = 'initial'; // Estado para la animación de hover
-
-  emitOpenDetail() {
-    this.openDetail.emit(this.product);
-  }
 }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ContactService } from '../../../core/services/contact.service';
 
 @Component({
   selector: 'app-returns',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   templateUrl: './returns.html'
 })
 export class ReturnsComponent {
-
+  public contactService = inject(ContactService);
 }

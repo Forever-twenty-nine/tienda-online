@@ -51,7 +51,9 @@ export class ProductForm {
     precio: [0, Validators.required],
     imagen: [''],
     categoriaId: [''],
-    destacado: [false]
+    destacado: [false],
+    disponibilidad: [true],
+    publicado: [true]
   });
 
   constructor() {

@@ -1,8 +1,9 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginModalComponent } from '../../shared/login-modal/login-modal';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { ContactService } from '../../../core/services/contact.service';
 
 @Component({
   selector: 'app-footer',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './footer.html'
 })
 export class FooterComponent {
+  public contactService = inject(ContactService);
   clickCount = 0;
   showAdminAccess = false;
   showLoginModal = false;

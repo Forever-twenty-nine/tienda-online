@@ -1,27 +1,27 @@
 @if (loading()) {
 <!-- ⏳ Estado de carga -->
 <div class="flex flex-col items-center justify-center py-20">
-  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-opacity-50 mb-4"></div>
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-brand-pink border-opacity-50 mb-4"></div>
   <p class="text-center text-gray-500 text-lg">Cargando producto...</p>
 </div>
 } @else if (error()) {
 <!-- ❌ Estado de error -->
-<div class="container mx-auto p-6">
+<div class="container mx-auto px-6 md:px-12 lg:px-20 py-6">
   <div class="flex flex-col items-center justify-center py-20">
     <div class="text-6xl mb-4">❌</div>
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Producto no encontrado</h2>
     <p class="text-gray-600 mb-6">El producto que buscas no existe o ha sido eliminado.</p>
-    <button (click)="goBack()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+    <button (click)="goBack()" class="bg-brand-pink text-white px-6 py-2 rounded-lg hover:bg-brand-pink-dark transition-colors">
       Volver al catálogo
     </button>
   </div>
 </div>
 } @else if (product()) {
 <!-- 📱 Detalle del producto -->
-<div class="container mx-auto p-6">
+<div class="container mx-auto px-6 md:px-12 lg:px-20 py-6">
   <!-- 🔙 Botón de volver -->
   <div class="mb-6">
-    <button (click)="goBack()" class="flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+    <button (click)="goBack()" class="flex items-center text-brand-pink-dark hover:text-brand-pink transition-colors">
       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
       </svg>
@@ -30,12 +30,12 @@
   </div>
 
   <!-- 📄 Contenido principal -->
-  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+  <div class="bg-white rounded-2xl shadow-lg shadow-brand-pink/5 overflow-hidden">
     <div class="grid md:grid-cols-2 gap-8 p-6">
 
       <!-- 🖼️ Imagen del producto -->
       <div class="space-y-4">
-        <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden relative">
+        <div class="aspect-square bg-gray-50 rounded-xl overflow-hidden relative">
           <img ngOptimizedImage
             [ngSrc]="product()!.imagen && product()!.imagen!.trim() ? product()!.imagen! : 'https://picsum.photos/600/600'"
             fill alt="{{ product()!.nombre }}" class="object-cover hover:scale-105 transition-transform duration-300"
@@ -47,11 +47,11 @@
       <div class="flex flex-col justify-between">
         <div>
           <!-- 🏷️ Nombre del producto -->
-          <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ product()!.nombre }}</h1>
+          <h1 class="text-3xl font-ftn-bold text-gray-900 mb-4 uppercase">{{ product()!.nombre }}</h1>
 
           <!-- 💲 Precio -->
           <div class="mb-6">
-            <p class="text-3xl font-bold text-blue-600">
+            <p class="text-3xl font-bold text-brand-pink-dark">
               {{ product()!.precio | currency:'ARS':'symbol':'1.0-0':'es-AR' }}
             </p>
           </div>
@@ -65,12 +65,12 @@
           <!-- 📊 Información adicional -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div class="bg-gray-50 p-4 rounded-lg">
-              <h4 class="font-semibold text-gray-800 mb-1">ID del Producto</h4>
-              <p class="text-gray-600 text-sm">{{ product()!.id }}</p>
-            </div>
-            <div class="bg-gray-50 p-4 rounded-lg">
               <h4 class="font-semibold text-gray-800 mb-1">Disponibilidad</h4>
-              <p class="text-green-600 font-medium">✅ En stock</p>
+              @if (product()!.disponibilidad) {
+                <p class="text-green-600 font-medium">✅ En stock</p>
+              } @else {
+                <p class="text-red-500 font-medium">❌ Sin stock</p>
+              }
             </div>
           </div>
         </div>

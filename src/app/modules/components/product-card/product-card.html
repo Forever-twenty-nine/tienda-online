@@ -3,7 +3,7 @@
      (mouseenter)="hoverState = 'hovered'"
      (mouseleave)="hoverState = 'initial'"
      class="bg-white rounded-lg flex flex-col h-full overflow-hidden cursor-pointer group"
-     (click)="emitOpenDetail()">
+     [routerLink]="['/product', product.slug]">
 
     <!-- 🖼️ Imagen principal del producto -->
     <div class="w-full h-80 bg-gray-100 relative overflow-hidden">
@@ -13,6 +13,19 @@
              alt="{{ product.nombre }}"
              class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
              priority />
+
+        <!-- Etiquetas de estado -->
+        <div class="absolute top-2 left-2 z-10 flex flex-col gap-1">
+            @if (product.disponibilidad) {
+            <div class="bg-success text-success-foreground text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                Disponible
+            </div>
+            } @else {
+            <div class="bg-error text-error-foreground text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                Sin Stock
+            </div>
+            }
+        </div>
 
         @if (product.destacado) {
         <div class="absolute top-2 right-2 z-10">

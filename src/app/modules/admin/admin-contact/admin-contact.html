@@ -1,0 +1,80 @@
+<div class="max-w-4xl mx-auto p-6">
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">Datos de Contacto</h2>
+    <p class="text-gray-600">Configura la información de contacto que se muestra en el sitio público.</p>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" #contactForm="ngForm" class="bg-white rounded-xl shadow-md p-6 space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Email -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Email de contacto</label>
+        <input type="email" name="email" [(ngModel)]="contactData.email" required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+          placeholder="ejemplo@correo.com">
+      </div>
+
+      <!-- Teléfono -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Teléfono</label>
+        <input type="text" name="phone" [(ngModel)]="contactData.phone" required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+          placeholder="+54 11 1234-5678">
+      </div>
+
+      <!-- WhatsApp -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">WhatsApp (solo números con código de país)</label>
+        <input type="text" name="whatsapp" [(ngModel)]="contactData.whatsapp" required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+          placeholder="5492615564713">
+          <p class="text-xs text-gray-500">Ejemplo: 549... (Importante para los links directos)</p>
+      </div>
+
+      <!-- Dirección -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Dirección / Ubicación</label>
+        <input type="text" name="address" [(ngModel)]="contactData.address" required
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+          placeholder="Mendoza, Argentina">
+      </div>
+
+      <!-- Instagram -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Instagram (URL o usuario)</label>
+        <div class="relative">
+          <span class="absolute left-3 top-2 text-gray-400">&#64;</span>
+          <input type="text" name="instagram" [(ngModel)]="contactData.instagram"
+            class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+            placeholder="usuario.instagram">
+        </div>
+      </div>
+
+      <!-- Facebook -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Facebook (URL)</label>
+        <input type="text" name="facebook" [(ngModel)]="contactData.facebook"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+          placeholder="https://facebook.com/tu-pagina">
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-gray-100 flex justify-end">
+      <button type="submit" [disabled]="!contactForm.form.valid"
+        class="px-6 py-2 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+        Guardar Cambios
+      </button>
+    </div>
+  </form>
+
+  <!-- Modal de éxito -->
+  <app-confirm-dialog
+    [open]="showSuccessModal()"
+    [title]="'¡Éxito!'"
+    [message]="'La información de contacto ha sido actualizada correctamente.'"
+    [confirmText]="'Entendido'"
+    [cancelText]="''"
+    (confirm)="showSuccessModal.set(false)"
+    (cancel)="showSuccessModal.set(false)">
+  </app-confirm-dialog>
+</div>

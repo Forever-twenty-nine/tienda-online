@@ -40,7 +40,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-muted-foreground">Total Productos</p>
-                    <p class="text-2xl font-bold text-primary">{{ productsService.products().length }}</p>
+                    <p class="text-2xl font-bold text-primary">{{ productsService.adminProducts().length }}</p>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm text-muted-foreground">Activos</p>
+                    <p class="text-sm text-muted-foreground">Publicados</p>
                     <p class="text-2xl font-bold text-success">{{ productsService.products().length }}</p>
                 </div>
             </div>
@@ -67,17 +67,17 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm text-muted-foreground">En Venta</p>
-                    <p class="text-2xl font-bold text-secondary">{{ productsService.products().length }}</p>
+                    <p class="text-sm text-muted-foreground">En Stock</p>
+                    <p class="text-2xl font-bold text-secondary">{{ productsService.adminProducts().filter(isAvailable).length }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 🛍️ Grid de productos moderno -->
-    @if (productsService.products().length > 0) {
+    @if (productsService.adminProducts().length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        @for (product of productsService.products(); track product.id) {
+        @for (product of productsService.adminProducts(); track product.id) {
         <div class="bg-white rounded-xl shadow-sm border border-muted-foreground/10 overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105 group">
             <!-- 🖼️ Imagen del producto con overlay -->
             <div class="relative aspect-square overflow-hidden bg-muted">
@@ -119,9 +119,24 @@
 
                 <!-- Badge de estado -->
                 <div class="absolute top-3 left-3 flex flex-col gap-1">
-                    <span class="bg-success text-success-foreground text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
-                        Activo
+                    @if (product.publicado) {
+                    <span class="bg-info text-info-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">
+                        Publicado
                     </span>
+                    } @else {
+                    <span class="bg-warning text-warning-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">
+                        Borrador
+                    </span>
+                    }
+                    @if (product.disponibilidad) {
+                    <span class="bg-success text-success-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">
+                        Disponible
+                    </span>
+                    } @else {
+                    <span class="bg-error text-error-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm uppercase tracking-wider">
+                        Sin Stock
+                    </span>
+                    }
                     @if (product.destacado) {
                     <span class="bg-secondary text-secondary-foreground text-xs font-semibold px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">

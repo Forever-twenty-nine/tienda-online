@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, effect } from '@angular/core';
+import { inject, Injectable, signal, computed } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Storage } from '@angular/fire/storage';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -13,18 +13,38 @@ import {
 } from 'firebase/firestore';
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { Product } from '../models/product.model';
-import { catchError, of } from 'rxjs';
+import { catchError, of, map } from 'rxjs';
+
+/**
+ * Genera un slug amigable para URL a partir de un texto.
+ */
+function createSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD') // Descompone caracteres acentuados
+    .replace(/[\u0300-\u036f]/g, '') // Elimina diacríticos
+    .replace(/[^a-z0-9 -]/g, '') // Elimina caracteres no permitidos
+    .replace(/\s+/g, '-') // Reemplaza espacios por guiones
+    .replace(/-+/g, '-') // Elimina guiones repetidos
+    .trim();
+}
 
 /**
  * Convertidor para transformar objetos Product a/desde Firestore.
  */
 const productConverter: FirestoreDataConverter<Product> = {
-  toFirestore({ id, ...data }): DocumentData {
+  toFirestore({ id, slug, ...data }): DocumentData {
     return data;
   },
   fromFirestore(snapshot, options): Product {
     const data = snapshot.data(options)! as Omit<Product, 'id'>;
-    return { id: snapshot.id, ...data };
+    return { 
+      id: snapshot.id, 
+      ...data,
+      disponibilidad: data.disponibilidad ?? true,
+      publicado: data.publicado ?? true,
+      slug: createSlug(data.nombre)
+    };
   }
 };
 
@@ -58,34 +78,50 @@ export class ProductsService {
     ) as import('rxjs').Observable<Product[]>,
     { initialValue: [] }
   );
-  products = signal<Product[]>([]);
+
+  /**
+   * Productos filtrados para la parte pública (solo publicados).
+   */
+  products = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+    const catId = this.categoryFilter();
+    const allProds = this.allProducts();
+
+    return allProds.filter(product => {
+      const matchesCategory = !catId || product.categoriaId === catId;
+      const matchesTerm = !term ||
+        product.nombre.toLowerCase().includes(term) ||
+        product.descripcion.toLowerCase().includes(term);
+      const isPublished = product.publicado !== false; // Por defecto true si es undefined
+
+      return matchesCategory && matchesTerm && isPublished;
+    });
+  });
+
+  /**
+   * Productos filtrados para el panel de administración (incluye no publicados).
+   */
+  adminProducts = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+    const catId = this.categoryFilter();
+    const allProds = this.allProducts();
+
+    return allProds.filter(product => {
+      const matchesCategory = !catId || product.categoriaId === catId;
+      const matchesTerm = !term ||
+        product.nombre.toLowerCase().includes(term) ||
+        product.descripcion.toLowerCase().includes(term);
+
+      return matchesCategory && matchesTerm;
+    });
+  });
+
   uploading = signal(false);
 
   /**
-   * Inicializa el efecto reactivo para filtrar productos por búsqueda.
+   * Inicializa el servicio.
    */
-  constructor() {
-    effect(() => {
-      const term = this.searchTerm().toLowerCase().trim();
-      const catId = this.categoryFilter();
-      const allProds = this.allProducts();
-      
-      let filtered = allProds;
-
-      if (catId) {
-        filtered = filtered.filter(product => product.categoriaId === catId);
-      }
-
-      if (term) {
-        filtered = filtered.filter(product => 
-          product.nombre.toLowerCase().includes(term) ||
-          product.descripcion.toLowerCase().includes(term)
-        );
-      }
-
-      this.products.set(filtered);
-    });
-  }
+  constructor() {}
 
   /**
    * Actualiza el término de búsqueda.

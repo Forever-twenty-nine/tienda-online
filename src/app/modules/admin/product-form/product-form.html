@@ -133,6 +133,28 @@
                     🌟 Marcar como producto destacado
                 </label>
             </div>
+
+            <!-- Disponibilidad -->
+            <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+                <input type="checkbox"
+                       formControlName="disponibilidad"
+                       id="disponibilidad"
+                       class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
+                <label for="disponibilidad" class="font-medium text-muted-foreground cursor-pointer select-none">
+                    📦 Producto disponible para la venta
+                </label>
+            </div>
+
+            <!-- Publicado -->
+            <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+                <input type="checkbox"
+                       formControlName="publicado"
+                       id="publicado"
+                       class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
+                <label for="publicado" class="font-medium text-muted-foreground cursor-pointer select-none">
+                    🌐 Publicar producto en la tienda
+                </label>
+            </div>
         </div>
 
         <!-- 🎯 Botones de Acción -->

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { Product } from '../../../core/models/product.model';
 
 @Component({
   selector: 'app-admin-products',
@@ -20,6 +21,8 @@ export class AdminProducts {
   // ⚠️ estado del modal de confirmación
   showConfirm = false;
   deletingId: string | null = null;
+
+  isAvailable = (p: Product) => p.disponibilidad;
   
   getCategoryName(id?: string): string {
     if (!id) return 'Sin categoría';

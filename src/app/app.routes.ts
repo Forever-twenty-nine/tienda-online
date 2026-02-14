@@ -19,7 +19,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Home },
       { path: 'catalogo', component: CatalogComponent },
-      { path: 'product/:id', component: ProductDetailComponent },
+      { path: 'product/:slug', component: ProductDetailComponent },
       { path: 'about', component: AboutComponent },
       { path: 'terms', component: TermsComponent },
       { path: 'privacy', component: PrivacyComponent },
