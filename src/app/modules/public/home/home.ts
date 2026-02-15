@@ -12,6 +12,8 @@ import { ProductCard } from '../../components/product-card/product-card';
 export class Home {
   productsService = inject(ProductsService);
 
+  defaultHeroImage = 'https://images.unsplash.com/photo-1549439602-43ebca2327af?q=80&w=2070&auto=format&fit=crop';
+
   heroProduct = computed(() => {
     const products = this.productsService.products();
     if (products.length === 0) return null;

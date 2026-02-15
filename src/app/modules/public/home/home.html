@@ -40,39 +40,37 @@
     <div class="relative order-1 lg:order-2 pb-10 min-h-[300px] flex items-center justify-center">
       <div class="absolute -top-10 -right-10 lg:-top-20 lg:-right-20 w-48 h-48 lg:w-96 lg:h-96 bg-brand-dark/20 rounded-full blur-2xl lg:blur-3xl"></div>
 
-      @if (heroProduct()) {
-        <a [routerLink]="['/product', heroProduct()?.slug]" class="relative z-10 block group">
-          <div class="rounded-[2rem] lg:rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-dark/20 lg:rotate-3 group-hover:rotate-0 transition-transform duration-700 mx-auto max-w-md lg:max-w-none">
-            <img class="w-full h-[300px] sm:h-[400px] lg:h-[550px] object-cover"
-                 [src]="heroProduct()?.imagen"
-                 [alt]="heroProduct()?.nombre">
+      <div class="relative z-10 block group">
+        <a [routerLink]="heroProduct() ? ['/product', heroProduct()?.slug] : null" 
+           [class.cursor-default]="!heroProduct()"
+           class="block">
+          <div class="rounded-[2rem] lg:rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-dark/20 lg:rotate-3 group-hover:rotate-0 transition-transform duration-700 mx-auto max-w-md lg:max-w-none bg-brand-dark/5">
+            <img class="w-full h-[300px] sm:h-[400px] lg:h-[550px] object-cover transition-opacity duration-500"
+                 [src]="heroProduct()?.imagen || defaultHeroImage"
+                 [alt]="heroProduct()?.nombre || 'Colección Exclusiva'"
+                 [class.opacity-80]="!heroProduct()">
             <div class="absolute inset-0 bg-black/0 transition-colors duration-700"></div>
           </div>
+        </a>
 
-          @if (heroProduct()?.descuento || heroProduct()?.destacado) {
-            <div class="absolute top-0 right-0 lg:-bottom-6 lg:top-auto lg:-right-6 bg-brand-tertiary p-4 lg:px-6 lg:py-4 rounded-2xl lg:rounded-2xl shadow-2xl shadow-brand-dark/30 z-20 animate-bounce duration-[3000ms] mb-2">
-              <div class="flex items-center gap-3 lg:gap-4">
-                <div class="w-10 h-10 lg:w-18 lg:h-9 bg-brand-light rounded-full flex items-center justify-center text-brand-tertiary uppercase font-ftn-bold text-[10px] lg:text-xs">
-                  {{ heroProduct()?.descuento ? 'Oferta' : 'Top' }}
-                </div>
-                <div>
-                  <p class="text-xs lg:text-lg font-ftn-bold text-brand-light">
-                    {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'Destacado' }}
-                  </p>
-                  <p class="text-[10px] lg:text-xs text-brand-light/80 w-full truncate max-w-[100px] lg:max-w-[200px]">
-                    {{ heroProduct()?.nombre }}
-                  </p>
-                </div>
+        @if (heroProduct() && (heroProduct()?.descuento || heroProduct()?.destacado)) {
+          <div class="absolute top-0 right-0 lg:-bottom-6 lg:top-auto lg:-right-6 bg-brand-tertiary p-4 lg:px-6 lg:py-4 rounded-2xl lg:rounded-2xl shadow-2xl shadow-brand-dark/30 z-20 animate-bounce duration-[3000ms] mb-2">
+            <div class="flex items-center gap-3 lg:gap-4">
+              <div class="w-10 h-10 lg:w-18 lg:h-9 bg-brand-light rounded-full flex items-center justify-center text-brand-tertiary uppercase font-ftn-bold text-[10px] lg:text-xs">
+                {{ heroProduct()?.descuento ? 'Oferta' : 'Top' }}
+              </div>
+              <div>
+                <p class="text-xs lg:text-lg font-ftn-bold text-brand-light">
+                  {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'Destacado' }}
+                </p>
+                <p class="text-[10px] lg:text-xs text-brand-light/80 w-full truncate max-w-[100px] lg:max-w-[200px]">
+                  {{ heroProduct()?.nombre }}
+                </p>
               </div>
             </div>
-          }
-        </a>
-      } @else {
-        <div class="relative z-10 flex flex-col items-center justify-center space-y-4 ">
-          <div class="w-12 h-12 border-4 border-brand-dark/20 border-t-brand-dark rounded-full animate-spin"></div>
-          <p class="text-brand-dark font-medium animate-pulse">Cargando...</p>
-        </div>
-      }
+          </div>
+        }
+      </div>
     </div>
   </div>
 </section>
