@@ -1,26 +1,26 @@
-<section class="container mx-auto px-6 md:px-12 lg:px-20 py-6">
+<section class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
   <!-- 🏷️ Título con mejor diseño -->
   <div class="text-center mb-8">
     @if (productsService.searchTerm()) {
-    <h1 class="text-5xl font-ftn-bold text-brand-dark mb-6 mt-6">
+    <h1 class="text-3xl lg:text-5xl font-ftn-bold text-brand-dark mb-4 mt-6">
       Resultados para:
     </h1>
-    <p class="text-5xl font-ftn-bold text-brand-tertiary mb-6 mt-6">
+    <p class="text-3xl lg:text-5xl font-ftn-bold text-brand-tertiary mb-6 mt-">
       "{{ productsService.searchTerm() }}
     </p>
     <p class="text-brand-dark/50">
       {{ productsService.products().length }} productos encontrados
     </p>
     } @else {
-    <h1 class="text-5xl font-ftn-bold text-brand-dark mb-6 mt-6">Catálogo de productos</h1>
-    <p class="text-brand-dark/50 max-w-xl mx-auto mb-10">Nuevos looks ideales para ti. Encuentra las joyas perfectas para completar tu colección.
+    <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">Catálogo de productos</h1>
+    <p class="text-base text-brand-dark/50 max-w-xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10">Nuevos looks ideales para ti. Encuentra las joyas perfectas para completar tu colección.
 </p>
     }
     <!-- <div class="w-24 h-1 bg-gradient-to-r from-brand-primary to-brand-primary mx-auto mt-4 rounded-full"></div> -->
   </div>
 
   <!-- 🔍 Buscador de productos -->
-  <div class="max-w-2xl mx-auto mb-14">
+  <div class="max-w-2xl mx-auto mb-10 lg:mb-14">
     <div class="relative group">
       <input
         type="search"
@@ -53,7 +53,7 @@
       (click)="setCategory(null)"
       [class.bg-brand-primary]="productsService.categoryFilter() === null"
       [class.text-brand-dark]="productsService.categoryFilter() === null"
-      class="px-4 py-2 rounded-full border-2 border-brand-primary text-brand- hover:bg-brand-primary/20 transition-colors cursor-pointer"
+      class="px-2 py-1 text-sm rounded-full border-2 border-brand-primary text-brand- hover:bg-brand-primary/20 transition-colors cursor-pointer lg:px-4 lg:py-2 lg:text-base"
     >
       Todas
     </button>
@@ -62,7 +62,7 @@
         (click)="setCategory(cat.id)"
         [class.bg-brand-primary]="productsService.categoryFilter() === cat.id"
         [class.text-brand-dark]="productsService.categoryFilter() === cat.id"
-        class="px-4 py-2 rounded-full border-2 border-brand-primary text-brand-dark hover:bg-brand-primary/20 transition-colors cursor-pointer"
+        class="px-2 py-1 text-sm rounded-full border-2 border-brand-primary text-brand-dark hover:bg-brand-primary/20 transition-colors cursor-pointer lg:px-4 lg:py-2 lg:text-base"
       >
         {{ cat.nombre }}
       </button>
@@ -80,15 +80,15 @@
   <!-- Centinela para scroll infinito -->
   <div #sentinel class="h-10 flex items-center justify-center mt-10">
     @if (productsService.hasMore()) {
-      <div class="flex items-center gap-2 text-brand-pink-dark font-medium animate-pulse">
+      <div class="flex items-center gap-2 text-brand-primary-dark font-medium animate-pulse">
         <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <path class="opacity-25" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
         <span>Cargando más productos...</span>
       </div>
     } @else {
-      <p class="text-gray-400 text-sm italic">Has llegado al final del catálogo</p>
+      <p class="text-brand-dark/50 text-sm italic">Has llegado al final del catálogo</p>
     }
   </div>
   } @else {
@@ -97,7 +97,7 @@
   <!-- 🔍 Sin resultados de búsqueda -->
   <div class="flex flex-col items-center justify-center py-10">
     <div class="text-6xl mb-4">🔍</div>
-    <h3 class="text-2xl font-ftn-bold text-brand-dark mb-2">
+    <h3 class="text-2xl font-ftn-bold text-brand-dark mb-4 text-center">
       No se encontraron productos
     </h3>
     <p class="text-center text-brand-dark/50 text-base mb-4 max-w-2xl mx-auto">

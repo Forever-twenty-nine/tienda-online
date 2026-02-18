@@ -1,16 +1,19 @@
 <!-- Hero Section -->
-<section class="bg-brand-dark/5 relative overflow-hidden min-h-[600px] flex items-center lg:pb-10 lg:pt-10 ">
-  <div class="container mx-auto px-6 md:px-12 lg:px-20 grid lg:grid-cols-2 gap-12 items-center relative z-10 pt-10">
+<section class="bg-gradient-to-tl from-brand-light to-white relative overflow-hidden min-h-[600px] flex items-center lg:pb-10 lg:pt-10 ">
+  <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px] grid lg:grid-cols-2 gap-12 items-center relative z-10 pt-10 pb-10">
     <div class="sm:text-center lg:text-left animate-fade-in order-2 lg:order-1">
-      <h1 class="text-3xl tracking-tight font-ftn-medium sm:text-5xl md:text-6xl leading-tight">
-        <span class="block ">Tu próxima joya</span>
-        <span class="block text-brand-tertiary">favorita está aquí</span>
-      </h1>
-      <p class="mt-6 text-lg text-brand-dark/50 sm:max-w-xl sm:mx-auto lg:mx-0 leading-snug">
-        Calidad excepcional y diseño de vanguardia creados para acompañarte en tus momentos más memorables.
-      </p>
-      <div class="mt-10 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
-        <a routerLink="/catalogo" class="flex items-center justify-center font-ftn-bold px-10 py-4 border border-transparent text-lg rounded-2xl text-brand-dark bg-brand-primary hover:bg-brand-primary  hover:scale-105 transition-all">
+      <div class="hidden lg:block">
+        <h1 class="tracking-tight font-ftn-medium sm:text-5xl md:text-6xl lg:text-6xl leading-tight">
+          <span class="block ">Tu próxima joya</span>
+          <span class="block text-brand-tertiary">favorita está aquí</span>
+        </h1>
+        <p class="mt-6 text-lg text-brand-dark/50 sm:max-w-xl sm:mx-auto lg:mx-0 leading-snug">
+          Calidad excepcional y diseño de vanguardia creados para acompañarte en tus momentos más memorables.
+        </p>
+      </div>
+
+      <div class="lg:mt-10 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
+        <a routerLink="/catalogo" class="flex items-center justify-center font-ftn-bold px-10 py-4 border border-transparent text-base lg:text-lg rounded-2xl text-brand-dark bg-brand-primary hover:bg-brand-primary  hover:scale-105 transition-all">
           Explora el Catálogo
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -37,15 +40,24 @@
       </div>
     </div>
 
-    <div class="relative order-1 lg:order-2 pb-10 min-h-[300px] flex items-center justify-center">
-      <div class="absolute -top-10 -right-10 lg:-top-20 lg:-right-20 w-48 h-48 lg:w-96 lg:h-96 bg-brand-dark/20 rounded-full blur-2xl lg:blur-3xl"></div>
+    <div class="relative order-1 lg:order-2 pb-10 mx-auto ">
+      <div class="lg:hidden">
+        <h1 class="text-4xl tracking-tight font-ftn-medium leading-tight">
+          <span class="block ">Tu próxima joya</span>
+          <span class="block text-brand-tertiary">favorita está aquí</span>
+        </h1>
+        <p class="mt-6 mb-10 text-base text-brand-dark/50 leading-snug">
+          Calidad excepcional y diseño de vanguardia creados para acompañarte en tus momentos más memorables.
+        </p>
+      </div>
+      <div class="absolute -top-10 -right-10 lg:-top-20 lg:-right-20 w-48 h-48 lg:w-80 lg:h-80 lg:bg-brand-primary/40 rounded-full blur-2xl lg:blur-3xl"></div>
 
-      <div class="relative z-10 block group">
-        <a [routerLink]="heroProduct() ? ['/product', heroProduct()?.slug] : null" 
+      <div class="relative z-10 block group max-w-[300px] lg:max-w-[700px] mx-auto">
+        <a [routerLink]="heroProduct() ? ['/product', heroProduct()?.slug] : null"
            [class.cursor-default]="!heroProduct()"
            class="block">
-          <div class="rounded-[2rem] lg:rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-dark/20 lg:rotate-3 group-hover:rotate-0 transition-transform duration-700 mx-auto max-w-md lg:max-w-none bg-brand-dark/5">
-            <img class="w-full h-[300px] sm:h-[400px] lg:h-[550px] object-cover transition-opacity duration-500"
+          <div class="rounded-[1rem] lg:rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-dark/20 lg:rotate-3 group-hover:rotate-0 transition-transform duration-700 mx-auto max-w-md lg:max-w-none bg-brand-primary/5">
+            <img class="w-full h-[350px] sm:h-[400px] lg:h-[550px] object-cover transition-opacity duration-500"
                  [src]="heroProduct()?.imagen || defaultHeroImage"
                  [alt]="heroProduct()?.nombre || 'Colección Exclusiva'"
                  [class.opacity-80]="!heroProduct()">
@@ -54,16 +66,16 @@
         </a>
 
         @if (heroProduct() && (heroProduct()?.descuento || heroProduct()?.destacado)) {
-          <div class="absolute top-0 right-0 lg:-bottom-6 lg:top-auto lg:-right-6 bg-brand-tertiary p-4 lg:px-6 lg:py-4 rounded-2xl lg:rounded-2xl shadow-2xl shadow-brand-dark/30 z-20 animate-bounce duration-[3000ms] mb-2">
+          <div class="absolute top-0 right-0 lg:-bottom-6 lg:top-auto lg:-right-6 bg-brand-tertiary p-4 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl shadow-2xl shadow-brand-primary/30 z-20 animate-bounce duration-[3000ms] mb-2">
             <div class="flex items-center gap-3 lg:gap-4">
-              <div class="w-10 h-10 lg:w-18 lg:h-9 bg-brand-light rounded-full flex items-center justify-center text-brand-tertiary uppercase font-ftn-bold text-[10px] lg:text-xs">
+              <div class="w-12 h-12 lg:w-18 lg:h-9 bg-white rounded-full flex items-center justify-center text-brand-tertiary uppercase font-ftn-bold text-[10px] lg:text-xs">
                 {{ heroProduct()?.descuento ? 'Oferta' : 'Top' }}
               </div>
               <div>
-                <p class="text-xs lg:text-lg font-ftn-bold text-brand-light">
+                <p class="text-xs lg:text-lg font-ftn-bold text-white">
                   {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'Destacado' }}
                 </p>
-                <p class="text-[10px] lg:text-xs text-brand-light/80 w-full truncate max-w-[100px] lg:max-w-[200px]">
+                <p class="text-[10px] lg:text-xs text-brand-light w-full truncate max-w-[100px] lg:max-w-[200px]">
                   {{ heroProduct()?.nombre }}
                 </p>
               </div>
@@ -77,11 +89,11 @@
 
 <!-- Featured Products Section -->
 <section class="py-16 lg:py-24 ">
-  <div class="container mx-auto px-6 md:px-12 lg:px-20">
+  <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
       <div class="">
         <!-- <h2 class="text-sm lg:text-base text-brand-pink font-ftn-medium tracking-widest mb-3">Nuestros productos más Top</h2> -->
-        <p class="text-3xl font-ftn-light tracking-tight text-gray-900 sm:text-5xl uppercase leading-tight">
+        <p class="text-3xl font-ftn-light tracking-tight text-gray-900 sm:text-4xl uppercase leading-tight">
           Nuestros productos<br> <span class="font-ftn-bold text-brand-tertiary">más top</span>
         </p>
       </div>
@@ -109,11 +121,11 @@
 </section>
 
 <!-- Why Us Section -->
-<section class="py-16 lg:py-24 bg-white overflow-hidden">
-  <div class="container mx-auto px-6 md:px-12 lg:px-20">
+<section class="py-6 lg:py-24 bg-white overflow-hidden">
+  <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-      <div class="order-2 lg:order-1">
-        <h2 class="text-3xl lg:text-4xl font-ftn-medium mb-10">¿Por qué elegirnos?</h2>
+      <div class="order-1 lg:order-1">
+        <h2 class="text-2xl lg:text-4xl uppercase mb-10">¿Por qué <br><span class="text-brand-tertiary font-ftn-bold">elegirnos?</span></h2>
         <div class="space-y-6 lg:space-y-8">
           <div class="flex gap-4 lg:gap-6">
             <div class="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 bg-brand-primary/20 rounded-xl lg:rounded-2xl flex items-center justify-center text-brand-primary ">
@@ -150,7 +162,7 @@
           </div>
         </div>
       </div>
-      <div class="order-1 lg:order-2">
+      <div class="order-2 lg:order-2">
         <div class="relative max-w-md mx-auto lg:max-w-none">
           <img src="https://images.unsplash.com/photo-1690701346316-1ecb0e67a3e2?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                class="rounded-[2.5rem] lg:rounded-[3rem] " alt="Nuestro compromiso">
