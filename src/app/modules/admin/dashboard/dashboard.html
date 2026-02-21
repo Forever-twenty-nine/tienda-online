@@ -1,10 +1,15 @@
 <div class="space-y-6 lg:space-y-8">
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">Panel de Control</h1>
+    <h1 class="text-2xl lg:text-3xl font-bold text-gray-800">
+      Bienvenido al Panel de Control
+    </h1>
     <span class="inline-flex items-center px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs lg:text-sm font-medium border border-primary/20 w-fit">
-      Bienvenido, Administrador
+      Bienvenido, Administrador!
     </span>
   </div>
+  <p class="text-xl">
+    Aquí tienes una vista general del estado de tu tienda. Revisa el rendimiento, detecta oportunidades y gestiona todo desde un solo lugar.
+  </p>
 
   <!-- Stats Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
@@ -49,7 +54,7 @@
                 <span class="text-gray-500">{{ cat.count }} productos</span>
               </div>
               <div class="w-full bg-gray-100 rounded-full h-1.5 lg:h-2">
-                <div class="bg-primary h-1.5 lg:h-2 rounded-full transition-all duration-500" 
+                <div class="bg-primary h-1.5 lg:h-2 rounded-full transition-all duration-500"
                      [style.width.%]="totalProducts() > 0 ? (cat.count / totalProducts() * 100) : 0">
                 </div>
               </div>
@@ -94,7 +99,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Spacer for Mobile visibility -->
   <div class="h-4 lg:hidden"></div>
 </div>
