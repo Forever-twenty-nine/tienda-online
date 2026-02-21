@@ -1,11 +1,11 @@
 <!-- src/app/product-form/product-form.html -->
 
 <!-- 1️⃣ Dialogo de confirmación -->
-<app-confirm-dialog [open]="showConfirm" title="Eliminar producto" message="¿Deseas eliminar este producto permanentemente?"
+<app-confirm-dialog [open]="showConfirm" title="Eliminar producto" message="¿Deseas eliminar este producto de formar permanente?"
     confirmText="Sí, eliminar" cancelText="Cancelar" (confirm)="onConfirmDelete()"
     (cancel)="onCancelDelete()"></app-confirm-dialog>
 
-<section class="mx-auto px-6 py-0">
+<section class="mx-auto px-3 lg:px-6 py-0">
 
   <!-- 🎨 Cabecera mejorada -->
     <div class="flex flex-col sm:flex-row items-start justify-between mb-6 gap-4">
@@ -46,8 +46,9 @@
 
         <!-- 🖼️ Sección de Imagen con Vista Previa -->
         <div class="bg-white rounded-xl p-6 border border-brand-dark/20 ">
-            <label class="block text-2xl font-ftn-bold text-brand-dark mb-6">
-              Imágenes del Producto (Máximo 3)
+            <h3 class="block text-2xl font-ftn-bold text-brand-dark mb-6">Imágenes del Producto</h3>
+            <label class="block text-base font-ftn-medium text-brand-dark mb-1">
+              Imagen del producto* (máximo 3 imágenes)
             </label>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
@@ -109,7 +110,7 @@
 
             <!-- Nombre -->
             <div class="mb-6">
-                <label class="block text-base font-ftn-medium text-brand-dark mb-1">Nombre del Producto</label>
+                <label class="block text-base font-ftn-medium text-brand-dark mb-1">Nombre del Producto*</label>
                 <input formControlName="nombre"
                        placeholder="Ej: Anillo corazón de plata"
                        class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50" />
@@ -117,12 +118,14 @@
 
             <!-- Descripción -->
             <div class="mb-6">
-                <label class="block text-base font-ftn-medium text-brand-dark mb-1">Descripción</label>
+                <label class="block text-base font-ftn-medium text-brand-dark mb-1">Descripción*</label>
                 <textarea formControlName="descripcion"
                           placeholder="Describe las características principales del producto..."
                           class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50"
                           rows="4"></textarea>
             </div>
+
+
 
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -192,53 +195,50 @@
             </div>
 
 
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
               <!-- Producto Destacado -->
-              <div class="flex items-start space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+              <div class="flex items-start mb-6 space-x-4 p-4 bg-brand-dark/2 rounded-lg border border-brand-dark/20">
                   <input type="checkbox"
                         formControlName="destacado"
                         id="destacado"
-                        class="w-12 h-12 text-brand-dark border-muted-foreground/20 rounded focus:ring-brand-dark focus:ring-2 transition-all cursor-pointer" />
-                  <label for="destacado" class="font-ftn-bold text-xl mt-3 text-muted-foreground cursor-pointer select-none">
-                    Es un producto Destacado? <br>
-                    <span class="font-ftn-light text-sm leading-3">Aparecerá en la sección de productos destacados de la Home y lo podrás filtrar en el catálogo</span>
+                        class="w-5 h-5 min-w-5 lg:w-8 lg:h-8 lg:min-w-8 text-brand-dark border-brand-dark/20 rounded transition-all cursor-pointer" />
+                  <label for="destacado" class="text-brand-dark cursor-pointer select-none">
+                    <span class="font-ftn-bold text-xl leading-6 block mb-2">¿Es un producto Destacado?</span>
+                    <span class="font-ftn-light text-sm leading-5 block ">Este producto aparecerá en la sección de productos destacados de la Home y en el catálogo se destacará con una ★</span>
                   </label>
               </div>
 
-              <!-- Disponibilidad -->
-              <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+              <!-- Stock -->
+              <div class="flex items-start mb-6 space-x-4 p-4 bg-brand-dark/2 rounded-lg border border-brand-dark/20">
                   <input type="checkbox"
                         formControlName="disponibilidad"
                         id="disponibilidad"
-                        class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
-                  <label for="disponibilidad" class="font-medium text-muted-foreground cursor-pointer select-none">
-                      📦 Producto que tiene Stock?
+                        class="w-5 h-5 min-w-5 lg:w-8 lg:h-8 lg:min-w-8 text-brand-dark border-brand-dark/20 rounded transition-all cursor-pointer" />
+                  <label for="disponibilidad" class="text-brand-dark cursor-pointer select-none">
+                      <span class="font-ftn-bold text-xl leading-6 block mb-2">¿Es un producto con Stock?</span>
+                      <span class="font-ftn-light text-sm leading-5 block ">Puedes crear / editar un producto y asignarle momentaneamente que No tiene Stock. Es utilil para tenerlo en la tienda visible y cuando ingresen nuevas unidades cambiar esta opción.</span>
+
                 </label>
             </div>
 
             <!-- Publicado -->
-            <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+            <div class="flex items-start mb-6 space-x-4 p-4 bg-brand-dark/2 rounded-lg border border-brand-dark/20">
                 <input type="checkbox"
                        formControlName="publicado"
                        id="publicado"
-                       class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
-                <label for="publicado" class="font-medium text-muted-foreground cursor-pointer select-none">
-                    🌐 Publicar producto en la tienda
+                       class="w-5 h-5 min-w-5 lg:w-8 lg:h-8 lg:min-w-8 text-brand-dark border-brand-dark/20 rounded transition-all cursor-pointer" />
+                <label for="publicado" class="text-brand-dark cursor-pointer select-none">
+                    <span class="font-ftn-bold text-xl leading-6 block mb-2">¿Quieres publicarlo en la tienda?</span>
+                    <span class="font-ftn-light text-sm leading-5 block ">Si desactivas esta opción, los clientes no podrán verlo ni comprarlo en tu tienda online.</span>
                 </label>
             </div>
-            </div>
-
-
-
 
         </div>
 
         <!-- 🎯 Botones de Acción -->
-        <div class="flex flex-col sm:flex-row gap-3 pt-6">
+        <div class="flex flex-col lg:flex-row justify-center items-center gap-6 pt-2 pb-10">
             <button type="submit"
                     [disabled]="form.invalid || uploading()"
-                    class="flex-1 bg-gradient-to-r from-success to-primary text-white font-semibold px-6 py-3 rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2 order-1">
+                    class="cursor-pointer font-ftn-bold bg-brand-primary text-brand-dark px-10 py-4 rounded-xl hover:bg-brand-primary-dark hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2 order-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
@@ -248,7 +248,7 @@
             @if (id()) {
                 <button type="button"
                         (click)="onDelete()"
-                        class="flex-1 bg-white border-2 border-error text-error font-semibold px-6 py-3 rounded-xl hover:bg-error hover:text-white transition-all duration-300 flex items-center justify-center space-x-2 order-3 sm:order-2">
+                        class="cursor-pointer bg-white border-2 border-error text-error font-semibold px-10 py-4 rounded-xl hover:bg-error hover:text-white transition-all duration-300 flex items-center justify-center space-x-2 order-3 sm:order-1">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>

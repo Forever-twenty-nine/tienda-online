@@ -8,44 +8,62 @@
   (cancel)="onCancelDelete()">
 </app-confirm-dialog>
 
-<section class="container mx-auto p-4 lg:p-6 max-w-4xl">
-  <div class="mb-8">
-    <h1 class="text-2xl lg:text-4xl font-bold text-gray-800">Gestión de Categorías</h1>
-    <p class="text-sm lg:text-base text-muted-foreground">Crea y organiza las categorías de tu tienda</p>
+<section class="mx-auto px-3 lg:px-6 py-0">
+  <!-- Encabezado -->
+  <div class="mb-10">
+      <h1 class="text-2xl font-ftn-bold font lg:text-4xl font-bold text-brand-dark mb-2">
+        Gestión de Categorías
+      </h1>
+      <p class="text-sm lg:text-base text-brand-dark/60 mt-2">
+        Crea y organiza las categorías de tu tienda
+      </p>
   </div>
+
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <!-- Formulario de Categoría -->
     <div class="md:col-span-1">
-      <div class="bg-white rounded-xl p-6 shadow-sm border border-muted-foreground/10 sticky top-6">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">
-          {{ isEditing() ? '✏️ Editar Categoría' : 'Nueva Categoría' }}
+      <div class="bg-white rounded-xl p-6 border border-brand-dark/20 sticky top-6">
+
+        <h3 class="block text-2xl font-ftn-bold text-brand-dark mb-6">
+          {{ isEditing() ? 'Editar Categoría' : 'Nueva Categoría' }}
         </h3>
-        <form (ngSubmit)="onSubmit()" class="space-y-4">
-          <div>
-            <label class="block font-medium text-muted-foreground mb-2">Nombre</label>
+        <form (ngSubmit)="onSubmit()" class="">
+          <div class="mb-8">
+            <label class="block text-base font-ftn-medium text-brand-dark mb-1">Nombre</label>
             <input
               type="text"
               [(ngModel)]="categoryName"
               name="categoryName"
               placeholder="Ej: Charms"
-              class="w-full border border-muted-foreground/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+              class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50"
               required />
           </div>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-4">
             <button
               type="submit"
               [disabled]="!categoryName().trim()"
-              class="w-full bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:scale-105 hover:shadow-lg transition-all duration-300 disabled:opacity-50">
+              class="cursor-pointer w-full sm:w-auto
+            bg-brand-primary text-brand-dark font-ftn-bold
+            px-6 py-3 rounded-xl
+            hover:text-white hover:bg-brand-primary-dark hover:border-brand-primary
+            transition-all duration-300
+            flex items-center justify-center space-x-2">
               {{ isEditing() ? 'Guardar Cambios' : 'Crear Categoría' }}
             </button>
             @if (isEditing()) {
               <button
                 type="button"
                 (click)="resetForm()"
-                class="w-full bg-muted text-muted-foreground font-semibold px-6 py-3 rounded-xl hover:bg-muted-foreground hover:text-white transition-all duration-300">
+                class="cursor-pointer w-full sm:w-auto
+            text-brand-dark bg-brand-dark/4 font-ftn-bold
+            px-6 py-3 rounded-xl
+            hover:text-white hover:bg-brand-dark
+            transition-all duration-300
+            flex items-center justify-center space-x-2">
                 Cancelar
               </button>
+
             }
           </div>
         </form>
@@ -53,34 +71,40 @@
     </div>
 
     <!-- Lista de Categorías -->
-    <div class="md:col-span-2">
-      <div class="bg-white rounded-xl shadow-sm border border-muted-foreground/10 overflow-hidden">
+    <div class="md:col-span-2 ">
+      <div class="bg-white rounded-xl p-6 border border-brand-dark/20 sticky top-6">
+        <h3 class="block text-2xl font-ftn-bold text-brand-dark mb-1 ">
+          Listado de categorías creadas
+        </h3>
+        <p class="mb-6">Las categorías se mostrarán en la tienda online según el orden de este listado. Arrástralas desde el ícono de la izquierda para cambiar su posición.</p>
+
+        <div class="bg-white rounded-xl border border-muted-foreground/10 overflow-hidden">
         <!-- Desktop Table -->
         <table class="hidden sm:table w-full text-left border-collapse">
-          <thead class="bg-muted/50 border-b border-muted-foreground/10">
+          <thead class="bg-brand-dark/4 border-b border-muted-foreground/10">
             <tr>
-              <th class="px-6 py-4 font-bold text-muted-foreground w-12"></th>
-              <th class="px-6 py-4 font-bold text-muted-foreground">Nombre</th>
-              <th class="px-6 py-4 font-bold text-muted-foreground text-right">Acciones</th>
+              <th class="px-6 py-2 font-bold text-xs uppercase font-ftn-bold tracking-wider text-muted-foreground w-12"></th>
+              <th class="px-6 py-2 font-bold text-xs uppercase font-ftn-bold tracking-wider text-muted-foreground">Nombre</th>
+              <th class="px-6 py-2 font-bold text-xs uppercase font-ftn-bold tracking-wider text-muted-foreground text-right">Acciones</th>
             </tr>
           </thead>
-          <tbody 
+          <tbody
             class="divide-y divide-muted-foreground/10"
             cdkDropList
             (cdkDropListDropped)="onDrop($event)">
             @for (cat of categoriesService.categories(); track cat.id) {
               <tr class="hover:bg-muted/20 transition-colors bg-white group" cdkDrag>
-                <td class="px-6 py-4 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors cursor-move" cdkDragHandle>
+                <td class="px-6 py-2 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors cursor-move" cdkDragHandle>
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
                   </svg>
                 </td>
-                <td class="px-6 py-4 font-medium text-gray-900">{{ cat.nombre }}</td>
-                <td class="px-6 py-4 text-right">
+                <td class="px-6 py-2 font-ftn-bold text-brand-dark/80">{{ cat.nombre }}</td>
+                <td class="px-6 py-2 text-right">
                   <div class="flex justify-end space-x-2">
                     <button
                       (click)="onEdit(cat)"
-                      class="p-2 text-muted-foreground hover:text-secondary hover:bg-secondary/10 rounded-lg transition-all"
+                      class=" cursor-pointer p-2 text-muted-foreground hover:bg-brand-primary/10 hover:text-brand-primary-dark  rounded-lg transition-all"
                       title="Editar">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -88,7 +112,7 @@
                     </button>
                     <button
                       (click)="onDelete(cat.id)"
-                      class="p-2 text-muted-foreground hover:text-error hover:bg-error/10 rounded-lg transition-all"
+                      class=" cursor-pointer p-2 text-muted-foreground hover:text-error hover:bg-error/10 rounded-lg transition-all"
                       title="Eliminar">
                       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -96,7 +120,7 @@
                     </button>
                   </div>
                 </td>
-                
+
                 <!-- Placeholder para el drag -->
                 <div *cdkDragPlaceholder class="bg-primary/5 h-16"></div>
               </tr>
@@ -147,6 +171,11 @@
           </div>
         }
       </div>
+
+
+      </div>
+
+
     </div>
   </div>
 </section>
