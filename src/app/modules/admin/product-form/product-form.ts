@@ -47,7 +47,7 @@ export class ProductForm {
   );
   // 📝 Título dinámico según si es edición o creación
   title = computed(() =>
-    this.id() ? 'Editar producto' : '🆕 Nuevo producto'
+    this.id() ? 'Editar producto' : 'Nuevo producto'
   );
   // 🖊️ Formulario reactivo
   form: FormGroup = this.fb.group({
@@ -127,7 +127,7 @@ export class ProductForm {
 
     // Subir imagen y obtener URL
     const url = await this.service.uploadImage(file);
-    
+
     // Actualizar lista de imágenes
     const currentImages = [...this.images(), url];
     this.images.set(currentImages);

@@ -5,45 +5,76 @@
     confirmText="Sí, eliminar" cancelText="Cancelar" (confirm)="onConfirmDelete()"
     (cancel)="onCancelDelete()"></app-confirm-dialog>
 
-<section class="container mx-auto p-4 lg:p-6 max-w-2xl">
+<section class="mx-auto px-6 py-0">
+
+  <!-- 🎨 Cabecera mejorada -->
+    <div class="flex flex-col sm:flex-row items-start justify-between mb-6 gap-4">
+        <div>
+            <h1 class="text-2xl font-ftn-bold font lg:text-4xl font-bold text-brand-dark mb-2">
+              {{ title() }}
+            </h1>
+            <p class="text-sm lg:text-base text-brand-dark/60 mt-2">
+              Completa los detalles del producto
+            </p>
+        </div>
+
+        <button type="button"
+                    (click)="onCancel()"
+                    class="cursor-pointer w-full sm:w-auto
+            bg-transparent text-brand-dark border-2 border-brand-dark font-ftn-bold
+            px-6 py-3 rounded-xl
+            hover:text-white hover:bg-brand-dark
+            transition-all duration-300
+            flex items-center justify-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Cancelar</span>
+            </button>
+    </div>
+
+
+
+
     <!-- 🌟 Título según computed `title` -->
     <div class="mb-8">
-        <h1 class="text-2xl lg:text-4xl font-bold text-gray-800 mb-2">{{ title() }}</h1>
-        <p class="text-sm lg:text-base text-muted-foreground">Completa los detalles del producto</p>
+        <h1 class="text-2xl lg:text-4xl font-bold text-gray-800 mb-2"></h1>
     </div>
 
     <!-- 📋 Formulario reactivo -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
 
         <!-- 🖼️ Sección de Imagen con Vista Previa -->
-        <div class="bg-white rounded-xl p-6 border border-muted-foreground/10 shadow-sm">
-            <label class="block text-lg font-semibold text-muted-foreground mb-4">Imágenes del Producto (Máximo 3)</label>
+        <div class="bg-white rounded-xl p-6 border border-brand-dark/20 ">
+            <label class="block text-2xl font-ftn-bold text-brand-dark mb-6">
+              Imágenes del Producto (Máximo 3)
+            </label>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                 @for (img of images(); track img; let i = $index) {
                     <div class="relative group">
                         <div class="aspect-square bg-muted rounded-xl overflow-hidden border-2" [ngClass]="{
-                            'border-primary': form.get('imagen')?.value === img,
+                            'border-brand-primary': form.get('imagen')?.value === img,
                             'border-dashed border-muted-foreground/20': form.get('imagen')?.value !== img
                         }">
                             <img [src]="img" [alt]="'Imagen ' + (i + 1)" class="w-full h-full object-cover transition-transform group-hover:scale-105"/>
                         </div>
 
                         @if (form.get('imagen')?.value === img) {
-                            <div class="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                            <div class="absolute top-2 left-2 bg-brand-primary-dark text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                                 Principal
                             </div>
                         }
 
                         <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center space-x-2">
                             @if (form.get('imagen')?.value !== img) {
-                                <button type="button" (click)="setMainImage(img)" class="p-2 bg-primary text-white rounded-lg hover:scale-110 transition-all text-xs" title="Marcar como principal">
+                                <button type="button" (click)="setMainImage(img)" class="p-2 bg-brand-primary-dark cursor-pointer text-white rounded-lg hover:scale-110 transition-all text-xs" title="Marcar como principal">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                     </svg>
                                 </button>
                             }
-                            <button type="button" (click)="removeImage(i)" class="p-2 bg-error text-error-foreground rounded-lg hover:scale-110 transition-all" title="Eliminar">
+                            <button type="button" (click)="removeImage(i)" class="p-2 bg-error text-error-foreground cursor-pointer rounded-lg hover:scale-110 transition-all" title="Eliminar">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
@@ -53,7 +84,7 @@
                 }
 
                 @if (images().length < 3 && !uploading()) {
-                    <div class="aspect-square bg-muted/50 rounded-xl border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center p-4 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer" (click)="fileInput.click()">
+                    <div class="aspect-square bg-muted/50 rounded-xl border-2 border-dashed border-muted-foreground/30 flex flex-col items-center justify-center p-4 hover:border-brand-primary-dark hover:bg-primary/5 transition-all cursor-pointer" (click)="fileInput.click()">
                         <svg class="w-8 h-8 text-muted-foreground/50 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
@@ -65,97 +96,124 @@
             <input #fileInput type="file" (change)="onFileSelected($event)" [disabled]="uploading()" accept="image/*" class="hidden"/>
 
             @if (uploading()) {
-                <div class="flex items-center justify-center space-x-3 p-4 bg-primary/10 rounded-lg">
-                    <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-primary"></div>
-                    <p class="text-primary font-medium text-sm">Subiendo imagen...</p>
+                <div class="flex items-center justify-center space-x-3 p-4 bg-brand-primary/10 rounded-lg">
+                    <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-brand-primary-dark"></div>
+                    <p class="text-brand-primary-dark font-medium text-sm">Subiendo imagen...</p>
                 </div>
             }
         </div>
 
         <!-- 📝 Información del Producto -->
-        <div class="bg-white rounded-xl p-6 border border-muted-foreground/10 shadow-sm space-y-4">
-            <h3 class="text-lg font-semibold text-muted-foreground mb-4">Información Básica</h3>
+        <div class="bg-white rounded-xl p-6 border border-brand-dark/20 space-y-4">
+            <h3 class="block text-2xl font-ftn-bold text-brand-dark mb-6">Información Básica</h3>
 
             <!-- Nombre -->
-            <div>
-                <label class="block font-medium text-muted-foreground mb-2">Nombre del Producto</label>
+            <div class="mb-6">
+                <label class="block text-base font-ftn-medium text-brand-dark mb-1">Nombre del Producto</label>
                 <input formControlName="nombre"
-                       placeholder="Ej: iPhone 15 Pro Max"
-                       class="w-full border border-muted-foreground/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all" />
+                       placeholder="Ej: Anillo corazón de plata"
+                       class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50" />
             </div>
 
             <!-- Descripción -->
-            <div>
-                <label class="block font-medium text-muted-foreground mb-2">Descripción</label>
+            <div class="mb-6">
+                <label class="block text-base font-ftn-medium text-brand-dark mb-1">Descripción</label>
                 <textarea formControlName="descripcion"
                           placeholder="Describe las características principales del producto..."
-                          class="w-full border border-muted-foreground/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-none"
+                          class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50"
                           rows="4"></textarea>
             </div>
 
-            <!-- Precio -->
-            <div>
-                <label class="block font-medium text-muted-foreground mb-2">Precio (ARS)</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <span class="text-muted-foreground text-lg">$</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <!-- Precio -->
+              <div class="mb-6">
+                  <label class="block text-base font-ftn-medium text-brand-dark mb-1">Precio (ARS)</label>
+                  <div class="relative">
+                      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                          <span class="text-brand-dark/50 text-lg">$</span>
+                      </div>
+                      <input type="number"
+                            formControlName="precio"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01"
+                            class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 pl-8 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50" />
+                  </div>
+              </div>
+
+              <!-- Descuento -->
+              <div class="mb-6">
+                  <label class="block text-base font-ftn-medium text-brand-dark mb-1">Descuento (%)</label>
+                  <div class="relative">
+                      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                          <span class="text-brand-dark/50 text-lg">%</span>
+                      </div>
+                      <input type="number"
+                            formControlName="descuento"
+                            placeholder="0"
+                            min="0"
+                            max="100"
+                            class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 pl-8 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50" />
+                  </div>
+              </div>
+
+
+              <!-- Categoría -->
+              <div>
+                  <label class="block text-base font-ftn-medium text-brand-dark mb-1">Categoría</label>
+                  <div class="relative">
+                    <select formControlName="categoriaId"
+                          class="block w-full px-4 py-3 pr-10 border border-brand-dark/80 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-base transition-all duration-300 hover:shadow-md appearance-none cursor-pointer">
+                      <option value="" class="">Selecciona una categoría</option>
+                      @for (cat of categories(); track cat.id) {
+                          <option [value]="cat.id">{{ cat.nombre }}</option>
+                      }
+                  </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-brand-dark/80">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="h-5 w-5"
+                        aria-hidden="true"
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
                     </div>
-                    <input type="number"
-                           formControlName="precio"
-                           placeholder="0.00"
-                           min="0"
-                           step="0.01"
-                           class="w-full border border-muted-foreground/20 rounded-lg pl-8 pr-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all" />
-                </div>
+                  </div>
+
+              </div>
+
             </div>
 
-            <!-- Descuento -->
-            <div>
-                <label class="block font-medium text-muted-foreground mb-2">Descuento (%)</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <span class="text-muted-foreground text-lg">%</span>
-                    </div>
-                    <input type="number"
-                           formControlName="descuento"
-                           placeholder="0"
-                           min="0"
-                           max="100"
-                           class="w-full border border-muted-foreground/20 rounded-lg pl-8 pr-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all" />
-                </div>
-            </div>
 
-            <!-- Categoría -->
-            <div>
-                <label class="block font-medium text-muted-foreground mb-2">Categoría</label>
-                <select formControlName="categoriaId"
-                        class="w-full border border-muted-foreground/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all bg-white appearance-none">
-                    <option value="">Selecciona una categoría</option>
-                    @for (cat of categories(); track cat.id) {
-                        <option [value]="cat.id">{{ cat.nombre }}</option>
-                    }
-                </select>
-            </div>
 
-            <!-- Producto Destacado -->
-            <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
-                <input type="checkbox"
-                       formControlName="destacado"
-                       id="destacado"
-                       class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
-                <label for="destacado" class="font-medium text-muted-foreground cursor-pointer select-none">
-                    🌟 Marcar como producto destacado
-                </label>
-            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <!-- Producto Destacado -->
+              <div class="flex items-start space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+                  <input type="checkbox"
+                        formControlName="destacado"
+                        id="destacado"
+                        class="w-12 h-12 text-brand-dark border-muted-foreground/20 rounded focus:ring-brand-dark focus:ring-2 transition-all cursor-pointer" />
+                  <label for="destacado" class="font-ftn-bold text-xl mt-3 text-muted-foreground cursor-pointer select-none">
+                    Es un producto Destacado? <br>
+                    <span class="font-ftn-light text-sm leading-3">Aparecerá en la sección de productos destacados de la Home y lo podrás filtrar en el catálogo</span>
+                  </label>
+              </div>
 
-            <!-- Disponibilidad -->
-            <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
-                <input type="checkbox"
-                       formControlName="disponibilidad"
-                       id="disponibilidad"
-                       class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
-                <label for="disponibilidad" class="font-medium text-muted-foreground cursor-pointer select-none">
-                    📦 Producto disponible para la venta
+              <!-- Disponibilidad -->
+              <div class="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-muted-foreground/10">
+                  <input type="checkbox"
+                        formControlName="disponibilidad"
+                        id="disponibilidad"
+                        class="w-5 h-5 text-primary border-muted-foreground/20 rounded focus:ring-primary focus:ring-2 transition-all cursor-pointer" />
+                  <label for="disponibilidad" class="font-medium text-muted-foreground cursor-pointer select-none">
+                      📦 Producto que tiene Stock?
                 </label>
             </div>
 
@@ -169,6 +227,11 @@
                     🌐 Publicar producto en la tienda
                 </label>
             </div>
+            </div>
+
+
+
+
         </div>
 
         <!-- 🎯 Botones de Acción -->
@@ -193,14 +256,7 @@
                 </button>
             }
 
-            <button type="button"
-                    (click)="onCancel()"
-                    class="flex-1 bg-muted text-muted-foreground font-semibold px-6 py-3 rounded-xl hover:bg-muted-foreground hover:text-white transition-all duration-300 flex items-center justify-center space-x-2 order-2 sm:order-3">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Cancelar</span>
-            </button>
+
         </div>
     </form>
 </section>
