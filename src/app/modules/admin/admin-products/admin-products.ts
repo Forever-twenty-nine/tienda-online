@@ -18,7 +18,13 @@ export class AdminProducts implements OnInit, OnDestroy, AfterViewInit {
   categoriesService = inject(CategoriesService);
   router = inject(Router);
 
-  @ViewChild('sentinel') sentinel!: ElementRef;
+  private observer!: IntersectionObserver;
+
+  @ViewChild('sentinel') set sentinel(element: ElementRef) {
+    if (element) {
+      this.observer.observe(element.nativeElement);
+    }
+  }
 
   ngOnInit() {
     this.productsService.clearSearch();
@@ -31,18 +37,17 @@ export class AdminProducts implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const observer = new IntersectionObserver((entries) => {
+    this.observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && this.productsService.hasMore()) {
         this.productsService.loadMore();
       }
     }, { threshold: 0.1 });
-
-    if (this.sentinel) {
-      observer.observe(this.sentinel.nativeElement);
-    }
   }
 
   ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
     this.productsService.clearSearch();
     this.productsService.categoryFilter.set(null);
     this.productsService.featuredFilter.set(null);

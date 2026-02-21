@@ -64,7 +64,7 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="text-sm text-muted-foreground">En Stock</p>
+                    <p class="text-sm text-muted-foreground">Con Stock</p>
                     <p class="text-2xl font-bold text-secondary">{{ productsService.adminProducts().filter(isAvailable).length }}</p>
                 </div>
             </div>
@@ -80,7 +80,7 @@
           <div class="relative min-w-[200px]">
                 <select
                     [value]="productsService.categoryFilter() || ''"
-                    (change)="productsService.categoryFilter.set($any($event.target).value || null)"
+                    (change)="productsService.setCategory($any($event.target).value || null)"
                     class=" block w-full px-4 py-3 pr-10 border border-brand-dark/50 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all duration-300 hover:shadow-md appearance-none cursor-pointer"
                 >
                     <option value="">Todas las Categorías</option>
@@ -139,7 +139,7 @@
             <div class="relative">
               <select
                 [value]="productsService.featuredFilter() === null ? '' : productsService.featuredFilter()"
-                (change)="productsService.featuredFilter.set($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
+                (change)="productsService.setFeatured($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
                 class="block w-full px-4 py-3 pr-10 border border-brand-dark/50 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all duration-300 hover:shadow-md appearance-none cursor-pointer"
             >
                 <option value="">Todos los Productos</option>
@@ -168,7 +168,7 @@
              <div class="relative">
               <select
                 [value]="productsService.publishedFilter() === null ? '' : productsService.publishedFilter()"
-                (change)="productsService.publishedFilter.set($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
+                (change)="productsService.setPublished($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
                 class="block w-full px-4 py-3 pr-10 border border-brand-dark/50 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all duration-300 hover:shadow-md appearance-none cursor-pointer"
             >
                 <option value="">Todos los Estados</option>
@@ -197,11 +197,11 @@
              <div class="relative">
               <select
                     [value]="productsService.stockFilter() === null ? '' : productsService.stockFilter()"
-                    (change)="productsService.stockFilter.set($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
+                    (change)="productsService.setStock($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
                     class="block w-full px-4 py-3 pr-10 border border-brand-dark/50 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all duration-300 hover:shadow-md appearance-none cursor-pointer"
                 >
                     <option value="">Cualquier Stock</option>
-                    <option value="true">En Stock</option>
+                    <option value="true">Con Stock</option>
                     <option value="false">Sin Stock</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-brand-dark/80">
@@ -226,7 +226,7 @@
             <div class="relative">
               <select
                   [value]="productsService.discountFilter() === null ? '' : productsService.discountFilter()"
-                  (change)="productsService.discountFilter.set($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
+                  (change)="productsService.setDiscount($any($event.target).value === '' ? null : $any($event.target).value === 'true')"
                   class="block w-full px-4 py-3 pr-10 border border-brand-dark/50 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-sm transition-all duration-300 hover:shadow-md appearance-none cursor-pointer"
               >
                   <option value="">Con y sin Descuentos</option>
@@ -254,9 +254,9 @@
     </div>
 
 
-    <!-- TExto de filtrado -->
+    <!-- Texto de filtrado -->
     <div class="mb-6 ">
-      <p class="text-xl">Estas viendo <span class="font-ftn-bold text-brand-dark">10 Productos</span> de un total de 22 productos</p>
+      <p class="text-xl">Estas viendo <span class="font-ftn-bold text-brand-dark">{{ productsService.adminProducts().length }} Productos</span> de un total de {{ productsService.allProducts().length }} productos</p>
     </div>
 
 
@@ -393,12 +393,12 @@
             </svg>
         </div>
 
-        @if (productsService.searchTerm() || productsService.categoryFilter() || productsService.featuredFilter() !== null || productsService.publishedFilter() !== null || productsService.stockFilter() !== null) {
+        @if (productsService.searchTerm() || productsService.categoryFilter() || productsService.featuredFilter() !== null || productsService.publishedFilter() !== null || productsService.stockFilter() !== null || productsService.discountFilter() !== null) {
             <h3 class="text-xl font-semibold text-muted-foreground mb-2">No se encontraron productos</h3>
             <p class="text-muted-foreground/70 mb-6">
                 No hay coincidencias para los filtros aplicados.
             </p>
-            <button (click)="productsService.clearSearch(); productsService.categoryFilter.set(null); productsService.featuredFilter.set(null); productsService.publishedFilter.set(null); productsService.stockFilter.set(null)" class="
+            <button (click)="productsService.clearSearch(); productsService.setCategory(null); productsService.setFeatured(null); productsService.setPublished(null); productsService.setStock(null); productsService.setDiscount(null)" class="
                 bg-muted text-muted-foreground font-semibold
                 px-6 py-3 rounded-xl
                 hover:bg-muted-foreground hover:text-white

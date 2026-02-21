@@ -189,6 +189,26 @@ export class ProductsService {
     this.resetPagination();
   }
 
+  setFeatured(featured: boolean | null): void {
+    this.featuredFilter.set(featured);
+    this.resetPagination();
+  }
+
+  setPublished(published: boolean | null): void {
+    this.publishedFilter.set(published);
+    this.resetPagination();
+  }
+
+  setStock(stock: boolean | null): void {
+    this.stockFilter.set(stock);
+    this.resetPagination();
+  }
+
+  setDiscount(discount: boolean | null): void {
+    this.discountFilter.set(discount);
+    this.resetPagination();
+  }
+
   /**
    * Agrega un nuevo producto a Firestore.
    * @param newProduct Producto sin id

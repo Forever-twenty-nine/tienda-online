@@ -95,9 +95,15 @@
                 </div> -->
                 <div class="">
                   <h4 class="text-xs uppercase font-ftn-light text-brand-gray-dark mb-1">Disponibilidad</h4>
-                  <p class="text-brand-pink-dark font-ftn-bold bg-brand-pink/10 inline-block px-4 py-1">
-                    En stock
-                  </p>
+                  @if (product.disponibilidad) {
+                    <p class="text-brand-pink-dark font-ftn-bold bg-brand-pink/10 inline-block px-4 py-1">
+                      Con stock
+                    </p>
+                  } @else {
+                    <p class="text-red-500 font-ftn-bold bg-red-100 inline-block px-4 py-1">
+                      Sin stock
+                    </p>
+                  }
                 </div>
               </div>
               <div class="bg-brand-gray/20 px-4 py-6">
