@@ -1,6 +1,6 @@
 <!-- src/app/admin/admin-products/admin-products.html -->
 
-<section class="mx-auto px-6 py-0">
+<section class="mx-auto px-2 md:px-0 py-0">
     <!-- 🎨 Cabecera mejorada -->
     <div class="flex flex-col sm:flex-row items-start justify-between mb-6 gap-4">
         <div>
@@ -370,7 +370,7 @@
     <!-- Centinela para scroll infinito -->
     <div #sentinel class="h-20 flex items-center justify-center mt-10">
         @if (productsService.hasMore()) {
-            <div class="flex items-center gap-3 text-primary font-bold animate-bounce">
+            <div class="flex items-center gap-3 text-brand-primary-dark font-bold animate-bounce">
                 <svg class="w-6 h-6 animate-spin" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -387,21 +387,21 @@
     } @else {
     <!-- 🚫 Estado vacío mejorado -->
     <div class="text-center py-16">
-        <div class="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
-            <svg class="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="mx-auto w-24 h-24 bg-white border border-brand-dark/20 rounded-full flex items-center justify-center mb-6">
+            <svg class="w-12 h-12 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
             </svg>
         </div>
 
         @if (productsService.searchTerm() || productsService.categoryFilter() || productsService.featuredFilter() !== null || productsService.publishedFilter() !== null || productsService.stockFilter() !== null || productsService.discountFilter() !== null) {
-            <h3 class="text-xl font-semibold text-muted-foreground mb-2">No se encontraron productos</h3>
-            <p class="text-muted-foreground/70 mb-6">
+            <h3 class="text-2xl font-ftn-bold text-brand-dark mb-2">No se encontraron productos</h3>
+            <p class="text-brand-dark/50 mb-6">
                 No hay coincidencias para los filtros aplicados.
             </p>
             <button (click)="productsService.clearSearch(); productsService.setCategory(null); productsService.setFeatured(null); productsService.setPublished(null); productsService.setStock(null); productsService.setDiscount(null)" class="
-                bg-muted text-muted-foreground font-semibold
+                bg-white border-2 border-brand-dark text-brand-dark font-semibold
                 px-6 py-3 rounded-xl
-                hover:bg-muted-foreground hover:text-white
+                hover:bg-brand-dark hover:text-white
                 transition-all duration-300 cursor-pointer
                 inline-flex items-center space-x-2
             ">
