@@ -2,6 +2,7 @@ import { inject, Injectable, signal, computed } from '@angular/core';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Storage } from '@angular/fire/storage';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { CategoriesService } from './categories.service';
 import {
   type FirestoreDataConverter,
   type DocumentData,
@@ -56,6 +57,7 @@ const productConverter: FirestoreDataConverter<Product> = {
 export class ProductsService {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
+  private categoriesService = inject(CategoriesService);
 
 
   /**
@@ -66,7 +68,9 @@ export class ProductsService {
    * - uploading: estado de carga de imagen
    */
   searchTerm = signal('');
+  rubroFilter = signal<string | null>(null);
   categoryFilter = signal<string | null>(null);
+  subcategoryFilter = signal<string | null>(null);
   featuredFilter = signal<boolean | null>(null);
   publishedFilter = signal<boolean | null>(null);
   stockFilter = signal<boolean | null>(null);
@@ -89,20 +93,60 @@ export class ProductsService {
     { initialValue: [] }
   );
 
+  private matchesTaxonomy(product: Product): boolean {
+    const rubroId = this.rubroFilter();
+    const catId = this.categoryFilter();
+    const subId = this.subcategoryFilter();
+
+    // Si hay filtro de subcategoría, debe coincidir exactamente
+    if (subId) return product.subcategoriaId === subId;
+    
+    // Si hay filtro de categoría, el producto debe estar en esa categoría o sus subcategorías
+    if (catId) {
+      if (product.categoriaId === catId) return true;
+      // También coincide si el producto está en una subcategoría que pertenece a esta categoría
+      if (product.subcategoriaId) {
+        const sub = this.categoriesService.subcategories().find(s => s.id === product.subcategoriaId);
+        if (sub && sub.categoryId === catId) return true;
+      }
+      return false;
+    }
+
+    // Si hay filtro de rubro, el producto debe estar en ese rubro o sus categorías/subcategorías
+    if (rubroId) {
+      if (product.rubroId === rubroId) return true;
+      
+      if (product.categoriaId) {
+        const cat = this.categoriesService.categories().find(c => c.id === product.categoriaId);
+        if (cat && cat.rubroId === rubroId) return true;
+      }
+      
+      if (product.subcategoriaId) {
+        const sub = this.categoriesService.subcategories().find(s => s.id === product.subcategoriaId);
+        if (sub && sub.categoryId) {
+          const cat = this.categoriesService.categories().find(c => c.id === sub.categoryId);
+          if (cat && cat.rubroId === rubroId) return true;
+        }
+      }
+      return false;
+    }
+
+    return true; // No hay filtros
+  }
+
   /**
    * Productos filtrados para la parte pública (solo publicados).
    */
   products = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
-    const catId = this.categoryFilter();
     const allProds = this.allProducts();
 
     return allProds.filter(product => {
-      const matchesCategory = !catId || product.categoriaId === catId;
+      const matchesCategory = this.matchesTaxonomy(product);
       const matchesTerm = !term ||
         product.nombre.toLowerCase().includes(term) ||
         product.descripcion.toLowerCase().includes(term);
-      const isPublished = product.publicado !== false; // Por defecto true si es undefined
+      const isPublished = product.publicado !== false;
 
       return matchesCategory && matchesTerm && isPublished;
     });
@@ -113,7 +157,6 @@ export class ProductsService {
    */
   adminProducts = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
-    const catId = this.categoryFilter();
     const featured = this.featuredFilter();
     const published = this.publishedFilter();
     const stock = this.stockFilter();
@@ -121,7 +164,7 @@ export class ProductsService {
     const allProds = this.allProducts();
 
     return allProds.filter(product => {
-      const matchesCategory = !catId || product.categoriaId === catId;
+      const matchesCategory = this.matchesTaxonomy(product);
       const matchesTerm = !term ||
         product.nombre.toLowerCase().includes(term) ||
         product.descripcion.toLowerCase().includes(term);
@@ -184,8 +227,28 @@ export class ProductsService {
     this.resetPagination();
   }
 
+  setRubro(id: string | null): void {
+    this.rubroFilter.set(id);
+    this.categoryFilter.set(null);
+    this.subcategoryFilter.set(null);
+    this.resetPagination();
+  }
+
   setCategory(catId: string | null): void {
     this.categoryFilter.set(catId);
+    this.subcategoryFilter.set(null);
+    this.resetPagination();
+  }
+
+  setSubcategory(subId: string | null): void {
+    this.subcategoryFilter.set(subId);
+    this.resetPagination();
+  }
+
+  clearFilters(): void {
+    this.rubroFilter.set(null);
+    this.categoryFilter.set(null);
+    this.subcategoryFilter.set(null);
     this.resetPagination();
   }
 

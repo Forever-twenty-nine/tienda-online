@@ -59,10 +59,14 @@ export class AdminProducts implements OnInit, OnDestroy, AfterViewInit {
 
   isAvailable = (p: Product) => p.disponibilidad;
   
-  getCategoryName(id?: string): string {
-    if (!id) return 'Sin categoría';
-    const cat = this.categoriesService.categories().find(c => c.id === id);
-    return cat ? cat.nombre : 'Cargando...';
+  getCategoryName(product: any): string {
+    if (product.subcategoriaId) return this.categoriesService.getSubcategoryPath(product.subcategoriaId);
+    if (product.categoriaId) return this.categoriesService.getCategoryPath(product.categoriaId);
+    if (product.rubroId) {
+      const rubro = this.categoriesService.rubros().find(r => r.id === product.rubroId);
+      return rubro ? rubro.nombre : 'Sin rubro';
+    }
+    return 'Sin categoría';
   }
 
   // ➕ crea uno nuevo

@@ -19,14 +19,19 @@
         </a>
         <a routerLink="/catalogo"
            routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
+           (click)="setCategory(null)"
            class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
           Catálogo
         </a>
-        <!-- <a routerLink="/about"
-           routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
-           class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
-          Nosotros
-        </a> -->
+
+        <!-- Categorías Dinámicas (Rubros) -->
+        @for (cat of topLevelCategories().slice(0, 3); track cat.id) {
+          <button (click)="setCategory(cat.id)"
+             [routerLink]="['/catalogo']"
+             class="hidden lg:block px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark cursor-pointer">
+            {{ cat.nombre }}
+          </button>
+        }
       </div>
 
       <!-- Botón de menú móvil -->
@@ -54,11 +59,18 @@
           Inicio
         </a>
         <a routerLink="/catalogo"
-           (click)="closeMenu()"
+           (click)="setCategory(null)"
            routerLinkActive="bg-brand-dark text-white font-ftn-bold"
            class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
           Catálogo
         </a>
+        @for (cat of topLevelCategories(); track cat.id) {
+          <a routerLink="/catalogo"
+             (click)="setCategory(cat.id)"
+             class="block px-6 py-2 rounded-md text-sm hover:bg-brand-dark/10 transition-all text-brand-dark/60">
+            - {{ cat.nombre }}
+          </a>
+        }
         <!-- <a routerLink="/about"
            (click)="closeMenu()"
            routerLinkActive="bg-brand-dark text-white font-ftn-bold"

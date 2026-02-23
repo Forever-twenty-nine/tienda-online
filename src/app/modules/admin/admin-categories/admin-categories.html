@@ -1,181 +1,125 @@
 <app-confirm-dialog
   [open]="showConfirm"
-  title="Eliminar categoría"
-  message="¿Deseas eliminar esta categoría? Esto no eliminará los productos asociados, pero podrían quedar sin categoría."
+  title="Eliminar ítem"
+  message="¿Deseas eliminar este ítem? Esto no eliminará los productos asociados, pero podrían quedar desorganizados."
   confirmText="Sí, eliminar"
   cancelText="Cancelar"
   (confirm)="onConfirmDelete()"
-  (cancel)="onCancelDelete()">
+  (cancel)="resetForm(); showConfirm = false;">
 </app-confirm-dialog>
 
 <section class="mx-auto px-2 md:px-0 py-0">
-  <!-- Encabezado -->
   <div class="mb-10">
-      <h1 class="text-2xl font-ftn-bold font lg:text-4xl font-bold text-brand-dark mb-2">
-        Gestión de Categorías
+      <h1 class="text-2xl font-ftn-bold lg:text-4xl text-brand-dark mb-2">
+        Organización del Catálogo
       </h1>
       <p class="text-sm lg:text-base text-brand-dark/60 mt-2">
-        Crea y organiza las categorías de tu tienda
+        Administra Rubros, Categorías y Subcategorías para organizar tus productos.
       </p>
   </div>
 
+  <!-- Selector de Nivel -->
+  <div class="gap-2 mb-8 bg-brand-dark/5 p-1 rounded-xl inline-flex">
+    <button (click)="setLevel(0)" [class]="activeLevel() === 0 ? 'bg-white shadow text-brand-dark' : 'text-brand-dark/60'" class="px-6 py-2 rounded-lg font-ftn-bold transition-all cursor-pointer">Rubros</button>
+    <button (click)="setLevel(1)" [class]="activeLevel() === 1 ? 'bg-white shadow text-brand-dark' : 'text-brand-dark/60'" class="px-6 py-2 rounded-lg font-ftn-bold transition-all cursor-pointer">Categorías</button>
+    <button (click)="setLevel(2)" [class]="activeLevel() === 2 ? 'bg-white shadow text-brand-dark' : 'text-brand-dark/60'" class="px-6 py-2 rounded-lg font-ftn-bold transition-all cursor-pointer">Subcategorías</button>
+  </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Formulario de Categoría -->
+    <!-- Formulario -->
     <div class="md:col-span-1">
       <div class="bg-white rounded-xl p-6 border border-brand-dark/20 sticky top-6">
-
-        <h3 class="block text-2xl font-ftn-bold text-brand-dark mb-6">
-          {{ isEditing() ? 'Editar Categoría' : 'Nueva Categoría' }}
+        <h3 class="block text-xl font-ftn-bold text-brand-dark mb-6">
+          {{ isEditing() ? 'Editar' : 'Nuevo' }} {{ activeLevel() === 0 ? 'Rubro' : activeLevel() === 1 ? 'Categoría' : 'Subcategoría' }}
         </h3>
-        <form (ngSubmit)="onSubmit()" class="">
-          <div class="mb-8">
-            <label class="block text-base font-ftn-medium text-brand-dark mb-1">Nombre</label>
-            <input
-              type="text"
-              [(ngModel)]="categoryName"
-              name="categoryName"
-              placeholder="Ej: Charms"
-              class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 focus:ring-2 focus:ring-brand-dark focus:border-brand-dark transition-all outline placeholder:text-muted-foreground/50"
-              required />
+        <form (ngSubmit)="onSubmit()">
+          <div class="mb-6">
+            <label class="block text-sm font-ftn-medium text-brand-dark mb-1">Nombre</label>
+            <input type="text" [(ngModel)]="name" name="name" class="w-full border border-brand-dark/20 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-brand-primary" required />
           </div>
-          <div class="flex flex-col gap-4">
-            <button
-              type="submit"
-              [disabled]="!categoryName().trim()"
-              class="cursor-pointer w-full sm:w-auto
-            bg-brand-primary text-brand-dark font-ftn-bold
-            px-6 py-3 rounded-xl
-            hover:text-white hover:bg-brand-primary-dark hover:border-brand-primary
-            transition-all duration-300
-            flex items-center justify-center space-x-2">
-              {{ isEditing() ? 'Guardar Cambios' : 'Crear Categoría' }}
+
+          @if (activeLevel() === 1) {
+            <div class="mb-6">
+              <label class="block text-sm font-ftn-medium text-brand-dark mb-1">Rubro Padre (Opcional)</label>
+              <select [(ngModel)]="parentId" name="parentId" class="w-full border border-brand-dark/20 rounded-lg px-4 py-2 outline-none bg-white">
+                <option [ngValue]="null">Sin Rubro</option>
+                @for (r of categoriesService.rubros(); track r.id) {
+                  <option [ngValue]="r.id">{{ r.nombre }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          @if (activeLevel() === 2) {
+            <div class="mb-6">
+              <label class="block text-sm font-ftn-medium text-brand-dark mb-1">Categoría Padre (Opcional)</label>
+              <select [(ngModel)]="parentId" name="parentId" class="w-full border border-brand-dark/20 rounded-lg px-4 py-2 outline-none bg-white">
+                <option [ngValue]="null">Sin Categoría</option>
+                @for (c of categoriesService.categories(); track c.id) {
+                  <option [ngValue]="c.id">{{ c.nombre }}</option>
+                }
+              </select>
+            </div>
+          }
+
+          <div class="flex flex-col gap-2 mt-8">
+            <button type="submit" [disabled]="!name().trim()" class="w-full bg-brand-primary text-brand-dark font-ftn-bold py-2 rounded-lg hover:bg-brand-primary/80 transition-all cursor-pointer">
+              {{ isEditing() ? 'Guardar Cambios' : 'Crear Ítem' }}
             </button>
             @if (isEditing()) {
-              <button
-                type="button"
-                (click)="resetForm()"
-                class="cursor-pointer w-full sm:w-auto
-            text-brand-dark bg-brand-dark/4 font-ftn-bold
-            px-6 py-3 rounded-xl
-            hover:text-white hover:bg-brand-dark
-            transition-all duration-300
-            flex items-center justify-center space-x-2">
-                Cancelar
-              </button>
-
+              <button type="button" (click)="resetForm()" class="w-full bg-gray-100 text-brand-dark font-ftn-bold py-2 rounded-lg hover:bg-gray-200 transition-all cursor-pointer">Cancelar</button>
             }
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Lista de Categorías -->
-    <div class="md:col-span-2 ">
-      <div class="bg-white rounded-xl p-6 border border-brand-dark/20 sticky top-6">
-        <h3 class="block text-2xl font-ftn-bold text-brand-dark mb-1 ">
-          Listado de categorías creadas
-        </h3>
-        <p class="mb-6">Las categorías se mostrarán en la tienda online según el orden de este listado. Arrástralas desde el ícono de la izquierda para cambiar su posición.</p>
-
-        <div class="bg-white rounded-xl border border-muted-foreground/10 overflow-hidden">
-        <!-- Desktop Table -->
-        <table class="hidden sm:table w-full text-left border-collapse">
-          <thead class="bg-brand-dark/4 border-b border-muted-foreground/10">
+    <!-- Lista -->
+    <div class="md:col-span-2">
+      <div class="bg-white rounded-xl border border-brand-dark/20 overflow-hidden">
+        <table class="w-full text-left">
+          <thead class="bg-brand-dark/5 border-b border-brand-dark/10">
             <tr>
-              <th class="px-6 py-2 font-bold text-xs uppercase font-ftn-bold tracking-wider text-muted-foreground w-12"></th>
-              <th class="px-6 py-2 font-bold text-xs uppercase font-ftn-bold tracking-wider text-muted-foreground">Nombre</th>
-              <th class="px-6 py-2 font-bold text-xs uppercase font-ftn-bold tracking-wider text-muted-foreground text-right">Acciones</th>
+              <th class="px-6 py-4 w-12"></th>
+              <th class="px-6 py-4 font-ftn-bold text-xs uppercase tracking-wider text-brand-dark/60">Nombre</th>
+              @if (activeLevel() > 0) {
+                <th class="px-6 py-4 font-ftn-bold text-xs uppercase tracking-wider text-brand-dark/60">Padre</th>
+              }
+              <th class="px-6 py-4 text-right"></th>
             </tr>
           </thead>
-          <tbody
-            class="divide-y divide-muted-foreground/10"
-            cdkDropList
-            (cdkDropListDropped)="onDrop($event)">
-            @for (cat of categoriesService.categories(); track cat.id) {
-              <tr class="hover:bg-muted/20 transition-colors bg-white group" cdkDrag>
-                <td class="px-6 py-2 text-muted-foreground/40 group-hover:text-muted-foreground transition-colors cursor-move" cdkDragHandle>
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-                  </svg>
+          <tbody cdkDropList (cdkDropListDropped)="onDrop($event)" class="divide-y divide-brand-dark/10">
+            @for (item of (activeLevel() === 0 ? categoriesService.rubros() : activeLevel() === 1 ? categoriesService.categories() : categoriesService.subcategories()); track item.id) {
+              <tr cdkDrag class="bg-white hover:bg-brand-dark/[0.02] group">
+                <td class="px-6 py-4 text-brand-dark/20 cursor-move" cdkDragHandle>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path></svg>
                 </td>
-                <td class="px-6 py-2 font-ftn-bold text-brand-dark/80">{{ cat.nombre }}</td>
-                <td class="px-6 py-2 text-right">
-                  <div class="flex justify-end space-x-2">
-                    <button
-                      (click)="onEdit(cat)"
-                      class=" cursor-pointer p-2 text-muted-foreground hover:bg-brand-primary/10 hover:text-brand-primary-dark  rounded-lg transition-all"
-                      title="Editar">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                      </svg>
+                <td class="px-6 py-4 font-ftn-medium text-brand-dark">{{ item.nombre }}</td>
+                @if (activeLevel() === 1) {
+                  <td class="px-6 py-4 text-sm text-brand-dark/40">{{ getRubroName($any(item).rubroId) }}</td>
+                }
+                @if (activeLevel() === 2) {
+                  <td class="px-6 py-4 text-sm text-brand-dark/40">{{ getCategoryName($any(item).categoryId) }}</td>
+                }
+                <td class="px-6 py-4 text-right">
+                  <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button (click)="onEdit(item)" class="p-2 text-brand-dark/60 hover:text-brand-primary transition-all cursor-pointer">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                     </button>
-                    <button
-                      (click)="onDelete(cat.id)"
-                      class=" cursor-pointer p-2 text-muted-foreground hover:text-error hover:bg-error/10 rounded-lg transition-all"
-                      title="Eliminar">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                      </svg>
+                    <button (click)="onDelete(item.id)" class="p-2 text-brand-dark/60 hover:text-red-500 transition-all cursor-pointer">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                     </button>
                   </div>
                 </td>
-
-                <!-- Placeholder para el drag -->
-                <div *cdkDragPlaceholder class="bg-primary/5 h-16"></div>
+                <div *cdkDragPlaceholder class="bg-brand-primary/10 h-16"></div>
               </tr>
             }
           </tbody>
         </table>
-
-        <!-- Mobile List -->
-        <div class="sm:hidden divide-y divide-muted-foreground/10"
-             cdkDropList
-             (cdkDropListDropped)="onDrop($event)">
-          @for (cat of categoriesService.categories(); track cat.id) {
-            <div class="p-4 flex items-center justify-between hover:bg-muted/10 bg-white" cdkDrag>
-              <div class="flex items-center gap-3">
-                <div class="text-muted-foreground/40 cursor-move" cdkDragHandle>
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-                  </svg>
-                </div>
-                <span class="font-medium text-gray-900">{{ cat.nombre }}</span>
-              </div>
-              <div class="flex space-x-2">
-                <button
-                  (click)="onEdit(cat)"
-                  class="p-2 text-muted-foreground hover:text-secondary rounded-lg"
-                  title="Editar">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                  </svg>
-                </button>
-                <button
-                  (click)="onDelete(cat.id)"
-                  class="p-2 text-muted-foreground hover:text-primary rounded-lg"
-                  title="Eliminar">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                  </svg>
-                </button>
-              </div>
-              <div *cdkDragPlaceholder class="bg-primary/5 h-16"></div>
-            </div>
-          }
-        </div>
-
-        @if (categoriesService.categories().length === 0) {
-          <div class="px-6 py-12 text-center text-muted-foreground italic">
-            No hay categorías creadas todavía.
-          </div>
+        @if ((activeLevel() === 0 ? categoriesService.rubros().length : activeLevel() === 1 ? categoriesService.categories().length : categoriesService.subcategories().length) === 0) {
+          <div class="p-12 text-center text-brand-dark/40 italic">No hay nada creado en este nivel.</div>
         }
       </div>
-
-
-      </div>
-
-
     </div>
   </div>
 </section>

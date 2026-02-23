@@ -87,6 +87,35 @@
   </div>
 </section>
 
+<!-- Niveles de Categorías (Rubros) -->
+@if (topLevelCategories().length > 0) {
+<section class="py-12 bg-white border-y border-brand-dark/5">
+  <div class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px]">
+    <div class="flex flex-col items-center mb-10">
+      <h2 class="text-xl md:text-2xl font-ftn-bold text-brand-dark uppercase tracking-widest mb-2">Explora por Rubro</h2>
+      <div class="w-20 h-1 bg-brand-primary rounded-full"></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      @for (cat of topLevelCategories(); track cat.id) {
+        <button 
+          (click)="navigateToCategory(cat.id)"
+          class="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-brand-light border border-brand-dark/5 hover:border-brand-primary transition-all cursor-pointer">
+          <!-- Placeholder para imagen de categoría (ya que no tienen) -->
+          <div class="absolute inset-0 bg-brand-primary/5 group-hover:bg-brand-primary/20 transition-colors"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-end">
+            <h3 class="text-lg md:text-xl font-ftn-bold text-brand-dark group-hover:scale-110 transition-transform origin-left">{{ cat.nombre }}</h3>
+            <p class="text-xs uppercase tracking-widest text-brand-dark/40 font-bold mt-1">Ver productos</p>
+          </div>
+          <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg class="w-6 h-6 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </div>
+        </button>
+      }
+    </div>
+  </div>
+</section>
+}
+
 <!-- Featured Products Section -->
 <section class="py-16 lg:py-24 ">
   <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">

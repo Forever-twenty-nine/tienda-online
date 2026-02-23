@@ -6,7 +6,9 @@ export interface Product {
     precio: number;
     imagen?: string; // Imagen principal
     imagenes?: string[]; // Lista de hasta 3 imágenes
+    rubroId?: string;
     categoriaId?: string;
+    subcategoriaId?: string;
     destacado?: boolean;
     descuento?: number;
     disponibilidad: boolean;

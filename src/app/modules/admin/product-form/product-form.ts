@@ -29,9 +29,6 @@ export class ProductForm {
   /** alias público para la señal de uploading */
   public readonly uploading = this.service.uploading;
 
-  /** Señal para las categorías */
-  public readonly categories = this.categoriesService.categories;
-
   /** Señal para las imágenes del producto */
   images = signal<string[]>([]);
 
@@ -57,13 +54,39 @@ export class ProductForm {
     descuento: [0, [Validators.min(0), Validators.max(100)]],
     imagen: [''],
     imagenes: [[]],
+    rubroId: [''],
     categoriaId: [''],
+    subcategoriaId: [''],
     destacado: [false],
     disponibilidad: [true],
     publicado: [true]
   });
 
+  // 📝 Computed para rubros, categorías y subcategorías filtradas
+  rubros = this.categoriesService.rubros;
+  
+  categories = computed(() => {
+    const rubroId = this.form.get('rubroId')?.value;
+    const all = this.categoriesService.categories();
+    return rubroId ? all.filter(c => c.rubroId === rubroId) : all;
+  });
+
+  subcategories = computed(() => {
+    const catId = this.form.get('categoriaId')?.value;
+    const all = this.categoriesService.subcategories();
+    return catId ? all.filter(s => s.categoryId === catId) : all;
+  });
+
   constructor() {
+    // Escuchar cambios en rubro para limpiar categorías
+    this.form.get('rubroId')?.valueChanges.subscribe(() => {
+      this.form.patchValue({ categoriaId: '', subcategoriaId: '' }, { emitEvent: false });
+    });
+    // Escuchar cambios en categoría para limpiar subcategorías
+    this.form.get('categoriaId')?.valueChanges.subscribe(() => {
+      this.form.patchValue({ subcategoriaId: '' }, { emitEvent: false });
+    });
+
     // 🔄 Effect: cuando 'current' cambie (carga de productos), parcheamos el formulario
     effect(() => {
       const prod = this.current();
@@ -79,6 +102,8 @@ export class ProductForm {
       }
     });
   }
+
+  // ... rest of methods
 
   // 💾 Al enviar: creamos o actualizamos según exista `id`
   onSubmit() {

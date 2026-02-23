@@ -1,6 +1,7 @@
 import { Component, inject, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
+import { CategoriesService } from '../../../core/services/categories.service';
 import { ProductCard } from '../../components/product-card/product-card';
 
 @Component({
@@ -11,9 +12,15 @@ import { ProductCard } from '../../components/product-card/product-card';
 })
 export class Home {
   productsService = inject(ProductsService);
+  categoriesService = inject(CategoriesService);
+  router = inject(Router);
 
   defaultHeroImage =
     'https://firebasestorage.googleapis.com/v0/b/tienda-online-50dda.firebasestorage.app/o/products%2F1770994343043_pulsera-2.jpg?alt=media&token=c6885275-a59c-4ad4-a8bb-49e4ad2a9b11';
+
+  topLevelCategories = computed(() => {
+    return this.categoriesService.rubros();
+  });
 
   heroProduct = computed(() => {
     const products = this.productsService.products();
@@ -34,5 +41,11 @@ export class Home {
       .products()
       .filter((p) => p.destacado)
       .slice(0, 4);
+  }
+
+  navigateToCategory(id: string) {
+    this.productsService.clearSearch();
+    this.productsService.setRubro(id);
+    this.router.navigate(['/catalogo']);
   }
 }

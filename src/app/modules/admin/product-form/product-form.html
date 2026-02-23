@@ -162,35 +162,40 @@
               </div>
 
 
-              <!-- Categoría -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- Rubro -->
               <div>
-                  <label class="block text-base font-ftn-medium text-brand-dark mb-1">Categoría</label>
-                  <div class="relative">
-                    <select formControlName="categoriaId"
-                          class="block w-full px-4 py-3 pr-10 border border-brand-dark/80 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-dark focus:border-brand-dark sm:text-base transition-all duration-300 hover:shadow-md appearance-none cursor-pointer">
-                      <option value="" class="">Selecciona una categoría</option>
-                      @for (cat of categories(); track cat.id) {
-                          <option [value]="cat.id">{{ cat.nombre }}</option>
+                  <label class="block text-sm font-ftn-medium text-brand-dark mb-1">Rubro</label>
+                  <select formControlName="rubroId" class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-brand-primary appearance-none cursor-pointer">
+                      <option value="">Selecciona un rubro</option>
+                      @for (r of rubros(); track r.id) {
+                          <option [value]="r.id">{{ r.nombre }}</option>
                       }
                   </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-brand-dark/80">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="h-5 w-5"
-                        aria-hidden="true"
-                      >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </div>
-                  </div>
-
               </div>
+
+              <!-- Categoría -->
+              <div>
+                <label class="block text-sm font-ftn-medium text-brand-dark mb-1">Categoría</label>
+                <select formControlName="categoriaId" class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-brand-primary appearance-none cursor-pointer">
+                    <option value="">Selecciona una categoría</option>
+                    @for (c of categories(); track c.id) {
+                        <option [value]="c.id">{{ c.nombre }}</option>
+                    }
+                </select>
+              </div>
+
+              <!-- Subcategoría -->
+              <div>
+                <label class="block text-sm font-ftn-medium text-brand-dark mb-1">Subcategoría</label>
+                <select formControlName="subcategoriaId" class="w-full border border-brand-dark/20 rounded-lg px-4 py-3 bg-white outline-none focus:ring-2 focus:ring-brand-primary appearance-none cursor-pointer">
+                    <option value="">Selecciona una subcategoría</option>
+                    @for (s of subcategories(); track s.id) {
+                        <option [value]="s.id">{{ s.nombre }}</option>
+                    }
+                </select>
+              </div>
+            </div>
 
             </div>
 
