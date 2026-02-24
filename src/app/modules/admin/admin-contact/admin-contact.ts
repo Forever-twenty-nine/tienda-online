@@ -1,5 +1,5 @@
 import { Component, inject, effect, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ContactService } from '../../../core/services/contact.service';
 import { ContactInfo } from '../../../core/models/contact.model';
@@ -8,7 +8,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 @Component({
   selector: 'app-admin-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmDialog],
+  imports: [FormsModule, ConfirmDialog],
   templateUrl: './admin-contact.html',
 })
 export class AdminContact {

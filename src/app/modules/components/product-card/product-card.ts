@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { NgOptimizedImage, CurrencyPipe, CommonModule } from '@angular/common';
+import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Product } from '../../../core/models/product.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
@@ -7,7 +7,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [NgOptimizedImage, RouterLink, CommonModule],
+  imports: [NgOptimizedImage, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './product-card.html',
   animations: [

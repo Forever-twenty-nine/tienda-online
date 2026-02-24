@@ -1,13 +1,15 @@
 <div class="h-screen bg-gray-100 flex overflow-hidden">
   <!-- Sidebar Overlay for Mobile -->
-  <div *ngIf="isSidebarOpen()"
-       class="fixed inset-0 bg-brand-dark/60 bg-opacity-50 z-40 lg:hidden"
-       (click)="closeSidebar()">
-  </div>
+  @if (isSidebarOpen()) {
+    <div
+      class="fixed inset-0 bg-brand-dark/60 bg-opacity-50 z-40 lg:hidden"
+      (click)="closeSidebar()">
+    </div>
+  }
 
   <!-- Sidebar -->
   <aside class="fixed inset-y-0 left-0 w-64 bg-brand-dark z-50 transform lg:translate-x-0 lg:static lg:inset-y-0 transition-transform duration-300 ease-in-out flex-shrink-0"
-         [class.-translate-x-full]="!isSidebarOpen()">
+    [class.-translate-x-full]="!isSidebarOpen()">
     <div class="h-full flex flex-col">
 
       <!-- Sidebar Header -->
@@ -23,37 +25,37 @@
       <!-- Navigation -->
       <nav class="flex-grow p-4 space-y-2 overflow-y-auto">
         <a routerLink="/admin"
-           routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
-           [routerLinkActiveOptions]="{exact: true}"
-           (click)="closeSidebar()"
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
+          routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
+          [routerLinkActiveOptions]="{exact: true}"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
           </svg>
           Dashboard
         </a>
         <a routerLink="/admin/products"
-           routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
-           (click)="closeSidebar()"
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
+          routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
           </svg>
           Productos
         </a>
         <a routerLink="/admin/categories"
-           routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
-           (click)="closeSidebar()"
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
+          routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
           </svg>
           Categorías
         </a>
         <a routerLink="/admin/contact"
-           routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
-           (click)="closeSidebar()"
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
+          routerLinkActive="bg-brand-primary !text-brand-dark !font-ftn-bold hover:!bg-brand-primary"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-brand-primary/10 hover:text-brand-light transition-colors font-ftn-light text-brand-light/50">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
           </svg>
@@ -64,9 +66,9 @@
       <!-- Sidebar Footer -->
       <div class="p-4 border-t border-brand-light/20 space-y-1">
         <a routerLink="/"
-           target="_blank"
-           (click)="closeSidebar()"
-           class="flex items-center gap-3 px-4 py-3 text-sm text-brand-light/50 hover:text-brand-light hover:bg-brand-light/10 rounded-lg transition-colors">
+          target="_blank"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-4 py-3 text-sm text-brand-light/50 hover:text-brand-light hover:bg-brand-light/10 rounded-lg transition-colors">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
           </svg>
@@ -88,7 +90,7 @@
     <header class="lg:hidden bg-brand-dark border-b px-4 py-3 flex items-center justify-between sticky top-0 z-30">
       <div class="flex items-center gap-3">
         <button (click)="toggleSidebar()"
-                class="p-2 rounded-md text-brand-light hover:bg-brand-primary hover:text-brand-dark active:bg-gray-200 transition-colors">
+          class="p-2 rounded-md text-brand-light hover:bg-brand-primary hover:text-brand-dark active:bg-gray-200 transition-colors">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>

@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CategoriesService } from '../../../core/services/categories.service';
@@ -9,7 +9,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 @Component({
   selector: 'app-admin-categories',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmDialog, DragDropModule],
+  imports: [FormsModule, ConfirmDialog, DragDropModule],
   templateUrl: './admin-categories.html',
 })
 export class AdminCategories {

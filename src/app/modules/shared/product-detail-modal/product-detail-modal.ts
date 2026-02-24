@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, signal, HostBinding, inject } from '@angular/core';
-import { NgOptimizedImage, CurrencyPipe, CommonModule } from '@angular/common';
+import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
 import { Product } from '../../../core/models/product.model';
 import { trigger, style, animate, transition, state } from '@angular/animations';
 import { ContactService } from '../../../core/services/contact.service';
@@ -7,7 +7,7 @@ import { ContactService } from '../../../core/services/contact.service';
 @Component({
   selector: 'app-product-detail-modal',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [NgOptimizedImage],
   templateUrl: './product-detail-modal.html',
   animations: [
     trigger('modalState', [

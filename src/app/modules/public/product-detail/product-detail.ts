@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal, effect, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgOptimizedImage, CurrencyPipe, CommonModule } from '@angular/common';
+import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { ProductsService } from '../../../core/services/products';
@@ -12,7 +12,7 @@ import { ProductCard } from '../../components/product-card/product-card';
 @Component({
     selector: 'app-product-detail',
     standalone: true,
-    imports: [CommonModule, NgOptimizedImage, ProductCard],
+    imports: [NgOptimizedImage, ProductCard],
     templateUrl: './product-detail.html'
 })
 export class ProductDetailComponent implements OnInit {
