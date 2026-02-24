@@ -1,8 +1,6 @@
-import { Component, inject, OnInit, signal, effect, computed } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject, OnInit, signal, effect, computed, input } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { Product } from '../../../core/models/product.model';
@@ -16,13 +14,12 @@ import { ProductCard } from '../../components/product-card/product-card';
     templateUrl: './product-detail.html'
 })
 export class ProductDetailComponent implements OnInit {
-    private route = inject(ActivatedRoute);
     private router = inject(Router);
     private productsService = inject(ProductsService);
     private contactService = inject(ContactService);
     private categoriesService = inject(CategoriesService);
 
-    slug = toSignal(this.route.paramMap.pipe(map(params => params.get('slug'))));
+    slug = input<string>();
     product = signal<Product | null>(null);
     selectedImage = signal<string | null>(null);
     loading = signal(true);
@@ -89,7 +86,7 @@ export class ProductDetailComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (!this.route.snapshot.paramMap.get('slug')) {
+        if (!this.slug()) {
             this.router.navigate(['/']);
         }
     }

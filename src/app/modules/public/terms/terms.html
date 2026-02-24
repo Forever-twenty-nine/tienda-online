@@ -1,168 +1,26 @@
-<section class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
-  <!-- Header -->
-  <div class="text-center mb-10 lg:mb-16">
-    <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">Términos y Condiciones</h1>
-    <p class="text-lg text-brand-dark/50 max-w-3xl mx-auto">
-      Última actualización: Enero 2025
-    </p>
+<section class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px] min-h-[60vh]">
+  <div *ngIf="isLoading()" class="flex justify-center p-20">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
   </div>
 
-  <!-- Content -->
-  <div class="">
-    <!-- Introducción -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">1. Introducción</h2>
-      <p class="text-brand-dark leading-relaxed mb-4">
-        Bienvenido a TiendaOnline. Estos términos y condiciones regulan el acceso y uso de nuestro sitio web y
-        servicios, conforme a la legislación vigente en la República Argentina, incluyendo la Ley de Defensa del
-        Consumidor N° 24.240 y la Ley de Protección de Datos Personales N° 25.326.
-      </p>
-      <p class="text-brand-dark leading-relaxed">
-        Al acceder a este sitio web, asumimos que aceptás estos términos y condiciones. Si no estás de acuerdo, por
-        favor no utilices TiendaOnline.
+  <div *ngIf="!isLoading()">
+    <!-- Header -->
+    <div class="text-center mb-10 lg:mb-16">
+      <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">
+        {{ pageData()?.title || 'Términos y Condiciones' }}
+      </h1>
+      <p class="text-lg text-brand-dark/50 max-w-3xl mx-auto" *ngIf="pageData()?.lastUpdated">
+        Última actualización: {{ pageData()?.lastUpdated.toDate() | date:'MMMM yyyy':'':'es-AR' }}
       </p>
     </div>
 
-    <!-- Uso del Sitio -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">2. Uso del Sitio</h2>
-      <div class="space-y-4">
-        <p class="text-brand-dark leading-relaxed">
-          <strong>2.1</strong> Debes ser mayor de 18 años para realizar compras en nuestro sitio.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>2.2</strong> Eres responsable de mantener la confidencialidad de tu cuenta y contraseña.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>2.3</strong> No puedes usar nuestro servicio para ningún propósito ilegal o no autorizado.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>2.4</strong> No debes transmitir ningún material que sea difamatorio, ofensivo o ilegal.
-        </p>
-      </div>
+    <!-- Content -->
+    <div class="whitespace-pre-wrap text-brand-dark leading-relaxed mb-20">
+      {{ pageData()?.content }}
     </div>
 
-    <!-- Productos y Precios -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">3. Productos y Precios</h2>
-      <div class="space-y-4">
-        <p class="text-brand-dark leading-relaxed">
-          <strong>3.1</strong> Todos los precios están expresados en pesos argentinos (ARS) e incluyen impuestos
-          aplicables. Se emite factura conforme a la normativa vigente.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>3.2</strong> Los precios pueden cambiar sin previo aviso, pero no afectarán pedidos ya confirmados.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>3.3</strong> Las imágenes de productos son ilustrativas y pueden diferir del producto real.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>3.4</strong> Nos reservamos el derecho de limitar las cantidades de compra por cliente.
-        </p>
-      </div>
-    </div>
-    <!-- Derecho de Arrepentimiento y Devoluciones -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">4. Derecho de Arrepentimiento y Devoluciones</h2>
-      <div class="space-y-4">
-        <p class="text-brand-dark leading-relaxed">
-          <strong>4.1</strong> Conforme al art. 34 de la Ley 24.240, tenés derecho a revocar la compra dentro de los 10
-          (diez) días corridos de recibido el producto, sin responsabilidad alguna. Para ejercer este derecho, debés
-          notificarlo por escrito a nuestro canal de contacto.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>4.2</strong> Los productos deben devolverse en las mismas condiciones en que fueron recibidos, sin uso
-          y con su embalaje original.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>4.3</strong> Los costos de devolución serán asumidos por TiendaOnline en caso de arrepentimiento
-          dentro del plazo legal.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>4.4</strong> Para gestionar devoluciones o cambios fuera del plazo de arrepentimiento, aplican las
-          políticas de garantía y servicio postventa.
-        </p>
-      </div>
-    </div>
-
-    <!-- Pedidos y Pagos -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">5. Pedidos y Pagos</h2>
-      <div class="space-y-4">
-        <p class="text-brand-dark leading-relaxed">
-          <strong>5.1</strong> Al realizar un pedido, hacés una oferta de compra sujeta a aceptación y disponibilidad de
-          stock.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>5.2</strong> Nos reservamos el derecho de rechazar cualquier pedido por motivos justificados.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>5.3</strong> El pago debe completarse al momento de realizar el pedido. Los medios de pago habilitados
-          son los informados en el sitio.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>5.4</strong> Se emite factura electrónica conforme a la normativa AFIP.
-        </p>
-      </div>
-    </div>
-
-    <!-- Envíos y Entregas -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">6. Envíos y Entregas</h2>
-      <div class="space-y-4">
-        <p class="text-brand-dark leading-relaxed">
-          <strong>6.1</strong> Los tiempos de envío son estimados y pueden variar según la ubicación y disponibilidad
-          del producto.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>6.2</strong> Los costos de envío se informan antes de finalizar la compra y se calculan según el peso
-          y destino del pedido.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>6.3</strong> No somos responsables por retrasos atribuibles al correo o transportista.
-        </p>
-      </div>
-    </div>
-
-    <!-- Protección de Datos Personales -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">7. Protección de Datos Personales</h2>
-      <p class="text-brand-dark leading-relaxed">
-        Los datos personales proporcionados serán tratados conforme a la Ley 25.326. El titular de los datos puede
-        ejercer los derechos de acceso, rectificación y supresión enviando un correo a info&#64;tiendaonline.com. La
-        AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, órgano de control de la Ley N° 25.326, tiene la atribución de
-        atender denuncias y reclamos.
-      </p>
-    </div>
-
-    <!-- Limitación de Responsabilidad -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">8. Limitación de Responsabilidad</h2>
-      <p class="text-brand-dark leading-relaxed">
-        TiendaOnline no será responsable por daños directos, indirectos o consecuentes derivados del uso o imposibilidad
-        de uso de los servicios, salvo lo dispuesto por la legislación vigente.
-      </p>
-    </div>
-
-    <!-- Jurisdicción y Ley Aplicable -->
-    <div class="mb-8">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">9. Jurisdicción y Ley Aplicable</h2>
-      <p class="text-brand-dark leading-relaxed">
-        Estos términos se rigen por las leyes de la República Argentina. Ante cualquier controversia, las partes se
-        someten a la jurisdicción de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires.
-      </p>
-    </div>
-
-    <!-- Contacto -->
-    <div class="bg-muted p-6 rounded-lg">
-      <h3 class="text-xl font-ftn-bold text-brand-dark mb-2">Contacto y Reclamos</h3>
-      <p class="text-brand-dark">
-        Si tenés preguntas, reclamos o querés ejercer tus derechos como consumidor, podés contactarnos en:
-        <a href="mailto:info@tiendaonline.com" class="text-brand-dark  hover:underline">info&#64;tiendaonline.com</a>.<br>
-        También podés presentar reclamos ante la autoridad de defensa del consumidor ingresando a <a
-          href="https://www.argentina.gob.ar/defensadelconsumidor" class="text-brand-dark  hover:underline"
-          target="_blank">www.argentina.gob.ar/defensadelconsumidor</a>.
-      </p>
+    <div *ngIf="!pageData()?.content" class="text-center py-20 text-gray-500 italic">
+      Contenido no disponible en este momento.
     </div>
   </div>
 </section>

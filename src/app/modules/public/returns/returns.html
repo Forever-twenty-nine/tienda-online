@@ -1,195 +1,26 @@
-<section class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
-  <!-- Header -->
-  <div class="text-center mb-10 lg:mb-16">
-    <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">Política de Devoluciones y Derecho de Arrepentimiento</h1>
-    <p class="text-base text-brand-dark/50 max-w-3xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10">
-      Nuestra política cumple con la Ley 24.240 de Defensa del Consumidor. Queremos que estés completamente satisfecho
-      con tu compra y conozcas tus derechos.
-    </p>
+<section class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px] min-h-[60vh]">
+  <div *ngIf="isLoading()" class="flex justify-center p-20">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
   </div>
 
-  <!-- Content Grid -->
-  <!-- Derecho de Arrepentimiento (Ley 24.240) -->
-  <div class="mb-12">
-    <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">Derecho de Arrepentimiento</h2>
-    <div class="space-y-4">
-      <p class="text-brand-dark leading-relaxed">
-        Conforme al art. 34 de la Ley 24.240, tenés derecho a revocar la compra dentro de los 10 (diez) días corridos de
-        recibido el producto, sin expresión de causa y sin costo alguno. Para ejercer este derecho, debés notificarlo
-        por escrito a nuestro canal de contacto.
-      </p>
-      <p class="text-brand-dark leading-relaxed">
-        Los costos de devolución por arrepentimiento serán asumidos por TiendaOnline. El producto debe estar en
-        condiciones originales y sin uso.
-      </p>
-      <p class="text-brand-dark leading-relaxed">
-        Este derecho no aplica a productos personalizados, digitales descargables, de higiene o que por su naturaleza no
-        puedan ser devueltos, salvo defecto de fabricación.
+  <div *ngIf="!isLoading()">
+    <!-- Header -->
+    <div class="text-center mb-10 lg:mb-16">
+      <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">
+        {{ pageData()?.title || 'Política de Devoluciones' }}
+      </h1>
+      <p class="text-lg text-brand-dark/50 max-w-3xl mx-auto" *ngIf="pageData()?.lastUpdated">
+        Última actualización: {{ pageData()?.lastUpdated.toDate() | date:'MMMM yyyy':'':'es-AR' }}
       </p>
     </div>
-  </div>
-  <div class="grid lg:grid-cols-3 gap-8 mb-16">
-    <!-- Tiempo de Devolución -->
-    <div class="">
-      <h3 class="text-xl font-ftn-bold text-brand-dark mb-2">30 Días</h3>
-      <p class="text-brand-dark">Para devolver tu producto desde la fecha de recepción.</p>
+
+    <!-- Content -->
+    <div class="whitespace-pre-wrap text-brand-dark leading-relaxed mb-20">
+      {{ pageData()?.content }}
     </div>
 
-    <!-- Envío Gratis -->
-     <div class="">
-      <h3 class="text-xl font-ftn-bold text-brand-dark mb-2">Envío Gratis</h3>
-      <p class="text-brand-dark">En devoluciones por defecto del producto.</p>
-    </div>
-
-    <!-- Reembolso Rápido -->
-    <div class="">
-      <h3 class="text-xl font-ftn-bold text-brand-dark mb-2">Reembolso</h3>
-      <p class="text-brand-dark">Procesado en 5-7 días hábiles.</p>
-    </div>
-
-  </div>
-
-  <!-- Detailed Policy -->
-  <div class="">
-    <!-- Condiciones Generales -->
-    <div class="mb-16">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">Condiciones Generales</h2>
-      <div class="space-y-4">
-        <p class="text-brand-dark leading-relaxed">
-          <strong>✓</strong> Solo se aceptan devoluciones por derecho de arrepentimiento (10 días) o por fallas de
-          fábrica/defectos de origen conforme garantía legal.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>✓</strong> El producto debe estar en condiciones originales, sin uso, con todos los accesorios,
-          manuales y embalaje original.
-        </p>
-        <p class="text-brand-dark leading-relaxed">
-          <strong>✓</strong> Conservá el comprobante de compra o número de pedido para cualquier gestión.
-        </p>
-      </div>
-    </div>
-
-    <!-- Proceso de Devolución -->
-    <div class="mb-16">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">Proceso de Devolución</h2>
-
-      <!-- Step by Step -->
-      <div class="space-y-4 mt-6">
-        <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 bg-brand-dark text-white rounded-full flex items-center justify-center font-bold text-sm">1
-          </div>
-          <div>
-            <h3 class="font-ftn-bold text-brand-dark text-lg mb-1">Solicita la Devolución</h3>
-            @if (contactService.contactInfo(); as info) {
-              <p class="text-brand-dark">Contáctanos por email ({{info.email}}) o teléfono ({{info.phone}}) para iniciar el proceso.</p>
-            } @else {
-              <p class="text-brand-dark">Contáctanos por email o teléfono para iniciar el proceso.</p>
-            }
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 bg-brand-dark text-white rounded-full flex items-center justify-center font-bold text-sm">2
-          </div>
-          <div>
-            <h3 class="font-ftn-bold text-brand-dark mb-1">Autorización</h3>
-            <p class="text-brand-dark">Recibirás un código de autorización y etiqueta de envío.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 bg-brand-dark text-white rounded-full flex items-center justify-center font-bold text-sm">3
-          </div>
-          <div>
-            <h3 class="font-ftn-bold text-brand-dark mb-1">Empaca el Producto</h3>
-            <p class="text-brand-dark">Empaca cuidadosamente con todos los accesorios originales.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 bg-brand-dark text-white rounded-full flex items-center justify-center font-bold text-sm">4
-          </div>
-          <div>
-            <h3 class="font-ftn-bold text-brand-dark mb-1">Envía el Paquete</h3>
-            <p class="text-brand-dark">Usa la etiqueta prepagada que te proporcionamos.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start space-x-4">
-          <div class="w-8 h-8 bg-brand-dark text-white rounded-full flex items-center justify-center font-bold text-sm">5
-          </div>
-          <div>
-            <h3 class="font-ftn-bold text-brand-dark mb-1">Recibe tu Reembolso</h3>
-            <p class="text-brand-dark">Una vez recibido, procesaremos tu reembolso en 5-7 días hábiles.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Excepciones -->
-    <div class="mb-16">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">Excepciones Legales</h2>
-      <div class="">
-        <p class="text-brand-dark mb-2">No aplica derecho de arrepentimiento ni devoluciones en los siguientes casos,
-          salvo defecto:</p>
-        <ul class="list-disc list-inside space-y-1 text-brand-dark ml-4">
-          <li>Productos de cuidado personal abiertos</li>
-          <li>Productos alimenticios perecederos</li>
-          <li>Productos personalizados o hechos a medida</li>
-          <li>Software descargable o productos digitales</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Cambios -->
-
-
-    <!-- Defectos -->
-    <div class="mb-16">
-      <h2 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">Productos con Fallas o Defectos de Fábrica</h2>
-      <div class="">
-        <p class="text-brand-dark mb-2">Si tu producto presenta fallas de fábrica o defectos de origen:</p>
-        <ul class="list-disc list-inside space-y-1 text-gray-600 ml-4">
-          <li>Contactanos dentro de las 48 horas de recibido o durante el período de garantía legal.</li>
-          <li>Proporcioná fotos o videos que evidencien el defecto.</li>
-          <li>Procesaremos un reemplazo, reparación o reembolso completo según corresponda por ley.</li>
-          <li>Cubrimos todos los costos de envío en estos casos.</li>
-        </ul>
-        <p class="text-brand-dark  mt-2">Todos los productos electrónicos cuentan con garantía legal mínima de 6
-          meses según Ley 24.240.</p>
-      </div>
-    </div>
-
-    <!-- Contacto -->
-    <div class="">
-      <h3 class="text-xl font-ftn-bold mb-2 text-brand-dark lg:mb-4 lg:text-2xl">¿Necesitás Ayuda o Querés Reclamar?</h3>
-      <p class="text-brand-dark mb-4">
-        Nuestro equipo de atención al cliente está aquí para ayudarte con cualquier devolución o para ejercer tu derecho
-        de arrepentimiento:
-      </p>
-      @if (contactService.contactInfo(); as info) {
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <p class="text-brand-dark">
-              <strong>Email:</strong> <a [href]="'mailto:' + info.email"
-                class="text-brand-dark hover:underline"> {{info.email}}</a>
-            </p>
-          </div>
-          <div>
-            <p class="text-brand-dark">
-              <strong>Teléfono:</strong> {{info.phone}}
-            </p>
-          </div>
-        </div>
-      }
-      <p class="text-brand-dark mt-4">
-        Horarios de atención: Lunes a Viernes 9:00 - 18:00 | Sábados 9:00 - 14:00
-      </p>
-      <p class="text-brand-dark mt-2">
-        También podés presentar reclamos ante la autoridad de defensa del consumidor ingresando a <a
-          href="https://www.argentina.gob.ar/defensadelconsumidor" class="text-brand-dark underline hover:underline"
-          target="_blank">www.argentina.gob.ar/defensadelconsumidor</a>.
-      </p>
+    <div *ngIf="!pageData()?.content" class="text-center py-20 text-gray-500 italic">
+      Contenido no disponible en este momento.
     </div>
   </div>
 </section>

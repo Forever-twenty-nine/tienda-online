@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, computed } from '@angular/core';
+import { inject, Injectable, signal, computed, DestroyRef } from '@angular/core';
 import { 
   Firestore, 
   collection, 
@@ -14,10 +14,8 @@ import {
 } from 'firebase/firestore';
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { FIREBASE_STORAGE } from '../firebase/firebase.config';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CategoriesService } from './categories.service';
 import { Product } from '../models/product.model';
-import { catchError, of, map, Observable } from 'rxjs';
 
 /**
  * Genera un slug amigable para URL a partir de un texto.
@@ -61,6 +59,7 @@ export class ProductsService {
   private firestore = inject(Firestore);
   private storage = inject(FIREBASE_STORAGE);
   private categoriesService = inject(CategoriesService);
+  private destroyRef = inject(DestroyRef);
 
 
   /**
@@ -83,21 +82,18 @@ export class ProductsService {
   private readonly itemsPerPage = 8;
   visibleCount = signal(this.itemsPerPage);
 
-  allProducts = toSignal(
-    new Observable<Product[]>(subscriber => {
-      const q = query(collection(this.firestore, 'products').withConverter(productConverter));
-      return onSnapshot(q, (snapshot) => {
-        const data = snapshot.docs.map(doc => doc.data());
-        subscriber.next(data);
-      }, error => subscriber.error(error));
-    }).pipe(
-      catchError(error => {
-        console.error('Error al cargar productos:', error);
-        return of([]);
-      })
-    ),
-    { initialValue: [] }
-  );
+  private allProductsSignal = signal<Product[]>([]);
+  allProducts = this.allProductsSignal.asReadonly();
+
+  constructor() {
+    const q = query(collection(this.firestore, 'products').withConverter(productConverter));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      this.allProductsSignal.set(snapshot.docs.map(doc => doc.data()));
+    }, error => {
+      console.error('Error al cargar productos:', error);
+    });
+    this.destroyRef.onDestroy(() => unsubscribe());
+  }
 
   private matchesTaxonomy(product: Product): boolean {
     const rubroId = this.rubroFilter();
@@ -210,11 +206,6 @@ export class ProductsService {
   resetPagination() {
     this.visibleCount.set(this.itemsPerPage);
   }
-
-  /**
-   * Inicializa el servicio.
-   */
-  constructor() {}
 
   /**
    * Actualiza el término de búsqueda.

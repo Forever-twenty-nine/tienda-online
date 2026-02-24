@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, DestroyRef } from '@angular/core';
 import { 
   Firestore, 
   collection, 
@@ -10,12 +10,9 @@ import {
   deleteDoc, 
   writeBatch,
   type FirestoreDataConverter,
-  type DocumentData,
-  CollectionReference
+  type DocumentData
 } from 'firebase/firestore';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Rubro, Category, Subcategory } from '../models/category.model';
-import { catchError, map, of, Observable } from 'rxjs';
 
 const rubroConverter: FirestoreDataConverter<Rubro> = {
   toFirestore({ id, ...data }): DocumentData { return data; },
@@ -44,36 +41,36 @@ const subcategoryConverter: FirestoreDataConverter<Subcategory> = {
 @Injectable({ providedIn: 'root' })
 export class CategoriesService {
   private firestore = inject(Firestore);
+  private destroyRef = inject(DestroyRef);
 
-  private collectionData<T>(collectionRef: any): Observable<T[]> {
-    return new Observable<T[]>(subscriber => {
-      return onSnapshot(query(collectionRef), (snapshot) => {
-        const data = snapshot.docs.map(doc => doc.data() as T);
-        subscriber.next(data);
-      }, error => subscriber.error(error));
-    });
+  private rubrosSignal = signal<Rubro[]>([]);
+  private categoriesSignal = signal<Category[]>([]);
+  private subcategoriesSignal = signal<Subcategory[]>([]);
+
+  rubros = this.rubrosSignal.asReadonly();
+  categories = this.categoriesSignal.asReadonly();
+  subcategories = this.subcategoriesSignal.asReadonly();
+
+  constructor() {
+    this.setupListener('rubros', rubroConverter, this.rubrosSignal);
+    this.setupListener('categories', categoryConverter, this.categoriesSignal);
+    this.setupListener('subcategories', subcategoryConverter, this.subcategoriesSignal);
   }
 
-  rubros = toSignal(
-    this.collectionData<Rubro>(collection(this.firestore, 'rubros').withConverter(rubroConverter)).pipe(
-      map(items => items.sort((a, b) => a.orden - b.orden)),
-      catchError(() => of([]))
-    ), { initialValue: [] }
-  );
-
-  categories = toSignal(
-    this.collectionData<Category>(collection(this.firestore, 'categories').withConverter(categoryConverter)).pipe(
-      map(items => items.sort((a, b) => a.orden - b.orden)),
-      catchError(() => of([]))
-    ), { initialValue: [] }
-  );
-
-  subcategories = toSignal(
-    this.collectionData<Subcategory>(collection(this.firestore, 'subcategories').withConverter(subcategoryConverter)).pipe(
-      map(items => items.sort((a, b) => a.orden - b.orden)),
-      catchError(() => of([]))
-    ), { initialValue: [] }
-  );
+  private setupListener<T extends { orden: number }>(
+    colName: string, 
+    converter: FirestoreDataConverter<T>, 
+    target: any
+  ) {
+    const q = query(collection(this.firestore, colName).withConverter(converter));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => doc.data());
+      target.set(data.sort((a, b) => a.orden - b.orden));
+    }, error => {
+      console.error(`Error al cargar ${colName}:`, error);
+    });
+    this.destroyRef.onDestroy(() => unsubscribe());
+  }
 
   // Rubros CRUD
   async addRubro(nombre: string) {

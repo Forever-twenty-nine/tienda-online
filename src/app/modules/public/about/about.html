@@ -1,86 +1,27 @@
-<section class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
-  <!-- Hero Section -->
-  <div class="text-center mb-16">
-    <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">Sobre Nosotros</h1>
-    <p class="text-base text-brand-dark/50 max-w-xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10">
-      Conoce la historia detrás de TiendaOnline y nuestro compromiso con la excelencia
-    </p>
+<section class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px] min-h-[60vh]">
+  <div *ngIf="isLoading()" class="flex justify-center p-20">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
   </div>
 
-  <!-- Content Grid -->
-  <div class="grid md:grid-cols-2 gap-12 mb-16">
-    <!-- Nuestra Historia -->
-    <div class="">
-      <div class="flex items-center mb-6">
-        <div
-          class="w-12 h-12 bg-gradient-to-r from-brand-dark to-brand-dark rounded-lg flex items-center justify-center mr-4">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-            </path>
-          </svg>
-        </div>
-        <h2 class="text-2xl font-ftn-medium text-brand-dark">Nuestra Historia</h2>
-      </div>
-      <p class="text-base text-brand-dark leading-relaxed mb-4">
-        TiendaOnline nació en 2020 con la visión de democratizar el comercio electrónico y hacer que los mejores
-        productos estén al alcance de todos.
-      </p>
-      <p class="text-base text-brand-dark leading-relaxed">
-        Lo que comenzó como un pequeño proyecto familiar, hoy se ha convertido en una plataforma confiable que conecta a
-        miles de clientes con productos de calidad.
+  <div *ngIf="!isLoading()">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">
+        {{ pageData()?.title || 'Sobre Nosotros' }}
+      </h1>
+      <p class="text-base text-brand-dark/50 max-w-xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10" *ngIf="!pageData()?.content">
+        Conoce la historia detrás de nuestra tienda y nuestro compromiso con la excelencia.
       </p>
     </div>
 
-    <!-- Nuestra Misión -->
-    <div class="">
-      <div class="flex items-center mb-6">
-        <div
-          class="w-12 h-12 bg-gradient-to-r from-brand-dark to-brand-dark rounded-lg flex items-center justify-center mr-4">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-          </svg>
-        </div>
-        <h2 class="text-2xl font-ftn-medium text-brand-dark">Nuestra Misión</h2>
-      </div>
-      <p class="text-base text-brand-dark leading-relaxed mb-4">
-        Brindar una experiencia de compra excepcional, ofreciendo productos de alta calidad con la mejor atención al
-        cliente.
-      </p>
-      <p class="text-base text-brand-dark leading-relaxed">
-        Nos comprometemos a ser tu tienda de confianza, donde cada compra sea una experiencia satisfactoria y segura.
-      </p>
+    <!-- Content -->
+    <div class="whitespace-pre-wrap text-brand-dark leading-relaxed mb-20">
+      {{ pageData()?.content }}
+    </div>
+
+    <!-- Mensaje si no hay contenido -->
+    <div *ngIf="!pageData()?.content" class="text-center py-20 text-gray-500 italic">
+      Contenido en preparación. ¡Vuelve pronto para conocernos mejor!
     </div>
   </div>
-
-  <!-- Valores -->
-  <div class="">
-    <div class="flex items-center mb-10">
-      <div
-          class="w-12 h-12 bg-gradient-to-r from-brand-dark to-brand-dark rounded-lg flex items-center justify-center mr-4">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-white"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-        </div>
-      <h2 class="text-2xl font-ftn-medium text-brand-dark">Nuestros Valores</h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="text-center bg-brand-dark/5 rounded-2xl p-8">
-        <h3 class="text-xl font-semibold text-brand-dark mb-2">Calidad</h3>
-        <p class="text-gray-600">Solo trabajamos con productos que cumplen nuestros altos estándares de calidad.</p>
-      </div>
-
-      <div class="text-center bg-brand-dark/5 rounded-2xl p-8">
-        <h3 class="text-xl font-semibold text-brand-dark mb-2">Confianza</h3>
-        <p class="text-gray-600">Transacciones seguras y transparentes para tu tranquilidad.</p>
-      </div>
-
-      <div class="text-center bg-brand-dark/5 rounded-2xl p-8">
-        <h3 class="text-xl font-semibold text-brand-dark mb-2">Innovación</h3>
-        <p class="text-gray-600">Constantemente mejoramos para ofrecerte la mejor experiencia.</p>
-      </div>
-
-    </div>
-  </div>
-
-
 </section>

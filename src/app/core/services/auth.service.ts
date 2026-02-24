@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private isAuthenticatedSignal = signal<boolean>(false);
+  public isAuthenticated$ = this.isAuthenticatedSignal; // No longer an observable but a signal
 
   // Credenciales por defecto (en producción esto debería venir de un backend)
   private readonly adminCredentials = {
@@ -17,13 +16,13 @@ export class AuthService {
   constructor() {
     // Verificar si ya está autenticado al cargar la aplicación
     const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
-    this.isAuthenticatedSubject.next(isLoggedIn);
+    this.isAuthenticatedSignal.set(isLoggedIn);
   }
 
   login(username: string, password: string): boolean {
     if (username === this.adminCredentials.username && 
         password === this.adminCredentials.password) {
-      this.isAuthenticatedSubject.next(true);
+      this.isAuthenticatedSignal.set(true);
       localStorage.setItem('adminLoggedIn', 'true');
       return true;
     }
@@ -31,11 +30,11 @@ export class AuthService {
   }
 
   logout(): void {
-    this.isAuthenticatedSubject.next(false);
+    this.isAuthenticatedSignal.set(false);
     localStorage.removeItem('adminLoggedIn');
   }
 
   isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
+    return this.isAuthenticatedSignal();
   }
 }
