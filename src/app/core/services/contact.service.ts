@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, doc, docData, setDoc } from '@angular/fire/firestore';
+import { Firestore, doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ContactInfo } from '../models/contact.model';
-import { catchError, of } from 'rxjs';
+import { catchError, of, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
@@ -10,12 +10,16 @@ export class ContactService {
   private contactDoc = doc(this.firestore, 'settings', 'contact');
 
   contactInfo = toSignal(
-    docData(this.contactDoc).pipe(
+    new Observable<ContactInfo | null>(subscriber => {
+      return onSnapshot(this.contactDoc, (snapshot) => {
+        subscriber.next(snapshot.exists() ? (snapshot.data() as ContactInfo) : null);
+      }, error => subscriber.error(error));
+    }).pipe(
       catchError(error => {
         console.error('Error al cargar información de contacto:', error);
         return of(null);
       })
-    ) as import('rxjs').Observable<ContactInfo | null>,
+    ),
     { initialValue: null }
   );
 

@@ -1,20 +1,23 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
-import { Storage } from '@angular/fire/storage';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { CategoriesService } from './categories.service';
-import {
+import { 
+  Firestore, 
+  collection, 
+  onSnapshot, 
+  query,
   type FirestoreDataConverter,
   type DocumentData,
   addDoc,
   doc,
   updateDoc,
   deleteDoc,
-  type DocumentReference
+  type DocumentReference 
 } from 'firebase/firestore';
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { FIREBASE_STORAGE } from '../firebase/firebase.config';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CategoriesService } from './categories.service';
 import { Product } from '../models/product.model';
-import { catchError, of, map } from 'rxjs';
+import { catchError, of, map, Observable } from 'rxjs';
 
 /**
  * Genera un slug amigable para URL a partir de un texto.
@@ -56,7 +59,7 @@ const productConverter: FirestoreDataConverter<Product> = {
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
   private firestore = inject(Firestore);
-  private storage = inject(Storage);
+  private storage = inject(FIREBASE_STORAGE);
   private categoriesService = inject(CategoriesService);
 
 
@@ -81,15 +84,18 @@ export class ProductsService {
   visibleCount = signal(this.itemsPerPage);
 
   allProducts = toSignal(
-    collectionData(
-      collection(this.firestore, 'products').withConverter(productConverter),
-      { idField: 'id' }
-    ).pipe(
+    new Observable<Product[]>(subscriber => {
+      const q = query(collection(this.firestore, 'products').withConverter(productConverter));
+      return onSnapshot(q, (snapshot) => {
+        const data = snapshot.docs.map(doc => doc.data());
+        subscriber.next(data);
+      }, error => subscriber.error(error));
+    }).pipe(
       catchError(error => {
         console.error('Error al cargar productos:', error);
         return of([]);
       })
-    ) as import('rxjs').Observable<Product[]>,
+    ),
     { initialValue: [] }
   );
 

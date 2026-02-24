@@ -1,12 +1,21 @@
 import { inject, Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, addDoc, doc, updateDoc, deleteDoc, writeBatch } from '@angular/fire/firestore';
-import { toSignal } from '@angular/core/rxjs-interop';
-import {
+import { 
+  Firestore, 
+  collection, 
+  onSnapshot, 
+  query, 
+  addDoc, 
+  doc, 
+  updateDoc, 
+  deleteDoc, 
+  writeBatch,
   type FirestoreDataConverter,
   type DocumentData,
+  CollectionReference
 } from 'firebase/firestore';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Rubro, Category, Subcategory } from '../models/category.model';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, Observable } from 'rxjs';
 
 const rubroConverter: FirestoreDataConverter<Rubro> = {
   toFirestore({ id, ...data }): DocumentData { return data; },
@@ -36,22 +45,31 @@ const subcategoryConverter: FirestoreDataConverter<Subcategory> = {
 export class CategoriesService {
   private firestore = inject(Firestore);
 
+  private collectionData<T>(collectionRef: any): Observable<T[]> {
+    return new Observable<T[]>(subscriber => {
+      return onSnapshot(query(collectionRef), (snapshot) => {
+        const data = snapshot.docs.map(doc => doc.data() as T);
+        subscriber.next(data);
+      }, error => subscriber.error(error));
+    });
+  }
+
   rubros = toSignal(
-    collectionData(collection(this.firestore, 'rubros').withConverter(rubroConverter), { idField: 'id' }).pipe(
+    this.collectionData<Rubro>(collection(this.firestore, 'rubros').withConverter(rubroConverter)).pipe(
       map(items => items.sort((a, b) => a.orden - b.orden)),
       catchError(() => of([]))
     ), { initialValue: [] }
   );
 
   categories = toSignal(
-    collectionData(collection(this.firestore, 'categories').withConverter(categoryConverter), { idField: 'id' }).pipe(
+    this.collectionData<Category>(collection(this.firestore, 'categories').withConverter(categoryConverter)).pipe(
       map(items => items.sort((a, b) => a.orden - b.orden)),
       catchError(() => of([]))
     ), { initialValue: [] }
   );
 
   subcategories = toSignal(
-    collectionData(collection(this.firestore, 'subcategories').withConverter(subcategoryConverter), { idField: 'id' }).pipe(
+    this.collectionData<Subcategory>(collection(this.firestore, 'subcategories').withConverter(subcategoryConverter)).pipe(
       map(items => items.sort((a, b) => a.orden - b.orden)),
       catchError(() => of([]))
     ), { initialValue: [] }
