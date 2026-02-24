@@ -1,67 +1,6 @@
 # 🛒 TiendaOnline
 
-Una aplicación de tienda online moderna desarrollada con Angular 20 y Firebase, que permite gestionar productos con un panel administrativo completo.
-
-## 📋 Descripción de la Aplicación
-
-**TiendaOnline** es una plataforma de comercio electrónico que incluye:
-
-### 🏪 **Funcionalidades Principales**
-
-#### **Área Pública**
-- **Catálogo de productos**: Visualización de productos con imágenes, nombres, descripciones y precios en pesos argentinos
-- **Búsqueda de productos**: Sistema de filtrado por nombre y descripción
-- **Detalle de producto**: Vista completa de cada producto individual
-- **Diseño responsive**: Adaptado para móviles, tablets y escritorio
-- **Navegación intuitiva**: Header con búsqueda y navegación por secciones
-
-#### **Panel Administrativo**
-- **Gestión de productos**: Crear, editar, eliminar y visualizar productos
-- **Subida de imágenes**: Sistema de upload a Firebase Storage
-- **Autenticación de admin**: Sistema de login para acceso administrativo
-- **Interfaz administrativa**: Panel dedicado con menú lateral y navegación optimizada
-
-### 🛠 **Tecnologías Utilizadas**
-
-- **Frontend**: Angular 20 con arquitectura standalone components
-- **Estilos**: TailwindCSS para diseño moderno y responsive
-- **Base de datos**: Firebase Firestore (NoSQL)
-- **Almacenamiento**: Firebase Storage para imágenes
-- **Estado**: Angular Signals para manejo reactivo del estado
-- **Routing**: Angular Router con guards de protección
-- **Formularios**: Angular Reactive Forms
-
-### 🏗 **Arquitectura del Proyecto**
-
-```
-src/app/
-├── admin/                    # Módulo administrativo
-│   ├── admin/               # Componente principal del panel admin
-│   ├── admin-products/      # Gestión de productos
-│   └── product-form/        # Formulario de productos
-├── components/              # Componentes reutilizables
-│   ├── header/             # Navegación principal
-│   ├── footer/             # Pie de página
-│   └── product-card/       # Tarjeta de producto
-├── pages/                   # Páginas principales
-│   ├── home/               # Página de inicio/catálogo
-│   ├── product-detail/     # Detalle de producto
-│   ├── about/              # Acerca de
-│   ├── terms/              # Términos y condiciones
-│   ├── privacy/            # Política de privacidad
-│   └── returns/            # Política de devoluciones
-├── services/               # Servicios de la aplicación
-│   ├── products.ts         # Gestión de productos
-│   ├── auth.service.ts     # Autenticación
-│   └── error-handler.service.ts # Manejo de errores
-├── guards/                 # Guards de routing
-│   └── admin.guard.ts      # Protección de rutas admin
-├── models/                 # Modelos de datos
-│   └── product.model.ts    # Interfaz de producto
-└── shared/                 # Componentes compartidos
-    ├── login-modal/        # Modal de login
-    └── confirm-dialog/     # Diálogo de confirmación
-```
+TiendaOnline es una plataforma de e-commerce desarrollada con Angular y Firebase. Permite la navegación por un catálogo de productos y la gestión administrativa de los mismos.
 
 ## 🚀 Instalación y Configuración
 
