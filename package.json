@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "seed": "node scripts/seed-products.mjs",
+    "seed:reset": "node scripts/seed-products.mjs --reset"
   },
   "prettier": {
     "overrides": [

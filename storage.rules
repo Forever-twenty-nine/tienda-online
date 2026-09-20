@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Storage Emulator: permisivo en dev. NO refleja reglas de producción.
+    // Las reglas de prod se mantienen independientes en Firebase Console.
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+}

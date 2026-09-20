@@ -40,3 +40,16 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Firebase service account keys (god-mode — NUNCA commitear)
+# Pattern lo ignora si la key vive en scripts/ o en cualquier subcarpeta.
+/**/serviceAccountKey*.json
+/firebase-adminsdk-*.json
+/service-account*.json
+
+# Firebase emulator debug logs (se regeneran cada vez)
+/firebase-debug.log
+/firestore-debug.log
+/ui-debug.log
+/auth-debug.log
+/**/emulator-data/
