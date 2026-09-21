@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
@@ -28,8 +28,8 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 export class ModalComponent {
-  @Input() open = false;
-  @Output() close = new EventEmitter<void>();
+  open = input(false);
+  close = output<void>();
 
   onBackdropClick(event: MouseEvent) {
     if (event.target === event.currentTarget) {

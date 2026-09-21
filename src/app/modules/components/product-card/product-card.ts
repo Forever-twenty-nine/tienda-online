@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Product } from '../../../core/models/product.model';
@@ -33,6 +33,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 export class ProductCard {
-  @Input() product!: Product;
+  product = input.required<Product>();
   hoverState = 'initial'; // Estado para la animación de hover
 }

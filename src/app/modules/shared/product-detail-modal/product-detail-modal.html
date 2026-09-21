@@ -1,4 +1,4 @@
-@if (loading) {
+@if (loading()) {
 <div [@modalState]="animationState" class="fixed inset-0 bg-slate-800/70 z-50 flex items-center justify-center">
   <div [@modalContent]="animationState" class="bg-white rounded-3xl shadow-xl max-w-[700px] w-full max-h-[90vh] overflow-y-auto relative">
     <div class="flex flex-col items-center justify-center py-10">
@@ -8,7 +8,7 @@
     <button class="absolute top-4 right-4 bg-transparent border-none text-2xl text-slate-400 cursor-pointer hover:text-slate-800 transition-colors z-10" (click)="onCloseClick()">&times;</button>
   </div>
 </div>
-} @else if (error) {
+} @else if (error()) {
 <div [@modalState]="animationState" class="fixed inset-0 bg-slate-800/70 z-50 flex items-center justify-center">
   <div [@modalContent]="animationState" class="bg-white rounded-3xl shadow-xl max-w-[700px] w-full max-h-[90vh] overflow-y-auto relative">
     <div class="flex flex-col items-center justify-center py-10">
@@ -20,33 +20,26 @@
     <button class="absolute top-4 right-4 bg-transparent border-none text-2xl text-slate-400 cursor-pointer hover:text-slate-800 transition-colors z-10" (click)="onCloseClick()">&times;</button>
   </div>
 </div>
-} @else if (product) {
+} @else if (product(); as p) {
 <div [@modalState]="animationState" class="fixed inset-0 bg-slate-800/70 z-50 flex items-center justify-center">
   <div [@modalContent]="animationState" class="bg-white rounded-xl  max-w-[90vw] w-full max-h-[90vh] overflow-y-auto relative">
     <div class="container mx-auto p-6">
-      <div class="mb-6 text-right">
-        <!-- <button (click)="onCloseClick()" class="flex items-center text-blue-600 hover:text-blue-800 transition-colors">
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Cerrar
-        </button> -->
-      </div>
+      <div class="mb-6 text-right"></div>
       <div class="bg-white overflow-hidden">
         <div class="grid md:grid-cols-2 gap-8 p-6">
           <div class="space-y-4">
             <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden relative border border-gray-100">
               <img ngOptimizedImage
                 [ngSrc]="selectedImage() ? selectedImage()! : 'https://picsum.photos/600/600'"
-                fill alt="{{ product.nombre }}" class="object-cover transition-all duration-500"
+                fill alt="{{ p.nombre }}" class="object-cover transition-all duration-500"
                 priority />
             </div>
 
             <!-- Miniaturas -->
-            @if (product.imagenes && product.imagenes.length > 1) {
+            @if (p.imagenes && p.imagenes.length > 1) {
               <div class="grid grid-cols-4 gap-2 mt-4">
-                @for (img of product.imagenes; track img) {
-                  <div 
+                @for (img of p.imagenes; track img) {
+                  <div
                     (click)="selectImage(img)"
                     class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300"
                     [class.border-brand-pink]="selectedImage() === img"
@@ -54,7 +47,7 @@
                     [class.shadow-sm]="selectedImage() === img"
                     [class.opacity-60]="selectedImage() !== img"
                     [class.hover:opacity-100]="selectedImage() !== img">
-                    <img [src]="img" class="w-full h-full object-cover" [alt]="product.nombre" loading="lazy">
+                    <img [src]="img" class="w-full h-full object-cover" [alt]="p.nombre" loading="lazy">
                   </div>
                 }
               </div>
@@ -62,40 +55,36 @@
           </div>
           <div class="flex flex-col">
             <div>
-              <h1 class="text-xl font-bold text-gray-900 mb-4">{{ product.nombre }}</h1>
+              <h1 class="text-xl font-bold text-gray-900 mb-4">{{ p.nombre }}</h1>
               <div class="mb-8">
-                @if (product.descuento && product.descuento > 0) {
+                @if (p.descuento && p.descuento > 0) {
                   <div class="flex items-center gap-3">
                     <p class="text-3xl font-extrabold text-red-600">
-                      $ {{ (product.precio * (1 - product.descuento / 100)).toFixed(2) }}
+                      $ {{ (p.precio * (1 - p.descuento / 100)).toFixed(2) }}
                     </p>
                     <div class="flex flex-col">
                       <span class="text-sm text-gray-400 line-through">
-                        $ {{ product.precio }}
+                        $ {{ p.precio }}
                       </span>
                       <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                        {{ product.descuento }}% OFF
+                        {{ p.descuento }}% OFF
                       </span>
                     </div>
                   </div>
                 } @else {
                   <p class="text-3xl font-extrabold text-red-600">
-                    $ {{ product.precio }}
+                    $ {{ p.precio }}
                   </p>
                 }
               </div>
               <div class="mb-8">
                 <h3 class="text-xs uppercase text-brand-gray-dark mb-2">Descripción</h3>
-                <p class="text-gray-700 text-sm leading-tight">{{ product.descripcion }}</p>
+                <p class="text-gray-700 text-sm leading-tight">{{ p.descripcion }}</p>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <!-- <div class="bg-gray-50 p-4 rounded-lg">
-                  <h4 class="font-semibold text-gray-800 mb-1">ID del Producto</h4>
-                  <p class="text-gray-600 text-sm">{{ product.id }}</p>
-                </div> -->
                 <div class="">
                   <h4 class="text-xs uppercase font-ftn-light text-brand-gray-dark mb-1">Disponibilidad</h4>
-                  @if (product.disponibilidad) {
+                  @if (p.disponibilidad) {
                     <p class="text-brand-pink-dark font-ftn-bold bg-brand-pink/10 inline-block px-4 py-1">
                       Con stock
                     </p>
@@ -108,16 +97,12 @@
               </div>
               <div class="bg-brand-gray/20 px-4 py-6">
                 <h4 class="text-sm font-ftn-medium mb-2 flex items-center">
-
                   <svg viewBox="0 0 20 20" focusable="false" class="w-4 h-4 mr-3"><path d="M13.2238 4.9337C13.1504 1.68636 9.32745 -0.0329918 6.56564 1.94201C3.42904 4.18502 3.42047 8.70116 5.85008 11.9883L10.4891 18.2647C12.0567 16.4701 14.5046 12.9513 15.7745 10.3471C16.5453 8.76617 16.9721 7.00668 16.5525 5.43291C16.4586 5.08077 16.3151 4.73487 16.1039 4.4181L17.0303 3.80052C17.3202 4.23531 17.5086 4.69733 17.6283 5.14605C18.1468 7.09056 17.6002 9.14313 16.7752 10.8351C15.3297 13.7995 12.4381 17.8735 10.8443 19.5261L10.3873 20L4.95474 12.6501C2.3006 9.05915 2.09757 3.76842 5.91802 1.03638C9.28618 -1.37222 14.24 0.621738 14.3369 4.90856C14.3392 5.01323 14.3404 5.11795 14.3404 5.22267C14.3404 7.6345 12.809 9.67611 10.722 9.67611C10.6154 9.67611 10.5052 9.66845 10.394 9.65515C8.64738 9.44629 7.59034 8.12336 7.39053 6.72797C7.18968 5.32541 7.85018 3.79067 9.53285 3.20839C9.91859 3.07491 10.3204 2.99595 10.722 2.99595V4.10931C10.4653 4.10931 10.1872 4.1601 9.89694 4.26053C8.78915 4.64388 8.35627 5.61781 8.49264 6.57015C8.63005 7.52968 9.34083 8.40792 10.5262 8.54966C10.6024 8.55878 10.6677 8.56275 10.722 8.56275C11.9751 8.56275 13.227 7.26428 13.227 5.22267C13.227 5.12633 13.226 5.02998 13.2238 4.9337Z" fill="currentColor"></path></svg>
-                  <span>
-                  Recoger en tienda
-                  </span>
+                  <span>Recoger en tienda</span>
                 </h4>
                 <p class="text-sm pl-7">
                   Comunicate con nosotros para coordinar la recogida de tu pedido en nuestra tienda física. Estamos ubicados en el corazón de la ciudad, listos para atenderte con una sonrisa y ayudarte a llevar tus joyas favoritas a casa. ¡Te esperamos!
                 </p>
-
               </div>
             </div>
             <div class="space-y-2 mt-10">
@@ -128,9 +113,6 @@
                 </svg>
                 <span>Consultanos por WhatsApp</span>
               </button>
-              <!-- <p class="text-center text-gray-500 text-sm">
-                Te contactaremos para ayudarte con tu consulta
-              </p> -->
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
-@if (open) {
-  <app-modal [open]="open" (close)="closeModal()">
+@if (open()) {
+  <app-modal [open]="open()" (close)="closeModal()">
     <div class="bg-white rounded-lg  py-12 px-10 transition-all duration-300 scale-100 mx-auto" style="width: 100%; ">
       <div class="flex gap-2 mb-10 w-full">
         <div class="flex w-full gap-4">

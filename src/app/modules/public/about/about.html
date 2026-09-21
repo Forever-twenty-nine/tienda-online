@@ -1,17 +1,19 @@
 <section class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px] min-h-[60vh]">
-  <div *ngIf="isLoading()" class="flex justify-center p-20">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
-  </div>
-
-  <div *ngIf="!isLoading()">
+  @if (isLoading()) {
+    <div class="flex justify-center p-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
+    </div>
+  } @else {
     <!-- Header -->
     <div class="text-center mb-16">
       <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">
         {{ pageData()?.title || 'Sobre Nosotros' }}
       </h1>
-      <p class="text-base text-brand-dark/50 max-w-xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10" *ngIf="!pageData()?.content">
-        Conoce la historia detrás de nuestra tienda y nuestro compromiso con la excelencia.
-      </p>
+      @if (!pageData()?.content) {
+        <p class="text-base text-brand-dark/50 max-w-xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10">
+          Conoce la historia detrás de nuestra tienda y nuestro compromiso con la excelencia.
+        </p>
+      }
     </div>
 
     <!-- Content -->
@@ -20,8 +22,10 @@
     </div>
 
     <!-- Mensaje si no hay contenido -->
-    <div *ngIf="!pageData()?.content" class="text-center py-20 text-gray-500 italic">
-      Contenido en preparación. ¡Vuelve pronto para conocernos mejor!
-    </div>
-  </div>
+    @if (!pageData()?.content) {
+      <div class="text-center py-20 text-gray-500 italic">
+        Contenido en preparación. ¡Vuelve pronto para conocernos mejor!
+      </div>
+    }
+  }
 </section>

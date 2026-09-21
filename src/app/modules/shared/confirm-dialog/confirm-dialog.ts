@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { ModalComponent } from '../modal/modal';
 
 @Component({
@@ -9,11 +9,11 @@ import { ModalComponent } from '../modal/modal';
   templateUrl: './confirm-dialog.html',
 })
 export class ConfirmDialog {
-  @Input() open = false;
-  @Input() title = 'Confirmación';
-  @Input() message = '¿Estás seguro?';
-  @Input() confirmText = 'Aceptar';
-  @Input() cancelText = 'Cancelar';
-  @Output() confirm = new EventEmitter<void>();
-  @Output() cancel = new EventEmitter<void>();
+  open = input(false);
+  title = input('Confirmación');
+  message = input('¿Estás seguro?');
+  confirmText = input('Aceptar');
+  cancelText = input('Cancelar');
+  confirm = output<void>();
+  cancel = output<void>();
 }

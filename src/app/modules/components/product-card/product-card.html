@@ -3,20 +3,20 @@
      (mouseenter)="hoverState = 'hovered'"
      (mouseleave)="hoverState = 'initial'"
      class="bg-white rounded-lg flex flex-col h-full overflow-hidden cursor-pointer group"
-     [routerLink]="['/product', product.slug]">
+     [routerLink]="['/product', product().slug]">
 
     <!-- 🖼️ Imagen principal del producto -->
     <div class="w-full h-80 bg-gray-100 relative overflow-hidden">
         <img ngOptimizedImage
-             [ngSrc]="product.imagen && product.imagen.trim() ? product.imagen : 'https://picsum.photos/400/300'"
+             [ngSrc]="product().imagen && product().imagen!.trim() ? product().imagen! : 'https://picsum.photos/400/300'"
              fill
-             alt="{{ product.nombre }}"
+             alt="{{ product().nombre }}"
              class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
              priority />
 
         <!-- Etiquetas de estado -->
         <div class="absolute top-2 left-2 z-10 flex flex-col gap-1">
-            @if (product.disponibilidad) {
+            @if (product().disponibilidad) {
             <div class="bg-success text-success-foreground text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
                 Con Stock
             </div>
@@ -25,14 +25,14 @@
                 Sin Stock
             </div>
             }
-            @if (product.descuento && product.descuento > 0) {
+            @if ((product().descuento ?? 0) > 0) {
             <div class="bg-brand-secondary text-error-foreground text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                {{ product.descuento }}% OFF
+                {{ product().descuento }}% OFF
             </div>
             }
         </div>
 
-        @if (product.destacado) {
+        @if (product().destacado) {
         <div class="absolute top-2 right-2 z-10 ">
             <div class="text-brand-primary  text-xs w-8 h-6 rounded-full flex justify-center items-center">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -46,21 +46,21 @@
     <!-- Nombre y precio -->
     <div class="p-4 flex flex-col items-start gap-2">
         <h2 class="text-sm line-clamp-2 h-10 flex items-start justify-start">
-            {{ product.nombre }}
+            {{ product().nombre }}
         </h2>
 
         <div class="py-1">
             <div class="flex flex-row gap-4  items-baseline">
-                @if (product.descuento && product.descuento > 0) {
+                @if ((product().descuento ?? 0) > 0) {
                     <span class="text-xl">
-                        $ {{ (product.precio * (1 - product.descuento / 100)).toFixed(2) }}
+                        $ {{ (product().precio * (1 - product().descuento! / 100)).toFixed(2) }}
                     </span>
                     <span class="text-xs text-brand-dark/50 line-through">
-                        $ {{ product.precio }}
+                        $ {{ product().precio }}
                     </span>
                 } @else {
                     <span class="text-xl">
-                        $ {{ product.precio }}
+                        $ {{ product().precio }}
                     </span>
                 }
             </div>

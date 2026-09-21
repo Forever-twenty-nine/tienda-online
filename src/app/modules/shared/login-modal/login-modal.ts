@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,8 +13,8 @@ import { ModalComponent } from '../modal/modal';
   templateUrl: './login-modal.html'
 })
 export class LoginModalComponent {
-  @Input() open = false;
-  @Output() closeModalEvent = new EventEmitter<void>();
+  open = input(false);
+  closeModalEvent = output<void>();
 
   credentials = {
     username: '',
@@ -39,7 +39,7 @@ export class LoginModalComponent {
       // Simular un pequeño delay para mostrar el loading
       setTimeout(() => {
         const loginSuccess = this.authService.login(
-          this.credentials.username, 
+          this.credentials.username,
           this.credentials.password
         );
 

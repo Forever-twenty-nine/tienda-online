@@ -1,17 +1,19 @@
 <section class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px] min-h-[60vh]">
-  <div *ngIf="isLoading()" class="flex justify-center p-20">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
-  </div>
-
-  <div *ngIf="!isLoading()">
+  @if (isLoading()) {
+    <div class="flex justify-center p-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
+    </div>
+  } @else {
     <!-- Header -->
     <div class="text-center mb-10 lg:mb-16">
       <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">
         {{ pageData()?.title || 'Términos y Condiciones' }}
       </h1>
-      <p class="text-lg text-brand-dark/50 max-w-3xl mx-auto" *ngIf="pageData()?.lastUpdated">
-        Última actualización: {{ pageData()?.lastUpdated.toDate() | date:'MMMM yyyy':'':'es-AR' }}
-      </p>
+      @if (pageData()?.lastUpdated) {
+        <p class="text-lg text-brand-dark/50 max-w-3xl mx-auto">
+          Última actualización: {{ pageData()?.lastUpdated.toDate() | date:'MMMM yyyy':'':'es-AR' }}
+        </p>
+      }
     </div>
 
     <!-- Content -->
@@ -19,8 +21,10 @@
       {{ pageData()?.content }}
     </div>
 
-    <div *ngIf="!pageData()?.content" class="text-center py-20 text-gray-500 italic">
-      Contenido no disponible en este momento.
-    </div>
-  </div>
+    @if (!pageData()?.content) {
+      <div class="text-center py-20 text-gray-500 italic">
+        Contenido no disponible en este momento.
+      </div>
+    }
+  }
 </section>
