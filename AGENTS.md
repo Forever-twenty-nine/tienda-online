@@ -4,11 +4,11 @@
 
 ## Stack
 
-- **Angular 21.1.5** — zoneless, standalone components, sin NgModules.
+- **Angular 22.1.7** — zoneless, standalone components, sin NgModules.
 - **Firebase 12.9** — Firestore + Storage. Sin Cloud Functions deployadas todavía.
 - **Tailwind 4** + PostCSS.
-- **Vitest 4** para tests (NO Karma/Jasmine).
-- **TypeScript ~5.9**.
+- **Vitest 5** para tests (NO Karma/Jasmine).
+- **TypeScript ~6.0.3**.
 - **Locale `es-AR`** registrado en `app.config.ts`. Moneda: ARS.
 
 ## Estructura
@@ -33,6 +33,8 @@ src/app/
 - **Signals** sobre RxJS para estado local. `inject()` o `inject(Provider)` en constructores.
 - **No agregar Zone.js**: `provideZonelessChangeDetection()` ya está activo.
 - **No usar `NgModel`** — usar Reactive Forms o signals.
+- **Signal APIs** para `@Input/@Output`: usar `input()`/`input.required()`/`output()`/`model()` (Angular 17.1+). NO usar decoradores `@Input/@Output` ni `new EventEmitter()`.
+- **Nuevo control flow** en templates: `@if/@for/@switch/@let`. NO usar directivas estructurales legacy `*ngIf/*ngFor/*ngSwitch`.
 - **Una sola instancia de Firebase** en `core/firebase/firebase.config.ts`. No instanciar `initializeApp` en otros lados.
 - **Imágenes en Storage**, nunca inline en base64.
 - **Lógica de negocio en services**, no en componentes.
