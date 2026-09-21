@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SettingsService } from '../../../core/services/settings.service';
 import { PageContent } from '../../../core/models/settings.model';
@@ -8,6 +8,7 @@ import { PageContent } from '../../../core/models/settings.model';
   standalone: true,
   imports: [CommonModule],
   // imports limpios, header/footer van en layout
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './privacy.html'
 })
 export class PrivacyComponent implements OnInit {

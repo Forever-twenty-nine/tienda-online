@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit, AfterViewInit, ViewChild, ElementRef, computed } from '@angular/core';
+import { Component, inject, signal, OnInit, AfterViewInit, ViewChild, ElementRef, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductCard } from '../../components/product-card/product-card';
 import { ProductsService } from '../../../core/services/products';
@@ -9,6 +9,7 @@ import { Product } from '../../../core/models/product.model';
   selector: 'app-catalog',
   standalone: true,
   imports: [ProductCard, FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './catalog.html'
 })
 export class CatalogComponent implements OnInit, AfterViewInit {

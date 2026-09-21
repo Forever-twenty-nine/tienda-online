@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -10,6 +10,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
   selector: 'app-admin-categories',
   standalone: true,
   imports: [FormsModule, ConfirmDialog, DragDropModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './admin-categories.html',
 })
 export class AdminCategories {

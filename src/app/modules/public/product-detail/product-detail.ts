@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, effect, computed, input } from '@angular/core';
+import { Component, inject, OnInit, signal, effect, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
 import { ProductsService } from '../../../core/services/products';
@@ -11,6 +11,7 @@ import { ProductCard } from '../../components/product-card/product-card';
     selector: 'app-product-detail',
     standalone: true,
     imports: [NgOptimizedImage, ProductCard],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './product-detail.html'
 })
 export class ProductDetailComponent implements OnInit {

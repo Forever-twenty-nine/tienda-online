@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, input, effect, signal } from '@angular/core';
+import { Component, inject, OnInit, input, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SettingsService } from '../../../core/services/settings.service';
@@ -8,6 +8,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
   selector: 'app-admin-legal',
   standalone: true,
   imports: [CommonModule, FormsModule, ConfirmDialog],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './admin-legal.html'
 })
 export class AdminLegalComponent implements OnInit {

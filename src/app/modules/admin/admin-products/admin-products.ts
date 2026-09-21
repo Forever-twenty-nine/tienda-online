@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 
 import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { Product } from '../../../core/models/product.model';
 @Component({
   selector: 'app-admin-products',
   imports: [NgOptimizedImage],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './admin-products.html',
 })
 export class AdminProducts implements OnInit, OnDestroy, AfterViewInit {

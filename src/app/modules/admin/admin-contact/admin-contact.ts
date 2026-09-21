@@ -1,4 +1,4 @@
-import { Component, inject, effect, signal } from '@angular/core';
+import { Component, inject, effect, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { ContactService } from '../../../core/services/contact.service';
@@ -9,6 +9,7 @@ import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
   selector: 'app-admin-contact',
   standalone: true,
   imports: [FormsModule, ConfirmDialog],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './admin-contact.html',
 })
 export class AdminContact {

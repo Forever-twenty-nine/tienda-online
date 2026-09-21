@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { LoginModalComponent } from '../../shared/login-modal/login-modal';
 import { AuthService } from '../../../core/services/auth.service';
@@ -9,6 +9,7 @@ import { ContactService } from '../../../core/services/contact.service';
   selector: 'app-footer',
   standalone: true,
   imports: [RouterLink, LoginModalComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './footer.html'
 })
 export class FooterComponent {

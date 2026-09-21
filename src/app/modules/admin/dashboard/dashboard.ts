@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-admin-dashboard',
   standalone: true,
   imports: [RouterLink],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './dashboard.html',
 })
 export class AdminDashboard {

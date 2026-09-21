@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, HostBinding, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, HostBinding, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NgOptimizedImage, CurrencyPipe } from '@angular/common';
 import { Product } from '../../../core/models/product.model';
 import { trigger, style, animate, transition, state } from '@angular/animations';
@@ -9,6 +9,7 @@ import { ContactService } from '../../../core/services/contact.service';
   standalone: true,
   imports: [NgOptimizedImage],
   templateUrl: './product-detail-modal.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('modalState', [
       state('void', style({

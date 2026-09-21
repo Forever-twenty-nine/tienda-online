@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
   templateUrl: './modal.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('modalBackdrop', [
       transition(':enter', [

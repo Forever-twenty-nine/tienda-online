@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ProductsService } from '../../../core/services/products';
@@ -7,6 +7,7 @@ import { ProductsService } from '../../../core/services/products';
   selector: 'app-header',
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './header.html'
 })
 export class HeaderComponent {

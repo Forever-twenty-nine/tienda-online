@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { HeaderComponent } from '../../../components/header/header';
 import { FooterComponent } from '../../../components/footer/footer';
 import { RouterOutlet } from '@angular/router';
@@ -8,6 +8,7 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-public-layout',
   standalone: true,
   imports: [HeaderComponent, FooterComponent, RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './layout.html',
 })
 export class PublicLayoutComponent {}

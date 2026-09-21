@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
@@ -15,6 +15,7 @@ import { NgClass } from '@angular/common';
 @Component({
   selector: 'app-product-form',
   imports: [ ReactiveFormsModule, ConfirmDialog, NgClass],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './product-form.html',
 })
 export class ProductForm {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { ModalComponent } from '../modal/modal';
   selector: 'app-login-modal',
   standalone: true,
   imports: [FormsModule, ModalComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './login-modal.html'
 })
 export class LoginModalComponent {

@@ -1,4 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
@@ -8,6 +8,7 @@ import { ProductCard } from '../../components/product-card/product-card';
   selector: 'app-home',
   standalone: true,
   imports: [RouterLink, ProductCard],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './home.html',
 })
 export class Home {
