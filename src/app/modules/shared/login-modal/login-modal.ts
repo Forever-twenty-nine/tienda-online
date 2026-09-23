@@ -17,7 +17,7 @@ export class LoginModalComponent {
   closeModalEvent = output<void>();
 
   credentials = {
-    username: '',
+    email: '',
     password: ''
   };
 
@@ -31,30 +31,30 @@ export class LoginModalComponent {
     private router: Router
   ) {}
 
-  onSubmit(): void {
-    if (this.credentials.username && this.credentials.password) {
+  async onSubmit(): Promise<void> {
+    if (this.credentials.email && this.credentials.password) {
       this.isLoading = true;
       this.showError = false;
 
-      // Simular un pequeño delay para mostrar el loading
-      setTimeout(() => {
-        const loginSuccess = this.authService.login(
-          this.credentials.username,
-          this.credentials.password
-        );
+      const loginSuccess = await this.authService.login(
+        this.credentials.email,
+        this.credentials.password
+      );
 
-        this.isLoading = false;
+      this.isLoading = false;
 
-        if (loginSuccess) {
-          this.closeModal();
-          this.router.navigate(['/admin']);
-        } else {
-          this.showError = true;
-          this.errorMessage = 'Usuario o contraseña incorrectos';
-          // Limpiar la contraseña
-          this.credentials.password = '';
-        }
-      }, 1000);
+      if (loginSuccess && this.authService.hasAdminAccess()) {
+        this.closeModal();
+        this.router.navigate(['/admin']);
+      } else if (loginSuccess) {
+        this.showError = true;
+        this.errorMessage = 'Login exitoso pero la cuenta no tiene permisos de admin.';
+        this.credentials.password = '';
+      } else {
+        this.showError = true;
+        this.errorMessage = 'Email o contraseña incorrectos';
+        this.credentials.password = '';
+      }
     }
   }
 
