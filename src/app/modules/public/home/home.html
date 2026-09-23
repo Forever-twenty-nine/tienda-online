@@ -188,9 +188,48 @@
         </div>
       </div>
       <div class="relative max-w-md mx-auto lg:max-w-none">
-        <div class="aspect-[4/5] rounded-[20px] overflow-hidden">
-          <img src="http://127.0.0.1:9199/v0/b/tienda-online-50dda.firebasestorage.app/o/home%2F1790157409371_hand_holding_iphone.jpg?alt=media&token=eeaf1d7c-be0a-45a9-9135-ca2b74069b93"
-               class="w-full h-full object-cover" alt="Atención personal">
+        <div class="aspect-[4/5] rounded-[20px] overflow-hidden bg-gradient-to-br from-canvas to-cool-wash">
+          <!-- Decorative SVG inline: celular estilizado + ícono de WhatsApp.
+               Las imágenes decorativas del home NO viven en Storage: van en
+               código. Solo las imágenes de productos van a Firebase Storage. -->
+          <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" aria-hidden="true">
+            <defs>
+              <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fafafa"/>
+                <stop offset="1" stop-color="#ecebe6"/>
+              </linearGradient>
+              <linearGradient id="phoneGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#1d1d1f"/>
+                <stop offset="1" stop-color="#3a3a3c"/>
+              </linearGradient>
+            </defs>
+            <!-- Fondo -->
+            <rect width="320" height="400" fill="url(#bgGrad)"/>
+            <!-- Sombra del celular -->
+            <ellipse cx="160" cy="338" rx="70" ry="6" fill="#000" opacity="0.12"/>
+            <!-- Cuerpo del celular -->
+            <rect x="100" y="62" width="120" height="236" rx="20" fill="url(#phoneGrad)"/>
+            <!-- Pantalla -->
+            <rect x="110" y="80" width="100" height="180" rx="6" fill="#ffffff"/>
+            <!-- Notch -->
+            <rect x="142" y="68" width="36" height="5" rx="2.5" fill="#0a0a0a"/>
+            <!-- Header chat WhatsApp -->
+            <rect x="110" y="80" width="100" height="28" fill="#075e54"/>
+            <text x="160" y="98" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" fill="#fff" font-weight="500">WhatsApp</text>
+            <!-- Burbujas de chat (3 mensajes) -->
+            <rect x="116" y="120" width="56" height="10" rx="5" fill="#e6f5d9"/>
+            <rect x="138" y="138" width="68" height="10" rx="5" fill="#e6f5d9"/>
+            <rect x="120" y="160" width="50" height="10" rx="5" fill="#dcf8c6"/>
+            <rect x="146" y="186" width="60" height="10" rx="5" fill="#dcf8c6"/>
+            <!-- Indicador "escribiendo" -->
+            <circle cx="124" cy="220" r="2.5" fill="#9ca3af"/>
+            <circle cx="132" cy="220" r="2.5" fill="#9ca3af"/>
+            <circle cx="140" cy="220" r="2.5" fill="#9ca3af"/>
+            <!-- Logo WhatsApp circular -->
+            <circle cx="220" cy="270" r="32" fill="#25d366"/>
+            <path d="M205 285 q-2 -8 5 -16 q3 -3 8 -3 l5 0 q4 0 6 4 l3 8 q2 4 -3 7 l-5 2 q3 8 9 14 q7 6 14 9 l2 -5 q3 -5 7 -3 l8 3 q4 2 4 6 l0 5 q0 4 -3 7 q-7 6 -15 4 q-15 -3 -28 -16 q-13 -13 -16 -28 z"
+                  fill="#fff" opacity="0.95"/>
+          </svg>
         </div>
         <div class="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-ink text-canvas p-5 rounded-2xl shadow-xl">
           <p class="text-3xl font-medium mb-1">+5.000</p>
