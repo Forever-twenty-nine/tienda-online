@@ -14,15 +14,15 @@ import { ContactService } from '../../../core/services/contact.service';
 })
 export class FooterComponent {
   public contactService = inject(ContactService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  // Inyectado via inject() (no constructor) para que TestBed.inject
+  // funcione sin necesidad de crear un fixture.
+  private cdr = inject(ChangeDetectorRef);
+
   clickCount = 0;
   showAdminAccess = false;
   showLoginModal = false;
-
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
 
   onLogoClick() {
     this.clickCount++;
