@@ -1,10 +1,14 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Storage Emulator: permisivo en dev. NO refleja reglas de producción.
-    // Las reglas de prod se mantienen independientes en Firebase Console.
+    // Cualquier visitante (anonimo) puede LEER imagenes (visitantes ven el
+    // catalogo). Solo el admin (custom claim `admin: true`) puede ESCRIBIR.
+    //
+    // Cubre tanto `products/{slug}/*` (imagenes de productos subidas desde
+    // el admin) como `home/*` (assets de la landing).
     match /{allPaths=**} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
     }
   }
 }
