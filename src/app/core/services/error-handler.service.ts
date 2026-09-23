@@ -39,7 +39,12 @@ export class ErrorHandlerService {
   }
 
   private handleFirebaseError(error: any): void {
-    switch (error.code) {
+    // Firebase SDK devuelve códigos prefijados ("auth/wrong-password",
+    // "storage/permission-denied", "firestore/unavailable") pero también
+    // se ven a veces sin prefijo ("CONFIGURATION_NOT_FOUND"). Tomamos el
+    // sufijo (ultimo segmento despues de '/') para switchear uniforme.
+    const code = String(error.code ?? '').split('/').pop() ?? '';
+    switch (code) {
       case 'CONFIGURATION_NOT_FOUND':
         console.log('💡 Solución sugerida: Verificar configuración de Firebase');
         console.log('   - Revisar archivo environment.ts');
