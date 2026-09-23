@@ -16,7 +16,7 @@
          que scroll horizontal, sacrifica la comparativa lado-a-lado.
          ============================================================ -->
     <div class="md:hidden space-y-4">
-      @for (p of IPHONES; track p.nombre) {
+      @for (p of IPHONES(); track p.nombre) {
         <article class="bg-canvas rounded-[20px] border border-hairline overflow-hidden">
 
           <!-- Header: nombre + badge descuento -->
@@ -86,7 +86,7 @@
             <th scope="col" class="sticky left-0 z-10 bg-mist text-left align-bottom pb-3 pr-4 w-0">
               <span class="absolute w-px h-px p-0 m-[-1px] overflow-hidden whitespace-nowrap border-0 [clip:rect(0,0,0,0)]">Modelo</span>
             </th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <th scope="col" class="align-bottom pb-3 px-3 min-w-[140px]">
                 <div class="flex flex-col items-center gap-2">
                   <span class="text-base font-medium text-ink">{{ p.nombre }}</span>
@@ -105,7 +105,7 @@
           <!-- Precio -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4">Precio</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3">
                 <span class="text-base font-medium text-ink">$ {{ p.precio | number:'1.0-0':'es-AR' }}</span>
               </td>
@@ -115,7 +115,7 @@
           <!-- 12 cuotas -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">12 cuotas de</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink-80">$ {{ p.cuota12 | number:'1.0-0':'es-AR' }} sin interés</span>
               </td>
@@ -125,7 +125,7 @@
           <!-- Chip -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Chip</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.chip }}</span>
               </td>
@@ -135,7 +135,7 @@
           <!-- Pantalla -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Pantalla</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.pantalla }}</span>
               </td>
@@ -145,7 +145,7 @@
           <!-- Cámara -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Cámaras</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.camara }}</span>
               </td>
@@ -155,7 +155,7 @@
           <!-- Batería -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Batería (video)</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.bateria }}</span>
               </td>
@@ -165,7 +165,7 @@
           <!-- Conector -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Conector</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.conector }}</span>
               </td>
@@ -175,7 +175,7 @@
           <!-- Capacidad mínima -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Desde</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.capacidadMin }}</span>
               </td>
@@ -185,7 +185,7 @@
           <!-- Colores -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Colores</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.colores }} colores</span>
               </td>
@@ -195,7 +195,7 @@
           <!-- CTA Comprar -->
           <tr>
             <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-bottom pt-4 pr-4 border-t border-hairline">Comprar</th>
-            @for (p of IPHONES; track p.nombre) {
+            @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-bottom pt-4 px-3 border-t border-hairline">
                 <a
                   [routerLink]="['/product', p.slug]"

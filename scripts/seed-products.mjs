@@ -117,6 +117,14 @@ const PRODUCTS = [
       { nombre: '(PRODUCT)RED', hex: '#bf0013' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB'],
+    specs: {
+      chip: 'A15 Bionic',
+      pantalla: '6.1" Super Retina XDR',
+      camara: '12 MP · 12 MP',
+      bateria: '19 hs',
+      conector: 'Lightning',
+      capacidadMin: '128 GB',
+    },
   },
   {
     nombre: 'iPhone 14',
@@ -142,6 +150,14 @@ const PRODUCTS = [
       { nombre: '(PRODUCT)RED', hex: '#bf0013' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB'],
+    specs: {
+      chip: 'A15 Bionic',
+      pantalla: '6.1" Super Retina XDR',
+      camara: '12 MP · 12 MP',
+      bateria: '20 hs',
+      conector: 'Lightning',
+      capacidadMin: '128 GB',
+    },
   },
   {
     nombre: 'iPhone 15',
@@ -166,6 +182,14 @@ const PRODUCTS = [
       { nombre: 'Negro', hex: '#1d1d1f' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB'],
+    specs: {
+      chip: 'A16 Bionic',
+      pantalla: '6.1" Super Retina XDR',
+      camara: '48 MP · 12 MP',
+      bateria: '20 hs',
+      conector: 'USB-C',
+      capacidadMin: '128 GB',
+    },
   },
   {
     nombre: 'iPhone 16',
@@ -190,6 +214,14 @@ const PRODUCTS = [
       { nombre: 'Negro', hex: '#1d1d1f' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB'],
+    specs: {
+      chip: 'A18',
+      pantalla: '6.1" Super Retina XDR',
+      camara: '48 MP Fusion · 12 MP',
+      bateria: '22 hs',
+      conector: 'USB-C',
+      capacidadMin: '128 GB',
+    },
   },
   {
     nombre: 'iPhone 16 Pro',
@@ -213,6 +245,14 @@ const PRODUCTS = [
       { nombre: 'Titanio negro', hex: '#3a3a3c' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB', '1 TB'],
+    specs: {
+      chip: 'A18 Pro',
+      pantalla: '6.3" ProMotion',
+      camara: '48 MP Fusion · 12 MP · 12 MP',
+      bateria: '27 hs',
+      conector: 'USB-C',
+      capacidadMin: '128 GB',
+    },
   },
 ];
 

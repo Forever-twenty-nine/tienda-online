@@ -14,26 +14,11 @@ _(vacío — sesión cerrada al final del redesign visual, ver "Línea del tiemp
 
 ## Pendientes (post-refactor) — lo que falta
 
-### 1. **Comparador a Firestore (cambio de modelo mayor)** — siguiente prioridad
-
-Hoy las specs del comparador (`chip`, `pantalla`, `camara`, `bateria`, `conector`) viven **hardcoded** en `src/app/modules/components/iphone-comparator/iphone-comparator.ts` (interface `IPhoneSpec` y array `IPHONES`).
-
-**Decisión postergada**: cuando se haga, crear el modelo. Alternativas evaluables:
-- **Opción A**: extender `Product` con campos opcionales `specs?: { chip, pantalla, camara, bateria, conector, capacidadMin }`. Pros: una sola fuente de verdad. Contras: solo aplica a iPhones — todos los productos no-iPhone tienen `specs` vacío.
-- **Opción B**: crear `interface IPhoneSpec` y una subcollection `products/{id}/specs` en Firestore. Pros: solo iPhones cargan specs. Contras: dos queries por producto.
-
-Probablemente **Opción A** es más simple para empezar (campos opcionales no rompen nada). Cambios involucrados:
-- `src/app/core/models/product.model.ts` — agregar `specs?` opcional
-- `scripts/seed-products.mjs` — poblar `specs` en los 5 iPhones
-- `src/app/core/firestore/firestore.rules` — permitir el campo nuevo (área crítica, AGENTS.md)
-- `src/app/modules/admin/product-form/product-form.html` + `.ts` — UI para editar specs
-- `src/app/modules/components/iphone-comparator/iphone-comparator.ts` — reemplazar `IPHONES` hardcoded por `computed(() => allProducts().filter(p => p.subcategoriaId?.startsWith('iphone-')).sort(...))`
-
-### 2. **Auth real** — bloqueante para producción
+### 1. **Auth real** — bloqueante para producción
 
 Sacar el `AuthService` cliente-hardcodeado (`admin/admin123` + flag `localStorage`) y migrar a Firebase Auth + Cloud Functions para validar tokens server-side. AGENTS.md marca `core/services/auth.service.ts` como **área crítica** — pedir OK explícito antes de empezar.
 
-### 3. **Imágenes reales** de los 5 iPhones (pendiente de data)
+### 2. **Imágenes reales** de los 5 iPhones (pendiente de data)
 
 Hoy todos muestran `https://picsum.photos/seed/{slug}/800/800` (placeholders). Para producción real se necesitan fotos de cada modelo + colores. Subir vía admin → Firebase Storage; o pasarle URLs de Apple al seed.
 

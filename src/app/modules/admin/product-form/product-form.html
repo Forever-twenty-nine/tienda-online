@@ -330,6 +330,43 @@
           </div>
         </div>
 
+        <!-- 📊 Specs del comparador (solo iPhones) -->
+        @if (showSpecs()) {
+          <div class="bg-canvas rounded-[20px] p-6 border border-hairline">
+            <div class="mb-4">
+              <h3 class="text-xl font-medium text-ink">Specs del comparador</h3>
+              <p class="text-sm text-ink-80 mt-1">Datos técnicos que verá el cliente en la tabla comparativa de iPhones.</p>
+            </div>
+
+            <div formGroupName="specs" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-ink mb-2">Chip</label>
+                <input type="text" formControlName="chip" placeholder="Ej: A18 Pro" class="w-full border border-hairline rounded-lg px-4 py-3 focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[44px]" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-ink mb-2">Pantalla</label>
+                <input type="text" formControlName="pantalla" placeholder='Ej: 6.3" ProMotion' class="w-full border border-hairline rounded-lg px-4 py-3 focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[44px]" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-ink mb-2">Cámaras</label>
+                <input type="text" formControlName="camara" placeholder="Ej: 48 MP Fusion · 12 MP · 12 MP" class="w-full border border-hairline rounded-lg px-4 py-3 focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[44px]" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-ink mb-2">Batería (video)</label>
+                <input type="text" formControlName="bateria" placeholder="Ej: 27 hs" class="w-full border border-hairline rounded-lg px-4 py-3 focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[44px]" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-ink mb-2">Conector</label>
+                <input type="text" formControlName="conector" placeholder="Ej: USB-C" class="w-full border border-hairline rounded-lg px-4 py-3 focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[44px]" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-ink mb-2">Capacidad mínima</label>
+                <input type="text" formControlName="capacidadMin" placeholder="Ej: 128 GB" class="w-full border border-hairline rounded-lg px-4 py-3 focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[44px]" />
+              </div>
+            </div>
+          </div>
+        }
+
         <!-- 🎯 Botones de Acción -->
         <div class="flex flex-col lg:flex-row justify-center items-center gap-6 pt-2 pb-10">
             <button type="submit"

@@ -12,6 +12,7 @@ import {
   FormControl
 } from '@angular/forms';
 import { Product } from '../../../core/models/product.model';
+import type { ProductSpecs } from '../../../core/models/product.model';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -66,7 +67,21 @@ export class ProductForm {
     /** Variantes de color (FormArray de FormGroup con `nombre` y `hex`). */
     colores: this.fb.array([]),
     /** Capacidades de almacenamiento (FormArray de FormControl strings). */
-    capacidades: this.fb.array([])
+    capacidades: this.fb.array([]),
+    /**
+     * Specs técnicas que se muestran en el comparador (solo iPhones).
+     * FormGroup anidado con 6 strings. Se persiste como objeto `specs`
+     * en el producto si la subcategoría es `iphone-*` y al menos un campo
+     * tiene valor. Ver `showSpecs()`.
+     */
+    specs: this.fb.group({
+      chip: [''],
+      pantalla: [''],
+      camara: [''],
+      bateria: [''],
+      conector: [''],
+      capacidadMin: [''],
+    }),
   });
 
   // 📝 Computed para rubros, categorías y subcategorías filtradas
@@ -82,6 +97,17 @@ export class ProductForm {
     const catId = this.form.get('categoriaId')?.value;
     const all = this.categoriesService.subcategories();
     return catId ? all.filter(s => s.categoryId === catId) : all;
+  });
+
+  /**
+   * La sección "Specs del comparador" solo aplica a productos iPhones.
+   * Se muestra cuando la subcategoría seleccionada empieza con `iphone-`.
+   * Si el admin cambia la subcategoría a algo no-iPhone, la sección
+   * desaparece y `onSubmit` no incluirá `specs` en el payload.
+   */
+  showSpecs = computed(() => {
+    const sub = this.form.get('subcategoriaId')?.value ?? '';
+    return sub.startsWith('iphone-');
   });
 
   /** Getter tipado del FormArray de colores. */
@@ -119,7 +145,22 @@ export class ProductForm {
         // Reemplazar FormArrays de variantes con la data del producto
         this.resetColores(prod.colores ?? []);
         this.resetCapacidades(prod.capacidades ?? []);
+        // Specs del comparador (si existen)
+        this.resetSpecs(prod.specs);
       }
+    });
+  }
+
+  /** Vacía el FormGroup de specs y lo llena con los provistos (o vacíos). */
+  private resetSpecs(items: Product['specs']): void {
+    const specs = items ?? { chip: '', pantalla: '', camara: '', bateria: '', conector: '', capacidadMin: '' };
+    this.form.get('specs')?.patchValue({
+      chip: specs.chip ?? '',
+      pantalla: specs.pantalla ?? '',
+      camara: specs.camara ?? '',
+      bateria: specs.bateria ?? '',
+      conector: specs.conector ?? '',
+      capacidadMin: specs.capacidadMin ?? '',
     });
   }
 
@@ -172,6 +213,7 @@ export class ProductForm {
     const raw = this.form.value as Omit<Product, 'id' | 'colores' | 'capacidades'> & {
       colores?: { nombre: string; hex: string }[];
       capacidades?: string[];
+      specs?: ProductSpecs;
     };
     const colores = (raw.colores ?? [])
       .filter(c => c?.nombre?.trim() && c?.hex?.trim())
@@ -179,6 +221,19 @@ export class ProductForm {
     const capacidades = (raw.capacidades ?? [])
       .map(c => (c ?? '').trim())
       .filter(c => c);
+    // Specs: solo se incluyen si la subcategoría es iphone-* y al menos un campo
+    // tiene contenido. Para productos no-iPhone, las specs no se persisten.
+    const specsRaw: ProductSpecs = (raw.specs ?? {}) as ProductSpecs;
+    const specsClean = {
+      chip: (specsRaw.chip ?? '').trim(),
+      pantalla: (specsRaw.pantalla ?? '').trim(),
+      camara: (specsRaw.camara ?? '').trim(),
+      bateria: (specsRaw.bateria ?? '').trim(),
+      conector: (specsRaw.conector ?? '').trim(),
+      capacidadMin: (specsRaw.capacidadMin ?? '').trim(),
+    };
+    const hasSpecs = Object.values(specsClean).some(v => v.length > 0);
+    const specs = this.showSpecs() && hasSpecs ? specsClean : undefined;
     // El id del producto es opcional en `addProduct` (auto-id de Firestore) y
     // obligatorio en `updateProduct`. Construimos `data` con tipo laxo para no
     // chocar contra TS y casteamos al传递给 los services según corresponda.
@@ -187,6 +242,7 @@ export class ProductForm {
       id: this.id() ?? '',
       colores: colores.length ? colores : undefined,
       capacidades: capacidades.length ? capacidades : undefined,
+      specs,
     } as unknown as Product;
     if (this.id()) {
       this.service.updateProduct(data);
