@@ -23,6 +23,10 @@ export class ProductDetailComponent implements OnInit {
     slug = input<string>();
     product = signal<Product | null>(null);
     selectedImage = signal<string | null>(null);
+    /** Índice del color elegido en `product().colores`, o null si no hay colores. */
+    selectedColorIndex = signal<number | null>(null);
+    /** Capacidad elegida en `product().capacidades`, o null si no hay capacidades. */
+    selectedCapacity = signal<string | null>(null);
     loading = signal(true);
     error = signal(false);
 
@@ -70,6 +74,9 @@ export class ProductDetailComponent implements OnInit {
                     // Priorizar imagen principal, luego la primera de la lista, luego null
                     const mainImage = foundProduct.imagen || (foundProduct.imagenes && foundProduct.imagenes.length > 0 ? foundProduct.imagenes[0] : null);
                     this.selectedImage.set(mainImage);
+                    // Reset selección de variantes al cambiar de producto
+                    this.selectedColorIndex.set(null);
+                    this.selectedCapacity.set(null);
                     this.loading.set(false);
                     this.error.set(false);
                     // Scroll al inicio al cambiar de producto
@@ -84,6 +91,14 @@ export class ProductDetailComponent implements OnInit {
 
     selectImage(url: string) {
         this.selectedImage.set(url);
+    }
+
+    selectColor(index: number) {
+        this.selectedColorIndex.set(index);
+    }
+
+    selectCapacity(cap: string) {
+        this.selectedCapacity.set(cap);
     }
 
     ngOnInit() {
@@ -131,7 +146,9 @@ export class ProductDetailComponent implements OnInit {
 Estoy interesado/a en el siguiente producto de su tienda:
 
 *${currentProduct.nombre}*
-Precio: ${priceText}
+Precio: ${priceText}${this.variantSummary()}
+Capacidad: ${this.selectedCapacity() ?? '—'}
+Color: ${this.selectedColorName()}
 
 ${currentProduct.descripcion}
 
@@ -147,5 +164,24 @@ Gracias!`;
 
         // Abrir WhatsApp en una nueva pestaña
         window.open(whatsappUrl, '_blank');
+    }
+
+    /**
+     * Devuelve un string resumen de las variantes elegidas, o vacío si no hay selección.
+     * Se usa para anexar al mensaje de WhatsApp antes del bloque "Capacidad".
+     */
+    private variantSummary(): string {
+        const parts: string[] = [];
+        const cap = this.selectedCapacity();
+        if (cap) parts.push(cap);
+        return parts.length ? ` (${parts.join(' · ')})` : '';
+    }
+
+    /** Devuelve el nombre del color elegido, o '—' si no hay selección (o no hay colores). */
+    private selectedColorName(): string {
+        const p = this.product();
+        const idx = this.selectedColorIndex();
+        if (!p?.colores || idx === null || !p.colores[idx]) return '—';
+        return p.colores[idx].nombre;
     }
 }

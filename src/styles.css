@@ -1,4 +1,3 @@
-
 @import "tailwindcss";
 
 /* === FUENTES PERSONALIZADAS === */
@@ -13,7 +12,7 @@
 @font-face {
   font-family: "GothamSSm-Medium";
   src: url("/fonts/GothamSSm-Medium.woff2") format("woff2"),
-  url("/fonts/GothamSSm-Medium.woff") format("woff");
+    url("/fonts/GothamSSm-Medium.woff") format("woff");
   font-weight: 500;
   font-display: swap;
 }
@@ -27,77 +26,127 @@
 }
 
 
-/* === TOKEN PRIMITIVOS === */
+/* === SISTEMA DE TOKENS — TECH PREMIUM (Apple-inspired) ===
+   Ver docs/design.md para el rationale completo.
+   Esta paleta reemplaza el esquema anterior (verde lima + naranja + rosa + violeta)
+   con un sistema monocromo + un único acento (Apple Blue). */
+
 :root {
-  /* === Light Mode === */
+  /* = 1. Colores primarios (monocromos) = */
+  --color-ink: #1d1d1f;             /* Texto principal, headings, footer */
+  --color-canvas: #ffffff;          /* Fondo de cards y body */
+  --color-mist: #f5f5f7;            /* Bandas alternadas, surface elevada */
 
-  /* = 1. Brand = */
-  --color-brand-primary: #afde41;
-  --color-brand-primary-dark: #92c434;
-  --color-brand-secondary: #6f2eeb;
-  --color-brand-tertiary: #dd592d;
-  --color-brand-light: #e8e9ea;
-  --color-brand-dark: #1c1d20;
+  /* = 2. Color de acción (único acento cromático) = */
+  --color-action: #0071e3;          /* Apple Blue — CTAs, links, focus */
+  --color-link: #0066cc;            /* Links inline */
 
+  /* = 3. Neutros / text ladder = */
+  --color-ink-80: rgba(29, 29, 31, 0.8);   /* Texto secundario */
+  --color-ink-48: rgba(29, 29, 31, 0.48);  /* Texto terciario, placeholders */
+  --color-ink-24: rgba(29, 29, 31, 0.24);  /* Disabled, hairline muy suave */
+  --color-hairline: #d2d2d7;               /* Bordes 1px entre cards */
+  --color-cool-wash: #e8e8ed;              /* Botones hover, surfaces suaves */
+  --color-graphite: #424245;               /* Texto inverse-medium */
 
+  /* = 4. Semánticos (estados) = */
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-warning: #f59e0b;
 
-  --color-brand-pink: #fb95ab;
-  --color-brand-pink-dark: #e84266;
-  --color-brand-gray: #d5d3d4;
-  --color-brand-gray-dark: #7d7d7d;
-
-  /* = 2. Fonts = */
-
+  /* = 5. Tipografía = */
   --font-ftn-light: "GothamSSm-Light", sans-serif;
   --font-ftn-medium: "GothamSSm-Medium", sans-serif;
   --font-ftn-bold: "GothamSSm-Bold", sans-serif;
 
+  /* = 6. Espaciado (8pt grid con subdivisión 4pt) = */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* = 7. Radios = */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  /* = 8. Easing estándar = */
+  --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
+/* = Dark mode — inversión semántica = */
 .dark {
-  --color-brand-primary: #b8e848;
-  --color-brand-primary-dark: #92c434;
-  --color-brand-secondary: #723fef;
-  --color-brand-tertiary: #e5613e;
-  --color-brand-light: #e8e9ea;
-  --color-brand-dark: #1c1d20;
+  --color-ink: #f5f5f7;
+  --color-canvas: #000000;
+  --color-mist: #1d1d1f;
+  --color-action: #2997ff;
+  --color-link: #2997ff;
+  --color-ink-80: rgba(245, 245, 247, 0.8);
+  --color-ink-48: rgba(245, 245, 247, 0.48);
+  --color-ink-24: rgba(245, 245, 247, 0.24);
+  --color-hairline: #424245;
+  --color-cool-wash: #1d1d1f;
+  --color-graphite: #d2d2d7;
 }
 
+
+/* === TAILWIND @theme inline === */
 @theme {
 
+  /* Tipografía */
   --font-ftn-light: var(--font-ftn-light);
   --font-ftn-medium: var(--font-ftn-medium);
   --font-ftn-bold: var(--font-ftn-bold);
 
-  --color-brand-primary: var(--color-brand-primary);
-  --color-brand-primary-dark: var(--color-brand-primary-dark);
-  --color-brand-secondary: var(--color-brand-secondary);
-  --color-brand-tertiary: var(--color-brand-tertiary);
-  --color-brand-dark: var(--color-brand-dark);
-  --color-brand-light: var(--color-brand-light);
+  /* Tokens semánticos nuevos (disponibles como `bg-ink`, `text-canvas`, etc.) */
+  --color-ink: var(--color-ink);
+  --color-canvas: var(--color-canvas);
+  --color-mist: var(--color-mist);
+  --color-action: var(--color-action);
+  --color-link: var(--color-link);
+  --color-hairline: var(--color-hairline);
+  --color-cool-wash: var(--color-cool-wash);
+  --color-graphite: var(--color-graphite);
 
+  --color-success: var(--color-success);
+  --color-success-foreground: #ffffff;
+  --color-danger: var(--color-danger);
+  --color-danger-foreground: #ffffff;
+  --color-warning: var(--color-warning);
+  --color-warning-foreground: #1f2937;
 
+  /* Aliases deprecated — mapean a los nuevos tokens semánticos.
+     Mantienen funcionando el HTML que aún usa brand-*.
+     Las Fases 2-4 del redesign (docs/design.md) los van eliminando
+     componente por componente. NO usar para código nuevo. */
+  --color-brand-primary: var(--color-action);
+  --color-brand-primary-dark: var(--color-action);
+  --color-brand-secondary: var(--color-graphite);
+  --color-brand-tertiary: var(--color-ink);
+  --color-brand-dark: var(--color-ink);
+  --color-brand-light: var(--color-mist);
+  --color-brand-pink: var(--color-danger);
+  --color-brand-pink-dark: var(--color-danger);
+  --color-brand-gray: var(--color-hairline);
+  --color-brand-gray-dark: var(--color-graphite);
 
-  --color-brand-pink: var(--color-brand-pink);
-  --color-brand-pink-dark: var(--color-brand-pink-dark);
-  --color-brand-gray: var(--color-brand-gray);
-  --color-brand-gray-dark: var(--color-brand-gray-dark);
-
-  /* A REVISAR VARIABLES!! */
-    --color-primary: #2563eb;
-    --color-primary-foreground: #ffffff;
-    --color-secondary: #7c3aed;
-    --color-secondary-foreground: #ffffff;
-    --color-muted: #f3f4f6;
-    --color-muted-foreground: #374151;
-    --color-success: #16a34a;
-    --color-success-foreground: #ffffff;
-    --color-error: #dc2626;
-    --color-error-foreground: #ffffff;
-    --color-warning: #f59e0b;
-    --color-warning-foreground: #1f2937;
-    --color-info: #0ea5e9;
-    --color-info-foreground: #ffffff;
+  /* Compatibilidad con tokens sueltos usados en el @theme anterior */
+  --color-primary: var(--color-action);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-graphite);
+  --color-secondary-foreground: #ffffff;
+  --color-muted: var(--color-mist);
+  --color-muted-foreground: var(--color-ink);
+  --color-error: var(--color-danger);
+  --color-error-foreground: #ffffff;
+  --color-info: var(--color-action);
+  --color-info-foreground: #ffffff;
 }
 
 
@@ -113,20 +162,19 @@
 
 
 
-
 .header-cart-badge {
     animation: pulse-custom 2s infinite;
 }
 
 .header-search-input:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
 }
 
 .router-link-active {
-    background-color: #dbeafe !important;
-    color: #1d4ed8 !important;
-    border-radius: 0.375rem;
+    background-color: var(--color-cool-wash) !important;
+    color: var(--color-ink) !important;
+    border-radius: var(--radius-md);
 }
 
 .login-modal-backdrop {
@@ -136,7 +184,7 @@
 /* CDK Drag and Drop Styles */
 .cdk-drag-preview {
   box-sizing: border-box;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
               0 8px 10px 1px rgba(0, 0, 0, 0.14),
               0 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -147,13 +195,73 @@
 }
 
 .cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 250ms var(--ease-standard);
 }
 
 .cdk-drop-list-dragging tr:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: transform 250ms var(--ease-standard);
 }
 
 
+/* === ACCESIBILIDAD === */
 
+/* Focus visible coherente en toda la app.
+   Solo se muestra cuando el usuario navega con teclado (no en click de mouse). */
+*:focus {
+  outline: none;
+}
 
+*:focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Inputs: mantener el anillado limpio y consistente. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline-offset: 1px;
+  border-color: var(--color-action);
+}
+
+/* Cards clickeables: focus ring sobre la card entera, no en hijos. */
+.app-card-link:focus-visible {
+  outline-offset: 4px;
+}
+
+/* Skip link para teclado (saltar navegación, ir a contenido).
+   Oculto hasta recibir foco — visible para usuarios de teclado/screen reader. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-ink);
+  color: var(--color-canvas);
+  padding: 12px 16px;
+  z-index: 100;
+  border-radius: 0 0 var(--radius-md) 0;
+  text-decoration: none;
+  font-weight: 500;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  left: 0;
+  outline-offset: -2px;
+}
+
+/* Respeta prefers-reduced-motion para usuarios sensibles a animaciones. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Contraste alto en selection (highlight de texto). */
+::selection {
+  background: var(--color-action);
+  color: #ffffff;
+}

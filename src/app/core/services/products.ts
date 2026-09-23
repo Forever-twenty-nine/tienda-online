@@ -78,6 +78,10 @@ export class ProductsService {
   stockFilter = signal<boolean | null>(null);
   discountFilter = signal<boolean | null>(null);
 
+  /** Filtrado por rango de precio (en ARS). `null` = sin tope. */
+  priceMin = signal<number | null>(null);
+  priceMax = signal<number | null>(null);
+
   // 📄 Paginación / Scroll Infinito
   private readonly itemsPerPage = 8;
   visibleCount = signal(this.itemsPerPage);
@@ -137,20 +141,58 @@ export class ProductsService {
   }
 
   /**
+   * Rango de precio derivado del dataset (mínimo y máximo observados).
+   * Sirve como referencia para los sliders numéricos del catálogo.
+   */
+  priceBounds = computed<[number, number]>(() => {
+    const all = this.allProducts();
+    if (all.length === 0) return [0, 0];
+    let min = Infinity;
+    let max = -Infinity;
+    for (const p of all) {
+      // Consideramos el precio efectivo (con descuento) para no Infla `max`.
+      const effective = (p.descuento && p.descuento > 0)
+        ? p.precio * (1 - p.descuento / 100)
+        : p.precio;
+      if (effective < min) min = effective;
+      if (effective > max) max = effective;
+    }
+    return [Math.floor(min), Math.ceil(max)];
+  });
+
+  /**
    * Productos filtrados para la parte pública (solo publicados).
+   * Aplica taxonomía, búsqueda, filtros booleanos (destacado / descuento / stock)
+   * y rango de precio.
    */
   products = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
+    const featured = this.featuredFilter();
+    const stock = this.stockFilter();
+    const discount = this.discountFilter();
+    const pMin = this.priceMin();
+    const pMax = this.priceMax();
     const allProds = this.allProducts();
 
     return allProds.filter(product => {
+      // Precio efectivo (con descuento) — para que "solo oferta" + slider matcheen.
+      const effective = (product.descuento && product.descuento > 0)
+        ? product.precio * (1 - product.descuento / 100)
+        : product.precio;
       const matchesCategory = this.matchesTaxonomy(product);
       const matchesTerm = !term ||
         product.nombre.toLowerCase().includes(term) ||
         product.descripcion.toLowerCase().includes(term);
       const isPublished = product.publicado !== false;
+      const matchesFeatured = featured === null || product.destacado === featured;
+      const matchesStock = stock === null || product.disponibilidad === stock;
+      const matchesDiscount = discount === null || (discount ? (product.descuento ?? 0) > 0 : (product.descuento ?? 0) === 0);
+      const matchesPriceMin = pMin === null || effective >= pMin;
+      const matchesPriceMax = pMax === null || effective <= pMax;
 
-      return matchesCategory && matchesTerm && isPublished;
+      return matchesCategory && matchesTerm && isPublished
+        && matchesFeatured && matchesStock && matchesDiscount
+        && matchesPriceMin && matchesPriceMax;
     });
   });
 
@@ -266,6 +308,23 @@ export class ProductsService {
 
   setDiscount(discount: boolean | null): void {
     this.discountFilter.set(discount);
+    this.resetPagination();
+  }
+
+  /** Fija ambos extremos del rango de precio. `null` = sin tope. */
+  setPriceRange(min: number | null, max: number | null): void {
+    this.priceMin.set(min);
+    this.priceMax.set(max);
+    this.resetPagination();
+  }
+
+  /** Limpia todos los filtros booleanos + rango. Deja taxonomía y búsqueda. */
+  clearSecondaryFilters(): void {
+    this.featuredFilter.set(null);
+    this.stockFilter.set(null);
+    this.discountFilter.set(null);
+    this.priceMin.set(null);
+    this.priceMax.set(null);
     this.resetPagination();
   }
 

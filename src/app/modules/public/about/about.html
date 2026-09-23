@@ -1,30 +1,31 @@
-<section class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px] min-h-[60vh]">
+<section class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px] min-h-[60vh]">
   @if (isLoading()) {
     <div class="flex justify-center p-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-primary"></div>
+      <div class="animate-spin rounded-full h-10 w-10 border-2 border-hairline border-t-action"></div>
     </div>
   } @else {
     <!-- Header -->
-    <div class="text-center mb-16">
-      <h1 class="text-2xl text-left font-ftn-bold text-brand-dark mb-2 mt-6 lg:mb-10 lg:mt-10 lg:text-center lg:text-5xl">
+    <div class="text-center mb-12 lg:mb-16 mt-10 lg:mt-16">
+      <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">Nuestra historia</p>
+      <h1 class="text-3xl md:text-4xl font-medium text-ink">
         {{ pageData()?.title || 'Sobre Nosotros' }}
       </h1>
       @if (!pageData()?.content) {
-        <p class="text-base text-brand-dark/50 max-w-xl text-left mx-auto lg:text-xl lg:text-center lg:mb-10">
-          Conoce la historia detrás de nuestra tienda y nuestro compromiso con la excelencia.
+        <p class="text-base text-ink-80 max-w-xl mx-auto mt-4">
+          Conocé la historia detrás de nuestra tienda y nuestro compromiso con la excelencia.
         </p>
       }
     </div>
 
     <!-- Content -->
-    <div class="whitespace-pre-wrap text-brand-dark leading-relaxed mb-20">
+    <article class="max-w-2xl mx-auto text-ink-80 leading-relaxed text-base whitespace-pre-wrap mb-20">
       {{ pageData()?.content }}
-    </div>
+    </article>
 
     <!-- Mensaje si no hay contenido -->
     @if (!pageData()?.content) {
-      <div class="text-center py-20 text-gray-500 italic">
-        Contenido en preparación. ¡Vuelve pronto para conocernos mejor!
+      <div class="text-center py-20 text-ink-48 italic">
+        Contenido en preparación. ¡Volvé pronto para conocernos mejor!
       </div>
     }
   }

@@ -1,155 +1,214 @@
 @if (loading()) {
 <!-- ⏳ Estado de carga -->
 <div class="flex flex-col items-center justify-center py-20">
-  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-brand-dark border-opacity-50 mb-4"></div>
-  <p class="text-center text-gray-500 text-lg">Cargando producto...</p>
+  <div class="animate-spin rounded-full h-12 w-12 border-2 border-hairline border-t-action mb-4"></div>
+  <p class="text-ink-80">Cargando producto...</p>
 </div>
 } @else if (error()) {
 <!-- ❌ Estado de error -->
-<div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
-  <div class="flex flex-col items-center justify-center py-20">
-    <div class="text-6xl mb-4">❌</div>
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Producto no encontrado</h2>
-    <p class="text-gray-600 mb-6">El producto que buscas no existe o ha sido eliminado.</p>
-    <button (click)="goBack()" class="cursor-pointer bg-brand-dark text-white px-6 py-2 rounded-lg hover:bg-brand-dark transition-colors">
+<div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
+  <div class="flex flex-col items-center justify-center py-20 text-center">
+    <div class="text-5xl mb-4 opacity-60">⚠</div>
+    <h2 class="text-2xl font-medium text-ink mb-3">Producto no encontrado</h2>
+    <p class="text-ink-80 mb-6">El producto que buscás no existe o ha sido eliminado.</p>
+    <button (click)="goBack()" class="bg-ink text-canvas px-6 py-3 rounded-full font-medium hover:opacity-90 transition-opacity min-h-[44px]">
       Volver al catálogo
     </button>
   </div>
 </div>
 } @else if (product()) {
 <!-- 📱 Detalle del producto -->
-<div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px] pt-6">
+<div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px] pt-6 pb-24 lg:pb-10">
   <!-- 🔙 Breadcrumbs -->
-  <div class="mb-6 flex items-center text-sm text-brand-dark/50 px-2">
-    <button (click)="goToHome()" class="hover:text-brand-primary transition-colors cursor-pointer">
+  <div class="mb-6 flex items-center text-sm text-ink-48 px-2">
+    <button (click)="goToHome()" class="hover:text-ink transition-colors">
       Inicio
     </button>
-    <span class="mx-2">/</span>
+    <span class="mx-2 text-ink-24">/</span>
     @if (productCategory()) {
-      <button (click)="goToCategory(productCategory()!.id)" class="hover:text-brand-primary transition-colors cursor-pointer">
+      <button (click)="goToCategory(productCategory()!.id)" class="hover:text-ink transition-colors">
         {{ productCategory()!.nombre }}
       </button>
     } @else {
-      <button (click)="goToCatalog()" class="hover:text-brand-primary transition-colors cursor-pointer">
+      <button (click)="goToCatalog()" class="hover:text-ink transition-colors">
         Catálogo
       </button>
     }
   </div>
 
-  <!-- 📄 Contenido principal -->
-  <div class="overflow-hidden">
-    <div class="grid md:grid-cols-2 gap-8 ">
-
-      <!-- 🖼️ Imagen del producto -->
-      <div class="space-y-4">
-        <div class="aspect-square bg-gray-50 rounded-xl overflow-hidden relative border border-gray-100">
-          <img ngOptimizedImage
-            [ngSrc]="selectedImage() ? selectedImage()! : 'https://picsum.photos/600/600'"
-            fill alt="{{ product()!.nombre }}" class="object-cover transition-all duration-500"
-            priority />
-        </div>
-
-        <!-- 🖼️ Miniaturas -->
-        @if (product()!.imagenes && product()!.imagenes!.length > 1) {
-          <div class="grid grid-cols-4 sm:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
-            @for (img of product()!.imagenes; track img) {
-              <div
-                (click)="selectImage(img)"
-                class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300"
-                [class.border-brand-primary]="selectedImage() === img"
-                [class.border-transparent]="selectedImage() !== img"
-                [class.opacity-60]="selectedImage() !== img"
-                [class.hover:opacity-100]="selectedImage() !== img">
-                <img [src]="img" class="w-full h-full object-cover" [alt]="product()!.nombre" loading="lazy">
-              </div>
-            }
-          </div>
-        }
+  <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+    <!-- 🖼️ Galería -->
+    <div class="space-y-4">
+      <div class="aspect-square bg-mist rounded-[20px] overflow-hidden relative">
+        <img ngOptimizedImage
+          [ngSrc]="selectedImage() ? selectedImage()! : 'https://picsum.photos/800/800'"
+          fill alt="{{ product()!.nombre }}" class="object-cover transition-opacity duration-500"
+          priority />
       </div>
 
-      <!-- 📝 Información del producto -->
-      <div class="flex flex-col">
-        <div>
-          <!-- 🏷️ Nombre del producto -->
-          <h1 class="text-2xl font-ftn-bold  mb-4 uppercase">{{ product()!.nombre }}</h1>
+      <!-- Thumbnails -->
+      @if (product()!.imagenes && product()!.imagenes!.length > 1) {
+        <div class="grid grid-cols-4 gap-2">
+          @for (img of product()!.imagenes; track img) {
+            <div
+              (click)="selectImage(img)"
+              class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-colors duration-200"
+              [class.border-action]="selectedImage() === img"
+              [class.border-transparent]="selectedImage() !== img"
+              [class.opacity-60]="selectedImage() !== img">
+              <img [src]="img" class="w-full h-full object-cover" [alt]="product()!.nombre" loading="lazy">
+            </div>
+          }
+        </div>
+      }
+    </div>
 
-          <!-- 💲 Precio -->
-          <div class="mb-10">
-            @if (product()?.descuento && product()!.descuento! > 0) {
-              <div class="flex items-center gap-6">
-                <p class="text-2xl">
-                  $ {{ (product()!.precio * (1 - product()!.descuento! / 100)).toFixed(2) }}
-                </p>
-                <div class="flex flex-row gap-2 items-baseline">
-                  <span class="text-lg text-brand-dark/50 line-through">
-                    $ {{ product()!.precio }}
-                  </span>
-                  <span class="bg-brand-secondary text-white text-xs px-2 font-ftn-medium py-0.5 rounded-full">
-                    {{ product()!.descuento }}% OFF
-                  </span>
-                </div>
-              </div>
-            } @else {
-              <p class="text-lg text-brand-dark/50 line-through">
-                $ {{ product()!.precio }}
+    <!-- 📝 Info -->
+    <div class="flex flex-col">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">{{ productCategory()?.nombre || 'Producto' }}</p>
+        <h1 class="text-3xl md:text-4xl font-medium text-ink mb-5 tracking-tight">{{ product()!.nombre }}</h1>
+
+        <!-- 💲 Precio + 12 cuotas -->
+        <div class="mb-6">
+          @if (product()?.descuento && product()!.descuento! > 0) {
+            <div class="flex items-baseline gap-3 mb-2">
+              <p class="text-3xl font-medium text-ink">
+                $ {{ (product()!.precio * (1 - product()!.descuento! / 100)).toFixed(2) }}
               </p>
-            }
-          </div>
+              <span class="bg-danger text-white text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                -{{ product()!.descuento }}%
+              </span>
+              <span class="text-base text-ink-48 line-through">
+                $ {{ product()!.precio }}
+              </span>
+            </div>
+          } @else {
+            <p class="text-3xl font-medium text-ink">
+              $ {{ product()!.precio }}
+            </p>
+          }
+          <p class="text-sm text-ink-80 mt-2">
+            12 cuotas sin interés de <strong class="text-ink">$ {{ ((product()!.precio * (1 - (product()?.descuento ?? 0) / 100)) / 12).toFixed(2) }}</strong>
+          </p>
+        </div>
 
-          <!-- 📝 Descripción -->
-          <div class="mb-8">
-            <h3 class="text-xs font-ftn-bold text-brand-dark/50 uppercase mb-3">Descripción</h3>
-            <p class="text-gray-700 leading-relaxed">{{ product()!.descripcion }}</p>
-          </div>
-
-          <!-- 📊 Información adicional -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div class="">
-              <h3 class="text-xs font-ftn-bold text-brand-dark/50 uppercase mb-3">Disponibilidad</h3>
-              @if (product()!.disponibilidad) {
-                <p class="text-green-500 uppercase font-ftn-bold">Con stock</p>
-              } @else {
-                <p class="text-red-500 uppercase font-ftn-bold">Sin stock</p>
+        <!-- 🎨 Variant pickers — se muestran si el producto tiene esos campos. -->
+        @if (product()?.colores && product()!.colores!.length > 0) {
+          <div class="mb-5">
+            <p class="text-xs uppercase tracking-widest text-ink-48 mb-3">
+              Color
+              @if (selectedColorIndex() !== null) {
+                <span class="ml-2 normal-case tracking-normal text-ink">— {{ product()!.colores![selectedColorIndex()!].nombre }}</span>
+              }
+            </p>
+            <div class="flex flex-wrap gap-3" role="radiogroup" aria-label="Color del producto">
+              @for (color of product()!.colores; track color.nombre; let i = $index) {
+                <button
+                  (click)="selectColor(i)"
+                  [attr.aria-pressed]="selectedColorIndex() === i"
+                  [attr.aria-label]="color.nombre"
+                  class="flex flex-col items-center gap-1.5 p-1 rounded-full focus:outline-none">
+                  <span
+                    class="w-9 h-9 rounded-full border-2 transition-all duration-150"
+                    [class.border-ink]="selectedColorIndex() === i"
+                    [class.border-transparent]="selectedColorIndex() !== i"
+                    [class.ring-2]="selectedColorIndex() === i"
+                    [class.ring-offset-2]="selectedColorIndex() === i"
+                    [class.ring-action]="selectedColorIndex() === i"
+                    [class.ring-offset-canvas]="selectedColorIndex() === i"
+                    [style.background-color]="color.hex">
+                  </span>
+                  <span class="text-[11px]"
+                        [class.text-ink]="selectedColorIndex() === i"
+                        [class.font-medium]="selectedColorIndex() === i"
+                        [class.text-ink-48]="selectedColorIndex() !== i">
+                    {{ color.nombre }}
+                  </span>
+                </button>
               }
             </div>
           </div>
-
-          <!-- 📊 Información adicional -->
-          <div class="mb-8">
-            <div class="bg-brand-dark/6 rounded-2xl px-6 py-8">
-              <h3 class="text-xs font-ftn-bold text-brand-dark/50 uppercase mb-3 flex items-center gap-2">
-                <svg viewBox="0 0 20 20" focusable="false" class="w-6 h-6"><path d="M13.2238 4.9337C13.1504 1.68636 9.32745 -0.0329918 6.56564 1.94201C3.42904 4.18502 3.42047 8.70116 5.85008 11.9883L10.4891 18.2647C12.0567 16.4701 14.5046 12.9513 15.7745 10.3471C16.5453 8.76617 16.9721 7.00668 16.5525 5.43291C16.4586 5.08077 16.3151 4.73487 16.1039 4.4181L17.0303 3.80052C17.3202 4.23531 17.5086 4.69733 17.6283 5.14605C18.1468 7.09056 17.6002 9.14313 16.7752 10.8351C15.3297 13.7995 12.4381 17.8735 10.8443 19.5261L10.3873 20L4.95474 12.6501C2.3006 9.05915 2.09757 3.76842 5.91802 1.03638C9.28618 -1.37222 14.24 0.621738 14.3369 4.90856C14.3392 5.01323 14.3404 5.11795 14.3404 5.22267C14.3404 7.6345 12.809 9.67611 10.722 9.67611C10.6154 9.67611 10.5052 9.66845 10.394 9.65515C8.64738 9.44629 7.59034 8.12336 7.39053 6.72797C7.18968 5.32541 7.85018 3.79067 9.53285 3.20839C9.91859 3.07491 10.3204 2.99595 10.722 2.99595V4.10931C10.4653 4.10931 10.1872 4.1601 9.89694 4.26053C8.78915 4.64388 8.35627 5.61781 8.49264 6.57015C8.63005 7.52968 9.34083 8.40792 10.5262 8.54966C10.6024 8.55878 10.6677 8.56275 10.722 8.56275C11.9751 8.56275 13.227 7.26428 13.227 5.22267C13.227 5.12633 13.226 5.02998 13.2238 4.9337Z" fill="currentColor"></path></svg>
-                Retirar en Tienda
-              </h3>
-              <div class="flex gap-2 pl-8">
-                @if (product()!.disponibilidad) {
-                  <p>Puedes retirar el producto en nuestra tienda física ubicada en calle Sarmiento 111, Mendoza, Argentina </p>
-                } @else {
-                  <p>Contactanos por Whatsapp, dejanos tus datos para reservar el producto y cuando ingrese te avisaremos!</p>
-                }
-              </div>
-
+        }
+        @if (product()?.capacidades && product()!.capacidades!.length > 0) {
+          <div class="mb-5">
+            <p class="text-xs uppercase tracking-widest text-ink-48 mb-3">
+              Capacidad
+              @if (selectedCapacity()) {
+                <span class="ml-2 normal-case tracking-normal text-ink">— {{ selectedCapacity() }}</span>
+              }
+            </p>
+            <div class="flex flex-wrap gap-2" role="radiogroup" aria-label="Capacidad de almacenamiento">
+              @for (cap of product()!.capacidades; track cap) {
+                <button
+                  (click)="selectCapacity(cap)"
+                  [attr.aria-pressed]="selectedCapacity() === cap"
+                  class="px-4 py-2 rounded-full border text-sm transition-colors min-h-[44px]"
+                  [class.border-action]="selectedCapacity() === cap"
+                  [class.bg-ink]="selectedCapacity() === cap"
+                  [class.text-canvas]="selectedCapacity() === cap"
+                  [class.border-hairline]="selectedCapacity() !== cap"
+                  [class.text-ink]="selectedCapacity() !== cap"
+                  [class.hover:border-ink]="selectedCapacity() !== cap">
+                  {{ cap }}
+                </button>
+              }
             </div>
           </div>
+        }
 
+        <!-- 📝 Descripción -->
+        <div class="mb-6">
+          <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">Descripción</p>
+          <p class="text-ink-80 leading-relaxed">{{ product()!.descripcion }}</p>
         </div>
 
-        <!-- � Contacto por WhatsApp -->
-        <div class="mt-6">
-          <button (click)="contactWhatsApp()"
-            class="w-auto cursor-pointer bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors  flex items-center justify-center space-x-2">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-              <path
-                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+        <!-- 📦 Stock -->
+        <div class="mb-6 flex items-center gap-3">
+          @if (product()!.disponibilidad) {
+            <span class="flex items-center gap-2 text-success text-sm font-medium">
+              <span class="w-2 h-2 rounded-full bg-success"></span>
+              Con stock — listo para retirar
+            </span>
+          } @else {
+            <span class="flex items-center gap-2 text-danger text-sm font-medium">
+              <span class="w-2 h-2 rounded-full bg-danger"></span>
+              Sin stock — avisame cuando llegue
+            </span>
+          }
+        </div>
+
+        <!-- 🏪 Retiro en tienda + Envío — cerca del CTA -->
+        <div class="bg-mist rounded-[16px] p-5 mb-6 space-y-3">
+          <div class="flex gap-3 items-start">
+            <svg viewBox="0 0 20 20" focusable="false" class="w-5 h-5 text-action flex-shrink-0 mt-0.5">
+              <path d="M13.2238 4.9337C13.1504 1.68636 9.32745 -0.0329918 6.56564 1.94201C3.42904 4.18502 3.42047 8.70116 5.85008 11.9883L10.4891 18.2647C12.0567 16.4701 14.5046 12.9513 15.7745 10.3471C16.5453 8.76617 16.9721 7.00668 16.5525 5.43291C16.4586 5.08077 16.3151 4.73487 16.1039 4.4181L17.0303 3.80052C17.3202 4.23531 17.5086 4.69733 17.6283 5.14605C18.1468 7.09056 17.6002 9.14313 16.7752 10.8351C15.3297 13.7995 12.4381 17.8735 10.8443 19.5261L10.3873 20L4.95474 12.6501C2.3006 9.05915 2.09757 3.76842 5.91802 1.03638C9.28618 -1.37222 14.24 0.621738 14.3369 4.90856C14.3392 5.01323 14.3404 5.11795 14.3404 5.22267C14.3404 7.6345 12.809 9.67611 10.722 9.67611C10.6154 9.67611 10.5052 9.66845 10.394 9.65515C8.64738 9.44629 7.59034 8.12336 7.39053 6.72797C7.18968 5.32541 7.85018 3.79067 9.53285 3.20839C9.91859 3.07491 10.3204 2.99595 10.722 2.99595V4.10931C10.4653 4.10931 10.1872 4.1601 9.89694 4.26053C8.78915 4.64388 8.35627 5.61781 8.49264 6.57015C8.63005 7.52968 9.34083 8.40792 10.5262 8.54966C10.6024 4.55878 10.6677 8.56275 10.722 8.56275C11.9751 8.56275 13.227 7.26428 13.227 5.22267C13.227 5.12633 13.226 5.02998 13.2238 4.9337Z" fill="currentColor"/>
             </svg>
-            @if (product()?.descuento && product()!.descuento! > 0) {
-              <span>Consultar por WhatsApp</span>
-            } @else {
-              <span>Consultar por WhatsApp</span>
-            }
+            <div>
+              <p class="text-sm font-medium text-ink mb-1">Retirar en tienda</p>
+              <p class="text-sm text-ink-80">Sarmiento 111, Mendoza. Atención de lunes a sábados de 10 a 19 hs.</p>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <svg class="w-5 h-5 text-action flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14l-1.5 11h-11L5 8zM9 11v4m6-4v4M5 8L4 4H1"/>
+            </svg>
+            <div>
+              <p class="text-sm font-medium text-ink mb-1">Envío a domicilio</p>
+              <p class="text-sm text-ink-80">Gratis en compras +$50.000. Despachamos en 24 hs.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA — visible desktop -->
+        <div class="hidden lg:block">
+          <button (click)="contactWhatsApp()"
+            class="w-full bg-success text-white py-4 px-6 rounded-full font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 min-h-[44px]">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+            </svg>
+            Consultar por WhatsApp
           </button>
-
-
         </div>
       </div>
     </div>
@@ -157,15 +216,25 @@
 
   <!-- 🛍️ Otros productos -->
   @if (relatedProducts().length > 0) {
-    <div class="pt-10 mt-14 border-t border-brand-dark/20 lg:pt-20 lg:mt-20 lg:mb-10">
-      <h2 class="text-2xl uppercase mb-8 "> También te puede gustar</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="pt-12 mt-12 border-t border-hairline lg:pt-16 lg:mt-16 lg:mb-10">
+      <h2 class="text-xl font-medium text-ink mb-6">También te puede interesar</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         @for (relProduct of relatedProducts(); track relProduct.id) {
           <app-product-card [product]="relProduct"></app-product-card>
         }
       </div>
     </div>
   }
+</div>
 
+<!-- Sticky CTA — solo mobile -->
+<div class="lg:hidden fixed bottom-0 inset-x-0 bg-canvas border-t border-hairline p-3 z-40 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+  <button (click)="contactWhatsApp()"
+    class="w-full bg-success text-white py-3 px-6 rounded-full font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2 min-h-[48px]">
+    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+    </svg>
+    Consultar por WhatsApp
+  </button>
 </div>
 }

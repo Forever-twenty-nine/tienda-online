@@ -1,0 +1,212 @@
+<section class="bg-mist py-16 lg:py-20">
+  <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
+    <div class="text-center mb-10">
+      <p class="text-xs font-medium uppercase tracking-widest text-ink-48 mb-2">Comparador</p>
+      <h2 class="text-2xl md:text-3xl font-medium tracking-tight text-ink">
+        ¿Cuál iPhone es para vos?
+      </h2>
+      <p class="mt-3 text-base text-ink-80 max-w-2xl mx-auto">
+        Compará specs y precios de todos los modelos en una sola vista.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         📱 MOBILE — Cards verticales (≤768px)
+         Cada modelo es una card con todas sus specs. Más cómodo
+         que scroll horizontal, sacrifica la comparativa lado-a-lado.
+         ============================================================ -->
+    <div class="md:hidden space-y-4">
+      @for (p of IPHONES; track p.nombre) {
+        <article class="bg-canvas rounded-[20px] border border-hairline overflow-hidden">
+
+          <!-- Header: nombre + badge descuento -->
+          <div class="p-5 pb-4 flex items-start justify-between gap-3 border-b border-hairline">
+            <div>
+              <h3 class="text-lg font-medium text-ink">{{ p.nombre }}</h3>
+              @if (p.destacado) {
+                <span class="inline-block mt-1 bg-danger text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                  {{ p.destacado }}
+                </span>
+              }
+            </div>
+            <span class="text-xs uppercase tracking-widest text-ink-48">{{ p.chip }}</span>
+          </div>
+
+          <!-- Precio destacado -->
+          <div class="p-5 pb-3 bg-canvas">
+            <span class="text-3xl font-medium text-ink">$ {{ p.precio | number:'1.0-0':'es-AR' }}</span>
+            <p class="text-sm text-ink-80 mt-1">
+              12 cuotas sin interés de <strong class="text-ink">$ {{ p.cuota12 | number:'1.0-0':'es-AR' }}</strong>
+            </p>
+          </div>
+
+          <!-- Specs grid 2 columnas -->
+          <dl class="p-5 pt-3 grid grid-cols-2 gap-x-4 gap-y-3 text-sm border-t border-hairline">
+            <dt class="text-ink-48">Pantalla</dt>
+            <dd class="text-ink text-right">{{ p.pantalla }}</dd>
+
+            <dt class="text-ink-48">Cámaras</dt>
+            <dd class="text-ink text-right">{{ p.camara }}</dd>
+
+            <dt class="text-ink-48">Batería</dt>
+            <dd class="text-ink text-right">{{ p.bateria }} (video)</dd>
+
+            <dt class="text-ink-48">Conector</dt>
+            <dd class="text-ink text-right">{{ p.conector }}</dd>
+
+            <dt class="text-ink-48">Desde</dt>
+            <dd class="text-ink text-right">{{ p.capacidadMin }}</dd>
+
+            <dt class="text-ink-48">Colores</dt>
+            <dd class="text-ink text-right">{{ p.colores }}</dd>
+          </dl>
+
+          <!-- CTA -->
+          <div class="p-5 pt-3 border-t border-hairline">
+            <a
+              [routerLink]="['/product', p.slug]"
+              class="block w-full text-center bg-action text-white px-5 py-3 rounded-full text-sm font-medium hover:opacity-90 transition-opacity min-h-[44px]">
+              Ver detalle del {{ p.nombre }}
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+
+    <!-- ============================================================
+         💻 DESKTOP — Tabla con scroll horizontal (≥768px)
+         Comparativa lado-a-lado. Sticky first-column mantiene el
+         label de la fila visible al scrollear horizontalmente.
+         ============================================================ -->
+    <div class="hidden md:block overflow-x-auto -mx-8 px-8 lg:-mx-10 lg:px-10 pb-2">
+      <table class="w-full min-w-[720px] border-separate border-spacing-0 text-sm">
+        <!-- Header: nombres de modelos -->
+        <thead>
+          <tr>
+            <th scope="col" class="sticky left-0 z-10 bg-mist text-left align-bottom pb-3 pr-4 w-0">
+              <span class="absolute w-px h-px p-0 m-[-1px] overflow-hidden whitespace-nowrap border-0 [clip:rect(0,0,0,0)]">Modelo</span>
+            </th>
+            @for (p of IPHONES; track p.nombre) {
+              <th scope="col" class="align-bottom pb-3 px-3 min-w-[140px]">
+                <div class="flex flex-col items-center gap-2">
+                  <span class="text-base font-medium text-ink">{{ p.nombre }}</span>
+                  @if (p.destacado) {
+                    <span class="bg-danger text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                      {{ p.destacado }}
+                    </span>
+                  }
+                </div>
+              </th>
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- Precio -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4">Precio</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3">
+                <span class="text-base font-medium text-ink">$ {{ p.precio | number:'1.0-0':'es-AR' }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- 12 cuotas -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">12 cuotas de</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink-80">$ {{ p.cuota12 | number:'1.0-0':'es-AR' }} sin interés</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Chip -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Chip</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.chip }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Pantalla -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Pantalla</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.pantalla }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Cámara -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Cámaras</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.camara }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Batería -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Batería (video)</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.bateria }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Conector -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Conector</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.conector }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Capacidad mínima -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Desde</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.capacidadMin }}</span>
+              </td>
+            }
+          </tr>
+
+          <!-- Colores -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Colores</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-top py-3 px-3 border-t border-hairline">
+                <span class="text-sm text-ink">{{ p.colores }} colores</span>
+              </td>
+            }
+          </tr>
+
+          <!-- CTA Comprar -->
+          <tr>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-bottom pt-4 pr-4 border-t border-hairline">Comprar</th>
+            @for (p of IPHONES; track p.nombre) {
+              <td class="text-center align-bottom pt-4 px-3 border-t border-hairline">
+                <a
+                  [routerLink]="['/product', p.slug]"
+                  class="inline-flex items-center justify-center bg-action text-white px-4 py-2 rounded-full text-xs font-medium hover:opacity-90 transition-opacity min-h-[36px]">
+                  Ver detalle
+                </a>
+              </td>
+            }
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

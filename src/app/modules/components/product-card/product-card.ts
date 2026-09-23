@@ -19,15 +19,15 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     ]),
     trigger('hoverAnimation', [
       state('initial', style({
-        transform: 'scale(1)',
-        boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)'
+        transform: 'translateY(0)',
+        boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.06)'
       })),
       state('hovered', style({
-        transform: 'scale(1.03)',
-        boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
+        transform: 'translateY(-2px)',
+        boxShadow: '0 8px 24px 0 rgb(0 0 0 / 0.08)'
       })),
       transition('initial <=> hovered', [
-        animate('200ms ease-in-out')
+        animate('200ms cubic-bezier(0.4, 0, 0.2, 1)')
       ])
     ])
   ]

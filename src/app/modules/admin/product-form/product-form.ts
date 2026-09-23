@@ -7,7 +7,9 @@ import {
   FormBuilder,
   ReactiveFormsModule,
   Validators,
-  FormGroup
+  FormGroup,
+  FormArray,
+  FormControl
 } from '@angular/forms';
 import { Product } from '../../../core/models/product.model';
 import { NgClass } from '@angular/common';
@@ -60,12 +62,16 @@ export class ProductForm {
     subcategoriaId: [''],
     destacado: [false],
     disponibilidad: [true],
-    publicado: [true]
+    publicado: [true],
+    /** Variantes de color (FormArray de FormGroup con `nombre` y `hex`). */
+    colores: this.fb.array([]),
+    /** Capacidades de almacenamiento (FormArray de FormControl strings). */
+    capacidades: this.fb.array([])
   });
 
   // 📝 Computed para rubros, categorías y subcategorías filtradas
   rubros = this.categoriesService.rubros;
-  
+
   categories = computed(() => {
     const rubroId = this.form.get('rubroId')?.value;
     const all = this.categoriesService.categories();
@@ -77,6 +83,16 @@ export class ProductForm {
     const all = this.categoriesService.subcategories();
     return catId ? all.filter(s => s.categoryId === catId) : all;
   });
+
+  /** Getter tipado del FormArray de colores. */
+  get coloresFA(): FormArray<FormGroup> {
+    return this.form.get('colores') as FormArray<FormGroup>;
+  }
+
+  /** Getter tipado del FormArray de capacidades. */
+  get capacidadesFA(): FormArray<FormControl<string>> {
+    return this.form.get('capacidades') as FormArray<FormControl<string>>;
+  }
 
   constructor() {
     // Escuchar cambios en rubro para limpiar categorías
@@ -92,24 +108,86 @@ export class ProductForm {
     effect(() => {
       const prod = this.current();
       if (this.id() && prod) {
+        // Cargar datos escalares primero
         this.form.patchValue(prod);
-        // Establecer imágenes si existen
+        // Establecer imágenes
         if (prod.imagenes) {
           this.images.set(prod.imagenes);
         } else if (prod.imagen) {
-          // Si solo tiene la imagen principal antigua, la ponemos en la lista
           this.images.set([prod.imagen]);
         }
+        // Reemplazar FormArrays de variantes con la data del producto
+        this.resetColores(prod.colores ?? []);
+        this.resetCapacidades(prod.capacidades ?? []);
       }
     });
   }
 
-  // ... rest of methods
+  /** Vacía el FormArray de colores y lo llena con los provistos. */
+  private resetColores(items: { nombre: string; hex: string }[]): void {
+    this.coloresFA.clear();
+    for (const c of items) {
+      this.coloresFA.push(this.fb.group({
+        nombre: [c.nombre, Validators.required],
+        hex: [c.hex, [Validators.required, Validators.pattern(/^#[0-9a-fA-F]{6}$/)]]
+      }));
+    }
+  }
 
-  // 💾 Al enviar: creamos o actualizamos según exista `id`
+  /** Vacía el FormArray de capacidades y lo llena con los provistos. */
+  private resetCapacidades(items: string[]): void {
+    this.capacidadesFA.clear();
+    for (const cap of items) {
+      this.capacidadesFA.push(this.fb.nonNullable.control(cap, Validators.required));
+    }
+  }
+
+  /** Agrega un color vacío al FormArray. */
+  addColor(): void {
+    this.coloresFA.push(this.fb.group({
+      nombre: ['', Validators.required],
+      hex: ['#000000', [Validators.required, Validators.pattern(/^#[0-9a-fA-F]{6}$/)]]
+    }));
+  }
+
+  /** Quita el color en `index` del FormArray. */
+  removeColor(index: number): void {
+    this.coloresFA.removeAt(index);
+  }
+
+  /** Agrega una capacidad vacía al FormArray. */
+  addCapacity(): void {
+    this.capacidadesFA.push(this.fb.nonNullable.control('', Validators.required));
+  }
+
+  /** Quita la capacidad en `index` del FormArray. */
+  removeCapacity(index: number): void {
+    this.capacidadesFA.removeAt(index);
+  }
+
+  // 💾 Al enviar: creamos o actualizamos según exista `id`.
+  // Omitimos `colores` y `capacidades` si están vacíos para no ensuciar Firestore.
   onSubmit() {
     if (this.form.invalid) return;
-    const data = { ...(this.form.value as Omit<Product, 'id'>), id: this.id()! };
+    const raw = this.form.value as Omit<Product, 'id' | 'colores' | 'capacidades'> & {
+      colores?: { nombre: string; hex: string }[];
+      capacidades?: string[];
+    };
+    const colores = (raw.colores ?? [])
+      .filter(c => c?.nombre?.trim() && c?.hex?.trim())
+      .map(c => ({ nombre: c.nombre.trim(), hex: c.hex.trim() }));
+    const capacidades = (raw.capacidades ?? [])
+      .map(c => (c ?? '').trim())
+      .filter(c => c);
+    // El id del producto es opcional en `addProduct` (auto-id de Firestore) y
+    // obligatorio en `updateProduct`. Construimos `data` con tipo laxo para no
+    // chocar contra TS y casteamos al传递给 los services según corresponda.
+    const data = {
+      ...raw,
+      id: this.id() ?? '',
+      colores: colores.length ? colores : undefined,
+      capacidades: capacidades.length ? capacidades : undefined,
+    } as unknown as Product;
     if (this.id()) {
       this.service.updateProduct(data);
     } else {

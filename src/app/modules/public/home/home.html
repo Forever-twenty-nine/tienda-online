@@ -1,81 +1,80 @@
-<!-- Hero Section -->
-<section class="bg-gradient-to-tl from-brand-light to-white relative overflow-hidden min-h-[600px] flex items-center lg:pb-10 lg:pt-10 ">
-  <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px] grid lg:grid-cols-2 gap-12 items-center relative z-10 pt-10 pb-10">
-    <div class="sm:text-center lg:text-left animate-fade-in order-2 lg:order-1">
-      <div class="hidden lg:block">
-        <h1 class="tracking-tight font-ftn-medium sm:text-5xl md:text-6xl lg:text-6xl leading-tight">
-          <span class="block ">Tu próxima joya</span>
-          <span class="block text-brand-tertiary">favorita está aquí</span>
-        </h1>
-        <p class="mt-6 text-lg text-brand-dark/50 sm:max-w-xl sm:mx-auto lg:mx-0 leading-snug">
-          Calidad excepcional y diseño de vanguardia creados para acompañarte en tus momentos más memorables.
+<!-- Hero Section — Edge-to-edge con producto, sin rotación ni gradientes fuertes -->
+<section class="bg-mist relative overflow-hidden">
+  <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px] py-12 lg:py-20">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Texto -->
+      <div class="text-center lg:text-left animate-fade-in">
+        <p class="text-sm font-medium uppercase tracking-widest text-ink-48 mb-3">
+          Lo más nuevo
         </p>
-      </div>
-
-      <div class="lg:mt-10 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
-        <a routerLink="/catalogo" class="flex items-center justify-center font-ftn-bold px-10 py-4 border border-transparent text-base lg:text-lg rounded-2xl text-brand-dark bg-brand-primary hover:bg-brand-primary  hover:scale-105 transition-all">
-          Explora el Catálogo
-          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </a>
-        <!-- <a routerLink="/about" class="flex items-center justify-center px-10 py-4 border-2 border-brand-pink text-lg font-bold rounded-2xl text-brand-pink bg-white hover:bg-brand-pink/10 transition-all">
-          Sobre Nosotros
-        </a> -->
-      </div>
-
-      <div class="mt-12 grid grid-cols-3 gap-4  pt-8">
-        <div class="text-center lg:text-left">
-          <p class="text-2xl sm:text-3xl font-bold text-gray-900">50k+</p>
-          <p class="text-xs sm:text-sm text-gray-500 font-medium">Clientes</p>
-        </div>
-        <div class="text-center lg:text-left border-x border-gray-100 px-4">
-          <p class="text-2xl sm:text-3xl font-bold text-gray-900">100%</p>
-          <p class="text-xs sm:text-sm text-gray-500 font-medium">Seguro</p>
-        </div>
-        <div class="text-center lg:text-left">
-          <p class="text-2xl sm:text-3xl font-bold text-gray-900">24h</p>
-          <p class="text-xs sm:text-sm text-gray-500 font-medium">Entrega</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="relative order-1 lg:order-2 pb-10 mx-auto ">
-      <div class="lg:hidden">
-        <h1 class="text-4xl tracking-tight font-ftn-medium leading-tight">
-          <span class="block ">Tu próxima joya</span>
-          <span class="block text-brand-tertiary">favorita está aquí</span>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl tracking-tight text-ink leading-[1.05]">
+          @if (heroProduct(); as hp) {
+            <span class="block">{{ hp.nombre }}</span>
+            <span class="block text-action">en stock</span>
+          } @else {
+            <span class="block">Tu próximo</span>
+            <span class="block text-action">iPhone</span>
+          }
         </h1>
-        <p class="mt-6 mb-10 text-base text-brand-dark/50 leading-snug">
-          Calidad excepcional y diseño de vanguardia creados para acompañarte en tus momentos más memorables.
+        <p class="mt-5 text-base md:text-lg text-ink-80 leading-relaxed max-w-xl mx-auto lg:mx-0">
+          Tecnología premium, garantía oficial Apple y cuotas sin interés. Retirá en nuestro local de Mendoza o recibilo en tu casa.
         </p>
-      </div>
-      <div class="absolute -top-10 -right-10 lg:-top-20 lg:-right-20 w-48 h-48 lg:w-80 lg:h-80 lg:bg-brand-primary/40 rounded-full blur-2xl lg:blur-3xl"></div>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+          <a routerLink="/catalogo" class="inline-flex items-center justify-center bg-action text-white px-7 py-3 rounded-full text-base font-medium hover:opacity-90 transition-opacity min-h-[44px]">
+            Comprar ahora
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          <a routerLink="/about" class="inline-flex items-center justify-center bg-canvas text-ink border border-hairline px-7 py-3 rounded-full text-base font-medium hover:bg-cool-wash transition-colors min-h-[44px]">
+            Sobre nosotros
+          </a>
+        </div>
 
-      <div class="relative z-10 block group max-w-[300px] lg:max-w-[700px] mx-auto">
-        <a [routerLink]="heroProduct() ? ['/product', heroProduct()?.slug] : null"
-           [class.cursor-default]="!heroProduct()"
-           class="block">
-          <div class="rounded-[1rem] lg:rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-dark/20 lg:rotate-3 group-hover:rotate-0 transition-transform duration-700 mx-auto max-w-md lg:max-w-none bg-brand-primary/5">
-            <img class="w-full h-[350px] sm:h-[400px] lg:h-[550px] object-cover transition-opacity duration-500"
-                 [src]="heroProduct()?.imagen || defaultHeroImage"
-                 [alt]="heroProduct()?.nombre || 'Colección Exclusiva'"
-                 [class.opacity-80]="!heroProduct()">
-            <div class="absolute inset-0 bg-black/0 transition-colors duration-700"></div>
+        <!-- Trust band inline -->
+        <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left max-w-xl mx-auto lg:mx-0">
+          <div class="flex items-center gap-2 text-sm text-ink-80">
+            <svg class="w-5 h-5 text-action flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Garantía oficial</span>
           </div>
-        </a>
+          <div class="flex items-center gap-2 text-sm text-ink-80">
+            <svg class="w-5 h-5 text-action flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>12 cuotas sin interés</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-ink-80">
+            <svg class="w-5 h-5 text-action flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Envío gratis +$50k</span>
+          </div>
+        </div>
+      </div>
 
+      <!-- Imagen del producto -->
+      <div class="relative max-w-md mx-auto lg:max-w-none">
+        <div class="aspect-square bg-canvas rounded-[32px] overflow-hidden">
+          <img class="w-full h-full object-cover"
+               [src]="heroProduct()?.imagen || defaultHeroImage"
+               [alt]="heroProduct()?.nombre || 'iPhone'"
+               [class.opacity-80]="!heroProduct()">
+        </div>
+
+        <!-- Badge flotante sin animación de bounce -->
         @if (heroProduct() && (heroProduct()?.descuento || heroProduct()?.destacado)) {
-          <div class="absolute top-0 right-0 lg:-bottom-6 lg:top-auto lg:-right-6 bg-brand-tertiary p-4 lg:px-6 lg:py-4 rounded-xl lg:rounded-2xl shadow-2xl shadow-brand-primary/30 z-20 animate-bounce duration-[3000ms] mb-2">
-            <div class="flex items-center gap-3 lg:gap-4">
-              <div class="w-12 h-12 lg:w-18 lg:h-9 bg-white rounded-full flex items-center justify-center text-brand-tertiary uppercase font-ftn-bold text-[10px] lg:text-xs">
-                {{ heroProduct()?.descuento ? 'Oferta' : 'Top' }}
+          <div class="absolute -bottom-4 -right-4 lg:-bottom-6 lg:-right-6 bg-ink text-canvas p-4 lg:px-6 lg:py-4 rounded-2xl shadow-xl z-10">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 lg:w-14 lg:h-14 bg-canvas text-ink rounded-full flex items-center justify-center font-bold text-xs lg:text-sm">
+                {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'TOP' }}
               </div>
               <div>
-                <p class="text-xs lg:text-lg font-ftn-bold text-white">
-                  {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'Destacado' }}
+                <p class="text-xs lg:text-sm font-medium text-canvas">
+                  {{ heroProduct()?.descuento ? 'Oferta' : 'Destacado' }}
                 </p>
-                <p class="text-[10px] lg:text-xs text-brand-light w-full truncate max-w-[100px] lg:max-w-[200px]">
+                <p class="text-[10px] lg:text-xs text-canvas/60 truncate max-w-[100px] lg:max-w-[160px]">
                   {{ heroProduct()?.nombre }}
                 </p>
               </div>
@@ -87,28 +86,19 @@
   </div>
 </section>
 
-<!-- Niveles de Categorías (Rubros) -->
+<!-- Categorías como chips horizontales (no grid de cards) -->
 @if (topLevelCategories().length > 0) {
-<section class="py-12 bg-white border-y border-brand-dark/5">
-  <div class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px]">
-    <div class="flex flex-col items-center mb-10">
-      <h2 class="text-xl md:text-2xl font-ftn-bold text-brand-dark uppercase tracking-widest mb-2">Explora por Rubro</h2>
-      <div class="w-20 h-1 bg-brand-primary rounded-full"></div>
+<section class="py-10 lg:py-12 bg-canvas border-b border-hairline">
+  <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
+    <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+      <h2 class="text-lg font-medium text-ink uppercase tracking-wider">Explorá por rubro</h2>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <div class="flex flex-wrap gap-3">
       @for (cat of topLevelCategories(); track cat.id) {
-        <button 
+        <button
           (click)="navigateToCategory(cat.id)"
-          class="group relative aspect-[4/3] rounded-2xl overflow-hidden bg-brand-light border border-brand-dark/5 hover:border-brand-primary transition-all cursor-pointer">
-          <!-- Placeholder para imagen de categoría (ya que no tienen) -->
-          <div class="absolute inset-0 bg-brand-primary/5 group-hover:bg-brand-primary/20 transition-colors"></div>
-          <div class="absolute inset-0 p-6 flex flex-col justify-end">
-            <h3 class="text-lg md:text-xl font-ftn-bold text-brand-dark group-hover:scale-110 transition-transform origin-left">{{ cat.nombre }}</h3>
-            <p class="text-xs uppercase tracking-widest text-brand-dark/40 font-bold mt-1">Ver productos</p>
-          </div>
-          <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-            <svg class="w-6 h-6 text-brand-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-          </div>
+          class="px-5 py-2.5 rounded-full border border-hairline text-ink hover:border-action hover:text-action transition-colors min-h-[44px]">
+          {{ cat.nombre }}
         </button>
       }
     </div>
@@ -117,88 +107,94 @@
 }
 
 <!-- Featured Products Section -->
-<section class="py-16 lg:py-24 ">
-  <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-      <div class="">
-        <!-- <h2 class="text-sm lg:text-base text-brand-pink font-ftn-medium tracking-widest mb-3">Nuestros productos más Top</h2> -->
-        <p class="text-3xl font-ftn-light tracking-tight text-gray-900 sm:text-4xl uppercase leading-tight">
-          Nuestros productos<br> <span class="font-ftn-bold text-brand-tertiary">más top</span>
-        </p>
+<section class="py-12 lg:py-20 bg-canvas">
+  <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-widest text-ink-48 mb-2">Top ventas</p>
+        <h2 class="text-2xl md:text-3xl tracking-tight text-ink">
+          Los más <span class="font-medium text-action">pedidos</span>
+        </h2>
       </div>
-      <a routerLink="/catalogo" class="inline-flex items-center text-brand-primary-dark p-4 hover:bg-brand-primary/10 rounded-lg transition-all gap-2 text-sm">
+      <a routerLink="/catalogo" class="inline-flex items-center text-action text-sm font-medium hover:opacity-80 transition-opacity gap-1">
         Ver catálogo completo
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
         </svg>
       </a>
     </div>
 
     @if (featuredProducts.length > 0) {
-      <div class="grid gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         @for (product of featuredProducts; track product.id) {
           <app-product-card [product]="product"></app-product-card>
         }
       </div>
     } @else {
-      <div class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-dashed border-gray-300 px-6 text-center">
-        <div class="text-5xl mb-4 grayscale opacity-50">✨</div>
-        <p class="text-gray-500 text-lg font-medium">Pronto tendremos novedades destacadas para ti</p>
+      <div class="flex flex-col items-center justify-center py-20 bg-mist rounded-2xl px-6 text-center">
+        <div class="text-5xl mb-4 opacity-50">⌛</div>
+        <p class="text-ink-80 text-base font-medium">Pronto tendremos novedades destacadas para vos</p>
       </div>
     }
   </div>
 </section>
 
-<!-- Why Us Section -->
-<section class="py-6 lg:py-24 bg-white overflow-hidden">
-  <div class="mx-auto px-8 md:px-10 lg:px-12  max-w-[1500px]">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-      <div class="order-1 lg:order-1">
-        <h2 class="text-2xl lg:text-4xl uppercase mb-10">¿Por qué <br><span class="text-brand-tertiary font-ftn-bold">elegirnos?</span></h2>
-        <div class="space-y-6 lg:space-y-8">
-          <div class="flex gap-4 lg:gap-6">
-            <div class="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 bg-brand-primary/20 rounded-xl lg:rounded-2xl flex items-center justify-center text-brand-primary ">
-              <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+<!-- 🆚 Comparador de iPhones -->
+<app-iphone-comparator></app-iphone-comparator>
+
+<!-- Why Us — value props sobrios -->
+<section class="py-12 lg:py-20 bg-canvas">
+  <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="text-xs font-medium uppercase tracking-widest text-ink-48 mb-2">¿Por qué elegirnos?</p>
+        <h2 class="text-2xl md:text-3xl tracking-tight text-ink mb-10">
+          Compra <span class="font-medium text-action">segura</span>, atención personal
+        </h2>
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-11 h-11 bg-action/10 text-action rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
               </svg>
             </div>
             <div>
-              <h3 class="text-lg lg:text-lg font-ftn-bold mb-1 lg:mb-1">Envío Express</h3>
-              <p class="text-sm lg:text-base text-brand-dark/50 leading-tight">Recibe tus pedidos en tiempo récord directamente en tu puerta.</p>
+              <h3 class="text-base font-medium text-ink mb-1">Envío express</h3>
+              <p class="text-sm text-ink-80 leading-relaxed">Recibí tu pedido en tiempo récord, con seguimiento de punta a punta.</p>
             </div>
           </div>
-          <div class="flex gap-4 lg:gap-6">
-            <div class="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 bg-brand-primary/20 rounded-xl lg:rounded-2xl flex items-center justify-center text-brand-primary ">
-              <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-11 h-11 bg-action/10 text-action rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
               </svg>
             </div>
             <div>
-              <h3 class="text-lg lg:text-lg font-ftn-bold mb-1 lg:mb-1">Compra Segura</h3>
-              <p class="text-sm lg:text-base text-brand-dark/50 leading-tight">Transacciones protegidas con los mayores estándares de seguridad.</p>
+              <h3 class="text-base font-medium text-ink mb-1">Garantía oficial</h3>
+              <p class="text-sm text-ink-80 leading-relaxed">Productos originales con garantía oficial Apple. Soporte post-venta incluido.</p>
             </div>
           </div>
-          <div class="flex gap-4 lg:gap-6">
-            <div class="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 bg-brand-primary/20 rounded-xl lg:rounded-2xl flex items-center justify-center text-brand-primary">
-              <svg class="w-6 h-6 lg:w-8 lg:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-11 h-11 bg-action/10 text-action rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
             </div>
             <div>
-              <h3 class="text-lg lg:text-lg font-ftn-bold  mb-1 lg:mb-1">Soporte 24/7</h3>
-              <p class="text-sm lg:text-base text-brand-dark/50 leading-tight">Nuestro equipo está listo para ayudarte en cualquier momento.</p>
+              <h3 class="text-base font-medium text-ink mb-1">Atención personal</h3>
+              <p class="text-sm text-ink-80 leading-relaxed">Equipo en Mendoza listo para ayudarte por WhatsApp antes y después de tu compra.</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="order-2 lg:order-2">
-        <div class="relative max-w-md mx-auto lg:max-w-none">
+      <div class="relative max-w-md mx-auto lg:max-w-none">
+        <div class="aspect-[4/5] rounded-[20px] overflow-hidden">
           <img src="https://images.unsplash.com/photo-1690701346316-1ecb0e67a3e2?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-               class="rounded-[2.5rem] lg:rounded-[3rem] " alt="Nuestro compromiso">
-          <div class="absolute -bottom-6 -left-6 lg:-bottom-10 lg:-left-10 bg-brand-tertiary p-6 lg:p-8 rounded-2xl lg:rounded-3xl text-white">
-            <p class="text-4xl lg:text-5xl mb-1 text-center">100%</p>
-            <p class="text-[10px] lg:text-xs font-medium opacity-80 uppercase tracking-widest text-center">Satisfacción</p>
-          </div>
+               class="w-full h-full object-cover" alt="Atención personal">
+        </div>
+        <div class="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-ink text-canvas p-5 rounded-2xl shadow-xl">
+          <p class="text-3xl font-medium mb-1">+5.000</p>
+          <p class="text-[10px] font-medium opacity-80 uppercase tracking-widest">Clientes felices</p>
         </div>
       </div>
     </div>

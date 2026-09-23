@@ -1,25 +1,25 @@
 @if (open()) {
   <app-modal [open]="open()" (close)="cancel.emit()">
-    <div class="bg-white w-full p-8 relative">
-      <h3 class="text-2xl font-ftn-bold mb-4 text-brand-dark">
+    <div class="bg-canvas w-full p-8 relative">
+      <h3 class="text-xl font-ftn-bold mb-3 text-ink">
         {{ title() }}
       </h3>
-      <p class="mb-6 text-muted-foreground">
+      <p class="mb-6 text-ink-80 leading-relaxed">
         {{ message() }}
       </p>
-      <div class="flex justify-end gap-4 border-t border-brand-dark/20  pt-6 mt-2">
+      <div class="flex justify-end gap-3 border-t border-hairline pt-6 mt-2">
         <button (click)="cancel.emit()" class="
-          bg-muted text-muted-foreground
-          px-6 py-3 font-ftn-bold rounded-lg cursor-pointer
-          hover:bg-brand-dark hover:text-muted
-          transition">
+          bg-cool-wash text-ink
+          px-6 py-3 font-ftn-bold rounded-full cursor-pointer
+          hover:bg-hairline transition-colors
+          min-h-[44px]">
           {{ cancelText() }}
         </button>
         <button (click)="confirm.emit()" class="
-          bg-error text-white
-          px-6 py-3 font-ftn-bold rounded-lg cursor-pointer
-          hover:bg-red-800 hover:text-white
-          transition">
+          bg-danger text-white
+          px-6 py-3 font-ftn-bold rounded-full cursor-pointer
+          hover:opacity-90 transition-opacity
+          min-h-[44px]">
           {{ confirmText() }}
         </button>
       </div>

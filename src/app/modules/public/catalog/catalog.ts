@@ -1,4 +1,5 @@
 import { Component, inject, signal, OnInit, AfterViewInit, ViewChild, ElementRef, computed, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { ProductCard } from '../../components/product-card/product-card';
 import { ProductsService } from '../../../core/services/products';
@@ -71,6 +72,52 @@ export class CatalogComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.searchTerm = this.productsService.searchTerm();
+  }
+
+  /** Auto-pobla min/max en el primer render con los bounds del dataset. */
+  priceRangeBounds = this.productsService.priceBounds;
+  hasSecondaryFilter = computed(() =>
+    this.productsService.featuredFilter() !== null
+    || this.productsService.discountFilter() !== null
+    || this.productsService.stockFilter() !== null
+    || this.productsService.priceMin() !== null
+    || this.productsService.priceMax() !== null
+  );
+
+  setFeatured(v: boolean): void {
+    const cur = this.productsService.featuredFilter();
+    this.productsService.setFeatured(cur === v ? null : v);
+  }
+  setDiscount(v: boolean): void {
+    const cur = this.productsService.discountFilter();
+    this.productsService.setDiscount(cur === v ? null : v);
+  }
+  setStock(v: boolean): void {
+    const cur = this.productsService.stockFilter();
+    this.productsService.setStock(cur === v ? null : v);
+  }
+
+  /** Aplica un nuevo precio al setter, manteniendo el otro extremo en null si está sin tope. */
+  onPriceMinInput(value: string | number | null): void {
+    const v = this.parsePriceInput(value, this.productsService.priceMin(), this.priceRangeBounds()[0]);
+    const cur = this.productsService.priceMax();
+    this.productsService.setPriceRange(v, cur);
+  }
+  onPriceMaxInput(value: string | number | null): void {
+    const v = this.parsePriceInput(value, this.productsService.priceMax(), this.priceRangeBounds()[1]);
+    const cur = this.productsService.priceMin();
+    this.productsService.setPriceRange(cur, v);
+  }
+
+  private parsePriceInput(v: string | number | null, current: number | null, fallback: number): number | null {
+    if (v === null || v === '') return null;
+    const n = typeof v === 'string' ? Number(v.replace(/\D/g, '')) : v;
+    if (!Number.isFinite(n) || n <= 0) return current;
+    return n;
+  }
+
+  clearSecondary(): void {
+    this.productsService.clearSecondaryFilters();
   }
 
   ngAfterViewInit() {

@@ -13,4 +13,8 @@ export interface Product {
     descuento?: number;
     disponibilidad: boolean;
     publicado: boolean;
+    /** Variantes de color disponibles (ej: iPhones). Si no está, no se muestran pickers. */
+    colores?: { nombre: string; hex: string }[];
+    /** Capacidades de almacenamiento disponibles (ej: 128GB, 256GB). Si no está, no se muestran pickers. */
+    capacidades?: string[];
 }

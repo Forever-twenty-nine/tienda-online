@@ -1,26 +1,27 @@
-<header class="bg-white border-b-2 border-brand-light sticky top-0 z-50 header-backdrop">
-  <nav class="mx-auto px-8 md:px-10 lg:px-12 max-w-[1500px]">
+<header class="bg-canvas/80 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+  <a href="#main-content" class="skip-link">Saltar al contenido</a>
+  <nav class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
     <div class="flex justify-between items-center h-16">
-      <!-- Logo - Nombre de la tienda - Enlace a home -->
-      <a routerLink="/" class="">
+      <!-- Logo -->
+      <a routerLink="/" class="flex-shrink-0">
         <img src="brand-ftn-tienda-online.svg" alt="" class="w-auto h-10">
       </a>
 
-      <!-- Espaciador para empujar la navegación a la derecha -->
+      <!-- Espaciador -->
       <div class="hidden md:block flex-grow"></div>
 
-      <!-- Navegación Desktop (Movida a la derecha) -->
-      <div class="hidden md:flex items-center space-x-4">
+      <!-- Navegación Desktop -->
+      <div class="hidden md:flex items-center gap-1">
         <a routerLink="/"
-           routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
+           routerLinkActive="bg-cool-wash text-ink font-ftn-bold"
            [routerLinkActiveOptions]="{exact: true}"
-           class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
+           class="px-4 py-2 rounded-full text-sm text-ink-80 hover:bg-cool-wash transition-colors">
           Inicio
         </a>
         <a routerLink="/catalogo"
-           routerLinkActive="bg-brand-dark text-white border-brand-dark font-ftn-bold"
+           routerLinkActive="bg-cool-wash text-ink font-ftn-bold"
            (click)="setCategory(null)"
-           class=" px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark">
+           class="px-4 py-2 rounded-full text-sm text-ink-80 hover:bg-cool-wash transition-colors">
           Catálogo
         </a>
 
@@ -28,7 +29,7 @@
         @for (cat of topLevelCategories().slice(0, 3); track cat.id) {
           <button (click)="setCategory(cat.id)"
              [routerLink]="['/catalogo']"
-             class="hidden lg:block px-4 py-2 rounded-lg border-2 border-solid border-transparent transition-all text-sm hover:border-brand-dark cursor-pointer">
+             class="hidden lg:block px-4 py-2 rounded-full text-sm text-ink-80 hover:bg-cool-wash transition-colors cursor-pointer">
             {{ cat.nombre }}
           </button>
         }
@@ -37,7 +38,7 @@
       <!-- Botón de menú móvil -->
       <div class="md:hidden ml-auto">
         <button (click)="toggleMenu()"
-                class="hover:text-brand-primary hover:bg-muted p-2 rounded-md transition-all duration-200 hover:scale-105 header-menu-btn">
+                class="hover:bg-cool-wash p-2 rounded-full transition-colors header-menu-btn">
           <svg class="w-6 h-6" [class.hidden]="isMenuOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
@@ -50,33 +51,27 @@
 
     <!-- Menú móvil -->
     <div class="md:hidden" [class.hidden]="!isMenuOpen">
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 backdrop-blur-sm rounded-lg transition-all mt-2 header-mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-canvas rounded-2xl mt-2 border border-hairline header-mobile-menu">
         <a routerLink="/"
            (click)="closeMenu()"
-           routerLinkActive="bg-brand-dark text-white font-ftn-bold"
+           routerLinkActive="bg-cool-wash text-ink font-ftn-bold"
            [routerLinkActiveOptions]="{exact: true}"
-           class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
+           class="block px-3 py-2 rounded-full text-base text-ink hover:bg-cool-wash transition-colors">
           Inicio
         </a>
         <a routerLink="/catalogo"
            (click)="setCategory(null)"
-           routerLinkActive="bg-brand-dark text-white font-ftn-bold"
-           class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
+           routerLinkActive="bg-cool-wash text-ink font-ftn-bold"
+           class="block px-3 py-2 rounded-full text-base text-ink hover:bg-cool-wash transition-colors">
           Catálogo
         </a>
         @for (cat of topLevelCategories(); track cat.id) {
           <a routerLink="/catalogo"
              (click)="setCategory(cat.id)"
-             class="block px-6 py-2 rounded-md text-sm hover:bg-brand-dark/10 transition-all text-brand-dark/60">
-            - {{ cat.nombre }}
+             class="block px-6 py-2 rounded-full text-sm text-ink-80 hover:bg-cool-wash transition-colors">
+            {{ cat.nombre }}
           </a>
         }
-        <!-- <a routerLink="/about"
-           (click)="closeMenu()"
-           routerLinkActive="bg-brand-dark text-white font-ftn-bold"
-           class="block px-3 py-2 rounded-md text-base hover:bg-brand-dark/10 transition-all">
-          Nosotros
-        </a> -->
       </div>
     </div>
   </nav>

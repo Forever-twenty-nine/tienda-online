@@ -3,11 +3,12 @@ import { RouterLink, Router } from '@angular/router';
 import { ProductsService } from '../../../core/services/products';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ProductCard } from '../../components/product-card/product-card';
+import { IPhoneComparator } from '../../components/iphone-comparator/iphone-comparator';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ProductCard],
+  imports: [RouterLink, ProductCard, IPhoneComparator],
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './home.html',
 })

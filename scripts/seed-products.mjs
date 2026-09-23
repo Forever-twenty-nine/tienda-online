@@ -68,176 +68,188 @@ try {
 // Coherente con los modelos en `src/app/core/models/`.
 // Idempotencia: usa `id` explícito en rubros/categories/subcategories/pages
 // para que un eventual upsert sea estable. Products usa auto-id (como la app).
+//
+// Catálogo: tienda de iPhones en Mendoza. 5 productos entre iPhone 13 y iPhone 16 Pro.
+// Colores y capacidades coinciden con los disponibles oficialmente en Apple Store AR
+// al momento del seed. Imágenes son placeholders de picsum.photos (provisorios hasta
+// que se suban fotos reales vía admin).
 
 const RUBROS = [
-  { id: 'muebles', nombre: 'Muebles', orden: 1 },
-  { id: 'decoracion', nombre: 'Decoración', orden: 2 },
-  { id: 'regalos', nombre: 'Regalos', orden: 3 },
+  { id: 'tecnologia', nombre: 'Tecnología', orden: 1 },
 ];
 
 const CATEGORIES = [
-  { id: 'muebles-living', nombre: 'Living', rubroId: 'muebles', orden: 1 },
-  { id: 'muebles-comedor', nombre: 'Comedor', rubroId: 'muebles', orden: 2 },
-  { id: 'muebles-dormitorio', nombre: 'Dormitorio', rubroId: 'muebles', orden: 3 },
-  { id: 'decoracion-textil', nombre: 'Textil', rubroId: 'decoracion', orden: 1 },
-  { id: 'decoracion-iluminacion', nombre: 'Iluminación', rubroId: 'decoracion', orden: 2 },
-  { id: 'regalos-hogar', nombre: 'Para el hogar', rubroId: 'regalos', orden: 1 },
+  { id: 'celulares', nombre: 'Celulares', rubroId: 'tecnologia', orden: 1 },
+  { id: 'accesorios', nombre: 'Accesorios', rubroId: 'tecnologia', orden: 2 },
 ];
 
 const SUBCATEGORIES = [
-  { id: 'sillones', nombre: 'Sillones', categoryId: 'muebles-living', orden: 1 },
-  { id: 'mesas-ratonas', nombre: 'Mesas ratonas', categoryId: 'muebles-living', orden: 2 },
-  { id: 'mesas-comedor', nombre: 'Mesas', categoryId: 'muebles-comedor', orden: 1 },
-  { id: 'sillas-comedor', nombre: 'Sillas', categoryId: 'muebles-comedor', orden: 2 },
-  { id: 'respaldos', nombre: 'Respaldos', categoryId: 'muebles-dormitorio', orden: 1 },
+  { id: 'iphone-13', nombre: 'iPhone 13', categoryId: 'celulares', orden: 1 },
+  { id: 'iphone-14', nombre: 'iPhone 14', categoryId: 'celulares', orden: 2 },
+  { id: 'iphone-15', nombre: 'iPhone 15', categoryId: 'celulares', orden: 3 },
+  { id: 'iphone-16', nombre: 'iPhone 16', categoryId: 'celulares', orden: 4 },
+  { id: 'iphone-16-pro', nombre: 'iPhone 16 Pro', categoryId: 'celulares', orden: 5 },
 ];
+
+const img = (slug) => `https://picsum.photos/seed/${slug}/800/800`;
 
 const PRODUCTS = [
   {
-    nombre: 'Sillón Recoleta',
-    slug: 'sillon-recoleta',
+    nombre: 'iPhone 13',
+    slug: 'iphone-13',
     descripcion:
-      'Sillón de living tapizado en pana verde botella. Estructura de madera maciza, patas de metal negro mate. Hecho a mano en Buenos Aires.',
-    precio: 459000,
-    rubroId: 'muebles',
-    categoriaId: 'muebles-living',
-    subcategoriaId: 'sillones',
-    destacado: true,
+      'Chip A15 Bionic con Neural Engine. Sistema de dos cámaras de 12 MP con modo Cine. Batería que dura todo el día. Pantalla Super Retina XDR de 6.1 pulgadas. Ceramic Shield en la parte frontal.',
+    precio: 1299000,
+    imagen: img('iphone-13'),
+    imagenes: [img('iphone-13'), img('iphone-13-2'), img('iphone-13-3')],
+    rubroId: 'tecnologia',
+    categoriaId: 'celulares',
+    subcategoriaId: 'iphone-13',
+    destacado: false,
     descuento: 0,
-    disponibilidad: true,
+    disponibilidad: false, // Agotado, para ver el flujo "sin stock"
     publicado: true,
+    colores: [
+      { nombre: 'Rosa', hex: '#fad0bc' },
+      { nombre: 'Azul', hex: '#3a4a6b' },
+      { nombre: 'Medianoche', hex: '#232a35' },
+      { nombre: 'Luz estelar', hex: '#f4f1ec' },
+      { nombre: '(PRODUCT)RED', hex: '#bf0013' },
+    ],
+    capacidades: ['128 GB', '256 GB', '512 GB'],
   },
   {
-    nombre: 'Mesa ratona Palermo',
-    slug: 'mesa-ratona-palermo',
+    nombre: 'iPhone 14',
+    slug: 'iphone-14',
     descripcion:
-      'Mesa ratona circular con tapa de mármol travertino y base de madera guayubira. Diámetro 90 cm.',
-    precio: 178000,
-    rubroId: 'muebles',
-    categoriaId: 'muebles-living',
-    subcategoriaId: 'mesas-ratonas',
-    destacado: true,
-    descuento: 0,
-    disponibilidad: true,
-    publicado: true,
-  },
-  {
-    nombre: 'Mesa de comedor Belgrano',
-    slug: 'mesa-comedor-belgrano',
-    descripcion:
-      'Mesa extensible para 6 a 8 personas. Tapa de madera de paraíso lustrada, patas de hierro forjado.',
-    precio: 612000,
-    rubroId: 'muebles',
-    categoriaId: 'muebles-comedor',
-    subcategoriaId: 'mesas-comedor',
+      'Chip A15 Bionic con GPU de 5 núcleos. Detección de Choques. Batería de hasta 20 horas de reproducción de video. Pantalla Super Retina XDR de 6.1 pulgadas con Ceramic Shield.',
+    precio: 1499000,
+    imagen: img('iphone-14'),
+    imagenes: [img('iphone-14'), img('iphone-14-2'), img('iphone-14-3')],
+    rubroId: 'tecnologia',
+    categoriaId: 'celulares',
+    subcategoriaId: 'iphone-14',
     destacado: false,
     descuento: 0,
     disponibilidad: true,
     publicado: true,
+    colores: [
+      { nombre: 'Amarillo', hex: '#f5e96d' },
+      { nombre: 'Azul', hex: '#a5c4e0' },
+      { nombre: 'Medianoche', hex: '#232a35' },
+      { nombre: 'Luz estelar', hex: '#f4f1ec' },
+      { nombre: 'Morado', hex: '#c2b5d6' },
+      { nombre: '(PRODUCT)RED', hex: '#bf0013' },
+    ],
+    capacidades: ['128 GB', '256 GB', '512 GB'],
   },
   {
-    nombre: 'Silla Eames réplica',
-    slug: 'silla-eames-replica',
+    nombre: 'iPhone 15',
+    slug: 'iphone-15',
     descripcion:
-      'Silla de comedor estilo Eames en madera de roble y asiento en polipropileno blanco. Set x4.',
-    precio: 195000,
-    rubroId: 'muebles',
-    categoriaId: 'muebles-comedor',
-    subcategoriaId: 'sillas-comedor',
-    destacado: false,
-    descuento: 0,
-    disponibilidad: true,
-    publicado: true,
-  },
-  {
-    nombre: 'Respaldo San Telmo',
-    slug: 'respaldo-san-telmo',
-    descripcion:
-      'Respaldo para cama queen en capitoné de lino color arena. Incluye instalación.',
-    precio: 285000,
-    rubroId: 'muebles',
-    categoriaId: 'muebles-dormitorio',
-    subcategoriaId: 'respaldos',
-    destacado: false,
-    descuento: 0,
-    disponibilidad: false, // Agotado, para ver el flujo de "no disponible"
-    publicado: true,
-  },
-  {
-    nombre: 'Frazada wool Sierra',
-    slug: 'frazada-wool-sierra',
-    descripcion: 'Frazada 100% lana virgen hilada a mano. Hecha en Patagonia.',
-    precio: 84000,
-    rubroId: 'decoracion',
-    categoriaId: 'decoracion-textil',
-    destacado: true,
-    descuento: 0,
-    disponibilidad: true,
-    publicado: true,
-  },
-  {
-    nombre: 'Lámpara de pie Troncos',
-    slug: 'lampara-pie-troncos',
-    descripcion:
-      'Lámpara de pie con pantalla de lino crudo y base de tronco de algarrobo reciclado.',
-    precio: 124000,
-    rubroId: 'decoracion',
-    categoriaId: 'decoracion-iluminacion',
-    destacado: false,
-    descuento: 0,
-    disponibilidad: true,
-    publicado: true,
-  },
-  {
-    nombre: 'Set regalo Desayuno',
-    slug: 'set-regalo-desayuno',
-    descripcion:
-      'Caja regalo con mermelada de membrillo casera, té de cedrón y medialunas artesanales. Presentación en caja de madera.',
-    precio: 18500,
-    rubroId: 'regalos',
-    categoriaId: 'regalos-hogar',
+      'Dynamic Island. Cámara de 48 MP con teleobjetivo de 2x. Puerto USB-C. Chip A16 Bionic. Vidrio trasero con infusión de color. Pantalla Super Retina XDR de 6.1 pulgadas.',
+    precio: 1799000,
+    imagen: img('iphone-15'),
+    imagenes: [img('iphone-15'), img('iphone-15-2'), img('iphone-15-3')],
+    rubroId: 'tecnologia',
+    categoriaId: 'celulares',
+    subcategoriaId: 'iphone-15',
     destacado: true,
     descuento: 10,
     disponibilidad: true,
     publicado: true,
+    colores: [
+      { nombre: 'Rosa', hex: '#fad0bc' },
+      { nombre: 'Amarillo', hex: '#f5e96d' },
+      { nombre: 'Verde', hex: '#c4dcc4' },
+      { nombre: 'Azul', hex: '#a5c4e0' },
+      { nombre: 'Negro', hex: '#1d1d1f' },
+    ],
+    capacidades: ['128 GB', '256 GB', '512 GB'],
+  },
+  {
+    nombre: 'iPhone 16',
+    slug: 'iphone-16',
+    descripcion:
+      'Chip A18 con Neural Engine de 16 núcleos. Control de Cámara. Nuevo botón de Acción. Sistema de cámaras Fusion de 48 MP. Apple Intelligence integrado. Pantalla Super Retina XDR de 6.1 pulgadas.',
+    precio: 1999000,
+    imagen: img('iphone-16'),
+    imagenes: [img('iphone-16'), img('iphone-16-2'), img('iphone-16-3')],
+    rubroId: 'tecnologia',
+    categoriaId: 'celulares',
+    subcategoriaId: 'iphone-16',
+    destacado: true,
+    descuento: 0,
+    disponibilidad: true,
+    publicado: true,
+    colores: [
+      { nombre: 'Ultramarino', hex: '#5a7aab' },
+      { nombre: 'Verde azulado', hex: '#7ea9a8' },
+      { nombre: 'Rosa', hex: '#f6c1d4' },
+      { nombre: 'Blanco', hex: '#f4f1ec' },
+      { nombre: 'Negro', hex: '#1d1d1f' },
+    ],
+    capacidades: ['128 GB', '256 GB', '512 GB'],
+  },
+  {
+    nombre: 'iPhone 16 Pro',
+    slug: 'iphone-16-pro',
+    descripcion:
+      'Chip A18 Pro. Pantalla ProMotion de 6.3 pulgadas con tecnología always-on. Cámara Fusion de 48 MP con teleobjetivo 5x. Diseño en titanio con Ceramic Shield de última generación. Apple Intelligence integrado.',
+    precio: 2599000,
+    imagen: img('iphone-16-pro'),
+    imagenes: [img('iphone-16-pro'), img('iphone-16-pro-2'), img('iphone-16-pro-3')],
+    rubroId: 'tecnologia',
+    categoriaId: 'celulares',
+    subcategoriaId: 'iphone-16-pro',
+    destacado: true,
+    descuento: 0,
+    disponibilidad: true,
+    publicado: true,
+    colores: [
+      { nombre: 'Titanio del desierto', hex: '#c4a886' },
+      { nombre: 'Titanio natural', hex: '#9b9a93' },
+      { nombre: 'Titanio blanco', hex: '#ecebe6' },
+      { nombre: 'Titanio negro', hex: '#3a3a3c' },
+    ],
+    capacidades: ['128 GB', '256 GB', '512 GB', '1 TB'],
   },
 ];
 
 const PAGES = [
   {
     id: 'about',
-    title: 'Sobre Regalarte',
+    title: 'Sobre nosotros',
     content:
-      'Regalarte es una tienda de muebles, objetos de decoración y regalos para el hogar. Trabajamos con diseñadores y artesanos locales de Buenos Aires y Patagonia. Cada pieza que vendemos está hecha a mano, en tiradas cortas, con materiales nobles. Si te interesa algo que no ves en la tienda, escribinos a hola@regalarte.com.ar y lo conseguimos.',
+      'Somos una tienda online de tecnología con local físico en Mendoza, Argentina. Nos especializamos en iPhones y accesorios Apple, con productos originales, garantía oficial y atención personalizada. Todas las compras incluyen 12 cuotas sin interés y envío gratis en compras mayores a $50.000 ARS. Si necesitás un modelo que no ves en la tienda, escribinos a hola@ftn-tienda.com.ar y lo conseguimos.',
   },
   {
     id: 'terms',
     title: 'Términos y condiciones',
     content:
-      'Las compras se procesan a través de MercadoPago o transferencia bancaria. Los precios están expresados en pesos argentinos (ARS) e incluyen IVA. Los envíos a CABA y GBA se realizan en 5 a 10 días hábiles; al interior del país, 10 a 15. Las piezas personalizadas no tienen cambio ni devolución. El resto de los productos pueden devolverse dentro de los 10 días corridos desde la entrega, en su empaque original.',
+      'Las compras se procesan a través de transferencia bancaria, MercadoPago o efectivo en el local. Los precios están expresados en pesos argentinos (ARS) e incluyen IVA. Ofrecemos 12 cuotas sin interés con tarjetas de bancos seleccionados. Los envíos a Mendoza capital se realizan en 24 a 48 hs hábiles; al resto del país, entre 3 y 7 días hábiles según destino. La garantía oficial Apple se respeta en todos los productos comercializados.',
   },
   {
     id: 'privacy',
     title: 'Política de privacidad',
     content:
-      'Tus datos personales (nombre, email, dirección de envío, teléfono) se usan únicamente para procesar tu pedido y contactarte sobre el estado del envío. No compartimos tu información con terceros con fines comerciales. Podés solicitar la eliminación de tus datos en cualquier momento escribiendo a privacidad@regalarte.com.ar. Este sitio usa cookies técnicas (sesión) y analíticas (Firebase Analytics, agregadas).',
+      'Tus datos personales (nombre, email, dirección de envío, teléfono) se usan únicamente para procesar tu pedido y contactarte sobre el estado del envío. No compartimos tu información con terceros con fines comerciales. Podés solicitar la eliminación de tus datos en cualquier momento escribiendo a privacidad@ftn-tienda.com.ar. Este sitio usa cookies técnicas (sesión) y analíticas agregadas.',
   },
   {
     id: 'returns',
     title: 'Cambios y devoluciones',
     content:
-      'Si el producto que recibiste tiene una falla de fabricación o no es lo que pediste, tenés 10 días corridos para pedir el cambio o la devolución. Los productos personalizados (a medida, con grabado, etc.) no tienen cambio. Para iniciar el proceso, escribinos a devoluciones@regalarte.com.ar con el número de pedido y una foto del producto. El costo de envío de la devolución corre por nuestra cuenta si la falla es nuestra.',
+      'Si el producto que recibiste tiene una falla de fábrica o no es lo que pediste, tenés 10 días corridos para pedir el cambio o la devolución, sin cargo. Los productos con la caja abierta o usados no tienen cambio. Para iniciar el proceso, escribinos a devoluciones@ftn-tienda.com.ar con el número de pedido y una foto del producto. Los productos en garantía oficial Apple se derivan al servicio técnico oficial.',
   },
 ];
 
 const CONTACT = {
-  email: 'hola@regalarte.com.ar',
-  phone: '+54 11 4567-8910',
-  whatsapp: '+54 9 11 4567-8910',
-  address: 'Defensa 742, San Telmo, Buenos Aires',
-  instagram: '@regalarte.ba',
-  facebook: 'regalarte.ba',
-  twitter: '@regalarteba',
+  email: 'hola@ftn-tienda.com.ar',
+  phone: '+54 261 555-1234',
+  whatsapp: '+54 9 261 555-1234',
+  address: 'Sarmiento 111, Mendoza, Argentina',
+  instagram: '@ftn.tienda',
+  facebook: 'ftn.tienda',
 };
 
 // ---------- 4. Helpers ----------
