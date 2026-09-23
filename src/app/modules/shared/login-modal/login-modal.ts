@@ -1,4 +1,4 @@
-import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy, effect } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,32 +29,63 @@ export class LoginModalComponent {
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    // Cada vez que el usuario toca el email o el password, limpio el error
+    // para que el banner rojo no quede persistido de un intento fallido.
+    // Ademas, asi el spinner trabado (caso reportado: si algo tira entre
+    // `isLoading = true` y un `await`, queda `false` en el UI) no se confunde
+    // con el error viejo.
+    let lastEmail = '';
+    let lastPassword = '';
+    effect(() => {
+      const email = this.credentials.email;
+      const password = this.credentials.password;
+      if (email !== lastEmail || password !== lastPassword) {
+        lastEmail = email;
+        lastPassword = password;
+        if (this.showError) {
+          this.showError = false;
+          this.errorMessage = '';
+        }
+      }
+    });
+  }
 
   async onSubmit(): Promise<void> {
-    if (this.credentials.email && this.credentials.password) {
-      this.isLoading = true;
-      this.showError = false;
+    if (!this.credentials.email || !this.credentials.password) return;
 
+    this.isLoading = true;
+    this.showError = false;
+
+    try {
       const loginSuccess = await this.authService.login(
         this.credentials.email,
         this.credentials.password
       );
 
-      this.isLoading = false;
-
       if (loginSuccess && this.authService.hasAdminAccess()) {
         this.closeModal();
         this.router.navigate(['/admin']);
-      } else if (loginSuccess) {
-        this.showError = true;
-        this.errorMessage = 'Login exitoso pero la cuenta no tiene permisos de admin.';
-        this.credentials.password = '';
-      } else {
-        this.showError = true;
-        this.errorMessage = 'Email o contraseña incorrectos';
-        this.credentials.password = '';
+        return;
       }
+      if (loginSuccess) {
+        this.errorMessage =
+          'Login exitoso pero la cuenta no tiene permisos de admin.';
+      } else {
+        this.errorMessage = 'Email o contraseña incorrectos';
+      }
+      this.credentials.password = '';
+      this.showError = true;
+    } catch (err) {
+      // Defensa contra cualquier throw inesperado (network, emulador caido,
+      // etc). El bug que el user reporto (spiner trabado si el network/auth
+      // emulator se cae a mitad del signIn) ya no puede pasar: el finally
+      // siempre apaga el spinner.
+      this.errorMessage = `Error inesperado: ${(err as Error)?.message ?? String(err)}`;
+      this.showError = true;
+      console.error('Login submit error:', err);
+    } finally {
+      this.isLoading = false;
     }
   }
 
