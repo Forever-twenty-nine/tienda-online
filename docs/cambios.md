@@ -14,9 +14,56 @@ _(vacío — sesión cerrada al final del redesign visual, ver "Línea del tiemp
 
 ## Pendientes (post-refactor) — lo que falta
 
-### 1. **Auth real** — bloqueante para producción
+### 1. **Auth real (Firebase Auth + 1 admin)** — bloqueante para producción
 
-Sacar el `AuthService` cliente-hardcodeado (`admin/admin123` + flag `localStorage`) y migrar a Firebase Auth + Cloud Functions para validar tokens server-side. AGENTS.md marca `core/services/auth.service.ts` como **área crítica** — pedir OK explícito antes de empezar.
+**Decisión:** migrar del `AuthService` hardcoded (`admin/admin123` + `localStorage` flag) a Firebase Auth + custom claims. **Alcance mínimo: 1 solo admin**, sin clientes autenticados.
+
+**Credenciales del admin** (decidido en sesión 2026-09-23):
+- Email: `sebastianechazu@gmail.com`
+- Password: `admin123` (placeholder dev — rotar antes de prod)
+- Custom claim: `{ admin: true }` (singleton)
+
+**Archivos a crear:**
+- `functions/package.json` — SDK `firebase-admin` + `firebase-functions`, runtime `nodejs20`
+- `functions/tsconfig.json` — TS config
+- `functions/src/index.ts` — 2 endpoints:
+  - `bootstrapAdmin` (callable, una sola vez) — crea el user con email/password y setea claim `admin: true`
+  - `setAdminClaim` (callable, seguro) — setea el claim `admin: true` para un uid preautorizado en una constante server-side
+- (opcional) `firestore.indexes.json` — si queries admin-only lo necesitan
+
+**Archivos a modificar:**
+- `firestore.rules` — escribir:
+  ```
+  match /products/{productId} {
+    allow read: if true;  // público
+    allow write: if request.auth != null && request.auth.token.admin == true;
+  }
+  match /{document=**} { allow read, write: if false; }  // default deny
+  ```
+- `firebase.json` — agregar bloque `"functions": { "source": "functions", "codebase": "default", "runtime": "nodejs20" }`. `emulators.auth` ya está en 9099.
+- `storage.rules` — mismo patrón: read público (visitantes ven fotos), write solo admin
+- `src/app/core/services/auth.service.ts` — reemplazarlo por:
+  - `signInWithEmailAndPassword(email, password)` desde `firebase/auth`
+  - Leer `user.getIdTokenResult()` y exponer `signal({ user, isAdmin })`
+  - Mantener compat con `isAuthenticated()` para `admin.guard.ts` y `footer.ts`
+- `src/app/modules/shared/login-modal/login-modal.ts` — UI pide email (no username), placeholder cambia
+- `src/environments/environment.ts` — `authEmulatorHost: '127.0.0.1:9099'` para dev (sin tocar el de Storage/Firestore)
+
+**Flujo (orden de implementación):**
+1. Crear `functions/` (sin deploy real — corre con emulador)
+2. Conectar emulador de auth + functions localmente
+3. Llamar `bootstrapAdmin` UNA VEZ (script cliente que dispara el callable con email/password desde la consola del emulador)
+4. Endurecer `firestore.rules` y `storage.rules`
+5. Refactorizar `AuthService` + `LoginModal` cliente
+6. Verificar ciclo completo: visitante anónimo puede hacer read pero NO write; admin autenticado puede hacer write
+7. `ng build` + commit en 2 PRs separados: (a) functions + rules, (b) refactor cliente
+
+**NO hace:**
+- Signup / login / recuperación de password de clientes
+- Multi-admin / roles / magic link
+- Cualquier feature relacionada con clientes autenticados
+
+**Post-prod:** rotar `admin123` antes de apuntar a producción real. Custom claim extensible a multi-admin si alguna vez se necesita.
 
 ---
 
