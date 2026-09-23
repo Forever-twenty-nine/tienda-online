@@ -1,82 +1,56 @@
 // scripts/upload-product-images.mjs
 //
 // Descarga fotos reales de los 5 iPhones del seed desde Wikimedia Commons,
-// las sube a Firebase Storage y actualiza los docs de Firestore con las URLs
-// públicas resultantes. Idempotente: corre con --reset para borrar las imágenes
-// previas de Storage de cada producto antes de subir las nuevas.
+// las sube a Firebase Storage (emulador) y actualiza el doc del producto
+// en Firestore con `imagen` + `imagenes` apuntando a las URLs del emulador.
 //
-// Fuente: Wikimedia Commons (CC-BY-SA). NO son fotos profesionales de Apple — son
-// de usuarios (manos, mostradores,大街). Cumple el pendiente #2 de docs/cambios.md.
+// Usa Firebase Admin SDK para bypassear las security rules (Storage rules
+// estan cerradas a admin-only writes — el client SDK no escribiria).
 //
-// Prerrequisito: `firebase emulators:start` corriendo en otra terminal.
-//
+// Prerrequisito: `firebase emulators:start` corriendo.
 // Uso:
-//   node scripts/upload-product-images.mjs          # añade imágenes faltantes
-//   node scripts/upload-product-images.mjs --reset  # borra previas y reemplaza
+//   node scripts/upload-product-images.mjs          # añade si faltan
+//   node scripts/upload-product-images.mjs --reset  # borra previos y reemplaza
 
-import { initializeApp } from 'firebase/app';
-import {
-  getFirestore,
-  connectFirestoreEmulator,
-  collection,
-  doc,
-  getDocs,
-  updateDoc,
-} from 'firebase/firestore';
-import {
-  getStorage,
-  connectStorageEmulator,
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-  listAll,
-} from 'firebase/storage';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-
-// ---------- 1. Config desde environment.ts ----------
+import { initializeApp, getApps } from 'firebase-admin/app';
+import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 
 const envPath = fileURLToPath(new URL('../src/environments/environment.ts', import.meta.url));
 const envSource = readFileSync(envPath, 'utf-8');
-
 const pick = (key) => {
   const m = envSource.match(new RegExp(`${key}:\\s*"([^"]+)"`));
   if (!m) throw new Error(`No se encontró "${key}" en environment.ts`);
   return m[1];
 };
 
-const firebaseConfig = {
-  apiKey: pick('apiKey'),
-  authDomain: pick('authDomain'),
-  projectId: pick('projectId'),
-  storageBucket: pick('storageBucket'),
-  messagingSenderId: pick('messagingSenderId'),
-  appId: pick('appId'),
-};
+const projectId = pick('projectId');
+const storageBucket = pick('storageBucket');
 
-// ---------- 2. Init Firebase ----------
+// firebase-admin NO necesita apiKey. Solo projectId + storageBucket.
+const app =
+  getApps().find((a) => a.name === 'upload-images') ??
+  initializeApp({ projectId, storageBucket }, 'upload-images');
 
-const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+db.settings({ host: '127.0.0.1:8080', ssl: false });
+
+// Storage con emulator: firebase-admin v12 no tiene connectStorageEmulator,
+// hay que setear el env var. Usamos el nombre de bucket por defecto.
+process.env.FIREBASE_STORAGE_EMULATOR_HOST = '127.0.0.1:9199';
 const storage = getStorage(app);
-const FIREBASE_PROJECT = firebaseConfig.projectId;
+const bucket = storage.bucket(storageBucket);
 
-const EMULATOR_HOST = process.env.FIRESTORE_EMULATOR_HOST ?? '127.0.0.1:8080';
-try {
-  const [host, portStr] = EMULATOR_HOST.split(':');
-  connectFirestoreEmulator(db, host, Number(portStr));
-  connectStorageEmulator(storage, '127.0.0.1', 9199);
-  console.log(`(emuladores Firestore ${EMULATOR_HOST} y Storage 9199)`);
-} catch (e) {
-  console.warn(`No pude conectar a emuladores (${EMULATOR_HOST}):`, e.message);
-}
+const FIREBASE_PROJECT = projectId;
+console.log(`(emuladores Firestore 127.0.0.1:8080 y Storage 9199)`);
 
-// ---------- 3. Mapa de modelos → archivos de Wikimedia ----------
+// ---------- 1. Mapa de modelos → archivos de Wikimedia ----------
 //
-// Cada modelo apunta a 3 archivos de Wikimedia Commons que muestran el producto.
-// Las URLs directas se obtienen en runtime via la API de Wikimedia para no hardcodear
-// paths que pueden cambiar. Los File: names son estables.
+// Cada modelo apunta a 3 archivos de Wikimedia Commons. Las URLs directas
+// se obtienen en runtime via la API de Wikimedia (no hardcodeamos paths que
+// pueden cambiar).
 
 const PRODUCT_IMAGES = {
   'iphone-13': [
@@ -106,22 +80,14 @@ const PRODUCT_IMAGES = {
   ],
 };
 
-// ---------- 4. Helpers ----------
+// ---------- 2. Helpers ----------
 
-/**
- * User-Agent para Wikimedia. La wiki pide identificar al bot con contacto real;
- * sin esto, el WAF bloquea con 403 (rechazo activo, no rate-limit). Sigue la
- * guía: https://meta.wikimedia.org/wiki/User-Agent_policy
- */
+/** User-Agent para Wikimedia (ver agent memory para detalle). */
 const WIKI_USER_AGENT =
   'TiendaOnlineScript/1.0 (https://ftn-agency.com; sebastianechazu@gmail.com) node-fetch';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/**
- * Wrapper de fetch con retry exponencial para HTTP 429 y 5xx.
- * Wikimedia rate-limite agresivamente sin User-Agent descriptivo.
- */
 async function fetchWithRetry(url, opts = {}, { maxAttempts = 4, baseDelayMs = 1500 } = {}) {
   let lastErr;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -130,8 +96,7 @@ async function fetchWithRetry(url, opts = {}, { maxAttempts = 4, baseDelayMs = 1
       if (res.status === 429 || res.status >= 500) {
         lastErr = new Error(`HTTP ${res.status}`);
         if (attempt < maxAttempts) {
-          const wait = baseDelayMs * 2 ** (attempt - 1);
-          await sleep(wait);
+          await sleep(baseDelayMs * 2 ** (attempt - 1));
           continue;
         }
       }
@@ -147,63 +112,64 @@ async function fetchWithRetry(url, opts = {}, { maxAttempts = 4, baseDelayMs = 1
   throw lastErr;
 }
 
-/** Devuelve la URL directa (upload.wikimedia.org) de un archivo Wikimedia. */
 async function getWikimediaFileUrl(fileName) {
   const url = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({
-    action: 'query',
-    format: 'json',
-    titles: `File:${fileName}`,
-    prop: 'imageinfo',
-    iiprop: 'url',
+    action: 'query', format: 'json',
+    titles: `File:${fileName}`, prop: 'imageinfo', iiprop: 'url',
   });
   const res = await fetchWithRetry(url, { headers: { 'User-Agent': WIKI_USER_AGENT } });
   if (!res.ok) throw new Error(`Wikimedia API HTTP ${res.status} para ${fileName}`);
   const json = await res.json();
-  const pages = json.query?.pages ?? {};
-  const first = Object.values(pages)[0];
+  const first = Object.values(json.query?.pages ?? {})[0];
   const info = first?.imageinfo?.[0];
-  if (!info?.url) throw new Error(`Sin URL para File:${fileName} (página no existe o sin imageinfo)`);
+  if (!info?.url) throw new Error(`Sin URL para File:${fileName}`);
   return info.url;
 }
 
-/** Descarga el archivo y devuelve su contenido como Uint8Array + contentType. */
 async function downloadImage(url) {
   const res = await fetchWithRetry(url, { headers: { 'User-Agent': WIKI_USER_AGENT } });
   if (!res.ok) throw new Error(`Download HTTP ${res.status} para ${url}`);
-  const buf = new Uint8Array(await res.arrayBuffer());
-  const contentType = res.headers.get('content-type') ?? 'image/jpeg';
-  return { buffer: buf, contentType };
+  return {
+    buffer: Buffer.from(await res.arrayBuffer()),
+    contentType: res.headers.get('content-type') ?? 'image/jpeg',
+  };
 }
 
-/** Sube un buffer a Storage bajo `products/{slug}/{timestamp}_{filename}` y devuelve la URL pública. */
+/** Sube un buffer a Storage (firebase-admin bypasea rules). Devuelve URL emulador. */
 async function uploadToStorage(slug, fileName, buffer, contentType) {
   const objectName = `${Date.now()}_${fileName}`;
   const path = `products/${slug}/${objectName}`;
-  const ref = storageRef(storage, path);
-  await uploadBytes(ref, buffer, { contentType });
-  return await getDownloadURL(ref);
+  await bucket.file(path).save(buffer, {
+    contentType,
+    resumable: false, // más rápido para buffers chicos/medianos
+    metadata: { cacheControl: 'public, max-age=3600' },
+  });
+  // URL del emulador de Firebase Storage (formato GET /v0/b/{bucket}/o/{path}?alt=media).
+  // No usamos getSignedUrl porque requiere google-auth completo; en dev la URL
+  // plana del emulador es suficiente.
+  return `http://127.0.0.1:9199/v0/b/${storageBucket}/o/${encodeURIComponent(path)}?alt=media`;
 }
 
-/** Borra todos los archivos previos bajo `products/{slug}/`. */
+/** Borra todos los archivos previos bajo `products/{slug}/` (admin: listado recursivo). */
 async function clearProductStorage(slug) {
-  const folderRef = storageRef(storage, `products/${slug}`);
-  const listed = await listAll(folderRef);
-  await Promise.all(listed.items.map((item) => deleteObject(item).catch(() => {})));
-  return listed.items.length;
+  const [files] = await bucket.getFiles({ prefix: `products/${slug}/` });
+  if (files.length === 0) return 0;
+  await Promise.all(files.map((f) => f.delete().catch(() => {})));
+  return files.length;
 }
 
-/** Actualiza el doc del producto en Firestore con las nuevas URLs. */
+/** Actualiza el doc del producto en Firestore con las URLs del Storage. */
 async function updateProductDoc(productId, urls) {
-  const ref = doc(db, 'products', productId);
-  await updateDoc(ref, {
+  await db.collection('products').doc(productId).update({
     imagen: urls[0],
     imagenes: urls,
+    updatedAt: FieldValue.serverTimestamp(),
   });
 }
 
-/** Busca el id del doc por slug (no asumimos que sea igual). */
+/** Busca el id del doc por subcategoriaId o slug. */
 async function findProductIdBySlug(slug) {
-  const snap = await getDocs(collection(db, 'products'));
+  const snap = await db.collection('products').get();
   for (const d of snap.docs) {
     const data = d.data();
     if (data.subcategoriaId === slug || data.slug === slug) return d.id;
@@ -211,7 +177,7 @@ async function findProductIdBySlug(slug) {
   return null;
 }
 
-// ---------- 5. Run ----------
+// ---------- 3. Run ----------
 
 const shouldReset = process.argv.includes('--reset');
 
@@ -226,7 +192,6 @@ async function uploadForModel(slug, fileNames) {
   if (shouldReset) {
     const removed = await clearProductStorage(slug);
     if (removed > 0) console.log(`  Storage: borrados ${removed} archivos previos`);
-    // Pequeño delay después de borrar antes de empezar uploads
     await sleep(500);
   }
 
@@ -237,9 +202,7 @@ async function uploadForModel(slug, fileNames) {
       const { buffer, contentType } = await downloadImage(wikiUrl);
       const publicUrl = await uploadToStorage(slug, fileName, buffer, contentType);
       urls.push(publicUrl);
-      console.log(`  ✓ ${fileName} → ${publicUrl.slice(0, 60)}...`);
-      // Delay entre imágenes para no triggerear rate limit de Wikimedia
-      // (~1.5s, suficiente para <50 req/min que es lo que permite el API).
+      console.log(`  ✓ ${fileName} → ${publicUrl.slice(0, 70)}...`);
       await sleep(1500);
     } catch (e) {
       console.log(`  ✗ ${fileName}: ${e.message}`);
@@ -252,7 +215,7 @@ async function uploadForModel(slug, fileNames) {
   }
 
   await updateProductDoc(productId, urls);
-  console.log(`  ✓ Firestore: imagen=${urls[0].slice(0, 50)}... (${urls.length} total)`);
+  console.log(`  ✓ Firestore: imagen=${urls[0].slice(0, 60)}... (${urls.length} total)`);
   return urls.length;
 }
 
