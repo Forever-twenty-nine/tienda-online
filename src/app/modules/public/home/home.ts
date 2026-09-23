@@ -18,7 +18,7 @@ export class Home {
   router = inject(Router);
 
   defaultHeroImage =
-    'https://firebasestorage.googleapis.com/v0/b/tienda-online-50dda.firebasestorage.app/o/products%2F1770994343043_pulsera-2.jpg?alt=media&token=c6885275-a59c-4ad4-a8bb-49e4ad2a9b11';
+    'http://127.0.0.1:9199/v0/b/tienda-online-50dda.firebasestorage.app/o/home%2F1790157409371_hand_holding_iphone.jpg?alt=media&token=eeaf1d7c-be0a-45a9-9135-ca2b74069b93';
 
   topLevelCategories = computed(() => {
     return this.categoriesService.rubros();
