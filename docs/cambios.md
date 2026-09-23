@@ -18,10 +18,6 @@ _(vacío — sesión cerrada al final del redesign visual, ver "Línea del tiemp
 
 Sacar el `AuthService` cliente-hardcodeado (`admin/admin123` + flag `localStorage`) y migrar a Firebase Auth + Cloud Functions para validar tokens server-side. AGENTS.md marca `core/services/auth.service.ts` como **área crítica** — pedir OK explícito antes de empezar.
 
-### 2. **Imágenes reales** de los 5 iPhones (pendiente de data)
-
-Hoy todos muestran `https://picsum.photos/seed/{slug}/800/800` (placeholders). Para producción real se necesitan fotos de cada modelo + colores. Subir vía admin → Firebase Storage; o pasarle URLs de Apple al seed.
-
 ---
 
 ## Línea del tiempo
