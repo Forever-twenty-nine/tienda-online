@@ -47,7 +47,9 @@ const app = initializeApp({
 
 const auth = getAuth(app);
 try {
-  connectAuthEmulator(auth, '127.0.0.1', 9099);
+  // firebase v12: connectAuthEmulator toma url completa + options.
+  // (Firestore/Storage/Functions siguen con host+port.)
+  connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
 } catch {}
 
 // ---------- 2. Constantes (ver también functions/src/index.ts) ----------

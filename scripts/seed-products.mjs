@@ -1,78 +1,54 @@
 // scripts/seed-products.mjs
 //
-// Carga datos de muestra en Firestore. Solo funciona mientras
-// `firestore.rules` esté abierta (`if true`); ver `docs/deuda-tecnica.md`.
-// Cuando se cierren las rules, migrar a Firebase Admin SDK + service account.
+// Carga datos de muestra en Firestore (5 iPhones, rubros, paginas, etc).
+// Usa Firebase Admin SDK para bypasear las reglas (el client SDK las
+// respeta y como `firestore.rules` esta cerrada a admin-only writes no
+// podria escribir).
 //
 // Uso:
 //   node scripts/seed-products.mjs          # idempotente: aborta si ya hay datos
-//   node scripts/seed-products.mjs --reset  # borra products/categories/etc. y reemplaza
+//   node scripts/seed-products.mjs --reset  # borra todo y reemplaza
 //
-// Lee la config de `src/environments/environment.ts`. No requiere credenciales
-// adicionales porque las rules actuales permiten todo.
+// Prerrequisito: emulador de firestore corriendo (8080).
 
-import { initializeApp } from 'firebase/app';
-import {
-  getFirestore,
-  connectFirestoreEmulator,
-  collection,
-  doc,
-  setDoc,
-  getDocs,
-  writeBatch,
-} from 'firebase/firestore';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { initializeApp, getApps } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 
 // ---------- 1. Config desde environment.ts ----------
 
 const envPath = fileURLToPath(new URL('../src/environments/environment.ts', import.meta.url));
 const envSource = readFileSync(envPath, 'utf-8');
-
 const pick = (key) => {
   const m = envSource.match(new RegExp(`${key}:\\s*"([^"]+)"`));
   if (!m) throw new Error(`No se encontró "${key}" en environment.ts`);
   return m[1];
 };
+const projectId = pick('projectId');
+const storageBucket = pick('storageBucket');
 
-const firebaseConfig = {
-  apiKey: pick('apiKey'),
-  authDomain: pick('authDomain'),
-  projectId: pick('projectId'),
-  storageBucket: pick('storageBucket'),
-  messagingSenderId: pick('messagingSenderId'),
-  appId: pick('appId'),
-};
+// ---------- 2. Init Firebase Admin ----------
 
-// ---------- 2. Init Firebase ----------
+// firebase-admin NO usa la apiKey para validar contra servidor real
+// cuando se conecta al emulador. Solo necesita el projectId. Pero para
+// inicializarlo "limpio" usamos un nombre explicito que evita el
+// autoInit por env vars (GOOGLE_APPLICATION_CREDENTIALS).
+const app =
+  getApps().find((a) => a.name === 'seed') ??
+  initializeApp({ projectId, storageBucket }, 'seed');
 
-const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const FIREBASE_PROJECT = firebaseConfig.projectId;
 
-// Conectar al emulador local por defecto (127.0.0.1:8080).
-// Para apuntar a producción, exportar FIRESTORE_EMULATOR_HOST='' antes de correr.
-// Si el emulador no está corriendo, los writes fallan ruidosamente — eso es lo que queremos
-// en dev (no escribir a prod por accidente).
-const EMULATOR_HOST = process.env.FIRESTORE_EMULATOR_HOST ?? '127.0.0.1:8080';
-try {
-  const [host, portStr] = EMULATOR_HOST.split(':');
-  connectFirestoreEmulator(db, host, Number(portStr));
-  console.log(`(emulador Firestore ${EMULATOR_HOST})`);
-} catch (e) {
-  console.warn(`No pude conectar al emulador (${EMULATOR_HOST}):`, e.message);
-}
+// Apuntar al emulador local (firebase-admin v12 usa settings()).
+// No usamos env vars porque queremos explícito y portable.
+db.settings({
+  host: '127.0.0.1:8080',
+  ssl: false,
+});
+console.log(`(emulador Firestore 127.0.0.1:8080, proyecto ${projectId})`);
 
 // ---------- 3. Datos de muestra ----------
-//
-// Coherente con los modelos en `src/app/core/models/`.
-// Idempotencia: usa `id` explícito en rubros/categories/subcategories/pages
-// para que un eventual upsert sea estable. Products usa auto-id (como la app).
-//
-// Catálogo: tienda de iPhones en Mendoza. 5 productos entre iPhone 13 y iPhone 16 Pro.
-// Colores y capacidades coinciden con los disponibles oficialmente en Apple Store AR
-// al momento del seed. Imágenes son placeholders de picsum.photos (provisorios hasta
-// que se suban fotos reales vía admin).
 
 const RUBROS = [
   { id: 'tecnologia', nombre: 'Tecnología', orden: 1 },
@@ -295,13 +271,11 @@ const CONTACT = {
 // ---------- 4. Helpers ----------
 
 async function deleteCollection(name) {
-  const snap = await getDocs(collection(db, name));
+  const snap = await db.collection(name).get();
   if (snap.empty) return 0;
-  // Firestore batch limit = 500 ops. Acá no aplica (datasets chicos), pero dejamos
-  // el patrón por si crece.
-  const batch = writeBatch(db);
+  const batch = db.batch();
   for (const docSnap of snap.docs) {
-    batch.delete(doc(db, name, docSnap.id));
+    batch.delete(docSnap.ref);
   }
   await batch.commit();
   return snap.size;
@@ -309,12 +283,12 @@ async function deleteCollection(name) {
 
 async function upsertCollection(name, items, idField = 'id') {
   if (items.length === 0) return;
-  const batch = writeBatch(db);
+  const batch = db.batch();
   for (const item of items) {
     const id = item[idField];
     const data = { ...item };
     delete data[idField];
-    batch.set(doc(db, name, id), data);
+    batch.set(db.collection(name).doc(id), data);
   }
   await batch.commit();
   console.log(`  ✓ ${name}: ${items.length} docs`);
@@ -322,10 +296,11 @@ async function upsertCollection(name, items, idField = 'id') {
 
 async function createProducts(items) {
   if (items.length === 0) return;
-  const batch = writeBatch(db);
+  const batch = db.batch();
   for (const p of items) {
-    const ref = doc(collection(db, 'products')); // auto-id (consistente con la app)
-    batch.set(ref, p);
+    // auto-id via .doc() sin param (no requiere el modulo `collection`/`doc`
+    // separados; se llaman como metodos de la instancia de Firestore).
+    batch.set(db.collection('products').doc(), p);
   }
   await batch.commit();
   console.log(`  ✓ products: ${items.length} docs (auto-id)`);
@@ -343,7 +318,7 @@ async function main() {
       if (n > 0) console.log(`  borrados ${n} docs de ${col}`);
     }
   } else {
-    const existing = await getDocs(collection(db, 'products'));
+    const existing = await db.collection('products').get();
     if (!existing.empty) {
       console.error(`Hay ${existing.size} productos ya cargados.`);
       console.error('Para reemplazarlos corré con --reset:');
@@ -353,7 +328,7 @@ async function main() {
     }
   }
 
-  console.log(`\nSembrando datos en proyecto: ${FIREBASE_PROJECT}\n`);
+  console.log(`\nSembrando datos en proyecto: ${projectId}\n`);
 
   await upsertCollection('rubros', RUBROS);
   await upsertCollection('categories', CATEGORIES);
@@ -361,7 +336,7 @@ async function main() {
   await createProducts(PRODUCTS);
   await upsertCollection('pages', PAGES);
 
-  await setDoc(doc(db, 'contact', 'main'), CONTACT);
+  await db.collection('contact').doc('main').set(CONTACT);
   console.log('  ✓ contact: 1 doc (id=main)');
 
   console.log('\nListo.');
