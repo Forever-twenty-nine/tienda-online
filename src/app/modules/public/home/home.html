@@ -1,88 +1,36 @@
-<!-- Hero Section — Edge-to-edge con producto, sin rotación ni gradientes fuertes -->
-<section class="bg-mist relative overflow-hidden">
-  <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px] py-12 lg:py-20">
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
-      <!-- Texto -->
-      <div class="text-center lg:text-left animate-fade-in">
-        <p class="text-sm font-medium uppercase tracking-wide text-ink-48 mb-3">
-          Lo más nuevo
-        </p>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl tracking-tight text-ink leading-[1.05]">
-          @if (heroProduct(); as hp) {
-            <span class="block">{{ hp.nombre }}</span>
-            <span class="block text-action">en stock</span>
-          } @else {
-            <span class="block">Tu próximo</span>
-            <span class="block text-action">iPhone</span>
-          }
-        </h1>
-        <p class="mt-5 text-base md:text-lg text-ink-80 leading-relaxed max-w-xl mx-auto lg:mx-0">
-          Tecnología premium, garantía oficial Apple y cuotas sin interés. Retirá en nuestro local de Mendoza o recibilo en tu casa.
-        </p>
-        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-          <a routerLink="/catalogo" class="inline-flex items-center justify-center bg-action text-white px-7 py-3 rounded-full text-base font-medium hover:opacity-90 transition-opacity min-h-[44px]">
-            Comprar ahora
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </a>
-          <a routerLink="/about" class="inline-flex items-center justify-center bg-canvas text-ink border border-hairline px-7 py-3 rounded-full text-base font-medium hover:bg-cool-wash transition-colors min-h-[44px]">
-            Sobre nosotros
-          </a>
-        </div>
+<!-- Hero Section — Imagen grande de fondo + propuesta de valor de la tienda -->
+<section class="relative overflow-hidden min-h-[80vh] lg:min-h-[90vh] flex items-center">
+  <!-- Imagen de fondo estática -->
+  <img src="/hero-store-isometric.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
+  <!-- Overlay sutil para legibilidad del texto -->
+  <div class="absolute inset-0 bg-ink/15 lg:bg-ink/25"></div>
 
-        <!-- Trust band inline -->
-        <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left max-w-xl mx-auto lg:mx-0">
-          <div class="flex items-center gap-2 text-sm text-ink-80">
-            <svg class="w-5 h-5 text-action flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Garantía oficial</span>
-          </div>
-          <div class="flex items-center gap-2 text-sm text-ink-80">
-            <svg class="w-5 h-5 text-action flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>12 cuotas sin interés</span>
-          </div>
-          <div class="flex items-center gap-2 text-sm text-ink-80">
-            <svg class="w-5 h-5 text-action flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Envío gratis +$50k</span>
-          </div>
-        </div>
-      </div>
+  <!-- Contenido -->
+  <div class="relative mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px] text-center py-20 lg:py-28 w-full">
+    <p class="text-xs uppercase tracking-wide text-canvas font-medium mb-4">
+      Mendoza, Argentina
+    </p>
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-canvas leading-[1.05] mb-6 max-w-3xl mx-auto">
+      Tecnología Apple en Mendoza
+    </h1>
+    <p class="text-base md:text-lg text-canvas/90 max-w-xl mx-auto mb-10 leading-relaxed">
+      iPhones originales con garantía oficial. Llevamos a domicilio.
+    </p>
 
-      <!-- Imagen del producto -->
-      <div class="relative max-w-md mx-auto lg:max-w-none">
-        <div class="aspect-square bg-canvas rounded-[32px] overflow-hidden">
-          <img class="w-full h-full object-cover"
-               [src]="heroProduct()?.imagen || defaultHeroImage"
-               [alt]="heroProduct()?.nombre || 'iPhone'"
-               [class.opacity-80]="!heroProduct()">
-        </div>
-
-        <!-- Badge flotante sin animación de bounce -->
-        @if (heroProduct() && (heroProduct()?.descuento || heroProduct()?.destacado)) {
-          <div class="absolute -bottom-4 -right-4 lg:-bottom-6 lg:-right-6 bg-ink text-canvas p-4 lg:px-6 lg:py-4 rounded-[20px] shadow-xl z-10">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 lg:w-14 lg:h-14 bg-canvas text-ink rounded-full flex items-center justify-center font-semibold text-xs lg:text-sm">
-                {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'TOP' }}
-              </div>
-              <div>
-                <p class="text-xs lg:text-sm font-medium text-canvas">
-                  {{ heroProduct()?.descuento ? 'Oferta' : 'Destacado' }}
-                </p>
-                <p class="text-xs lg:text-xs text-canvas/60 truncate max-w-[100px] lg:max-w-[160px]">
-                  {{ heroProduct()?.nombre }}
-                </p>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a routerLink="/catalogo" class="inline-flex items-center justify-center bg-action text-white px-7 py-3 rounded-full text-base font-medium hover:opacity-90 transition-opacity min-h-[44px]">
+        Ver catálogo
+      </a>
+      <a routerLink="/about" class="inline-flex items-center justify-center bg-canvas/90 backdrop-blur-sm text-ink px-7 py-3 rounded-full text-base font-medium hover:bg-canvas transition-colors min-h-[44px]">
+        Sobre nosotros
+      </a>
     </div>
+  </div>
+
+  <!-- Badge flotante bottom-left (solo desktop) -->
+  <div class="hidden lg:block absolute bottom-6 left-6 bg-ink text-canvas px-6 py-4 rounded-[20px] shadow-xl">
+    <p class="text-3xl font-semibold mb-1">+5.000</p>
+    <p class="text-xs font-medium opacity-80 uppercase tracking-wide">Clientes felices</p>
   </div>
 </section>
 
@@ -230,10 +178,6 @@
             <path d="M205 285 q-2 -8 5 -16 q3 -3 8 -3 l5 0 q4 0 6 4 l3 8 q2 4 -3 7 l-5 2 q3 8 9 14 q7 6 14 9 l2 -5 q3 -5 7 -3 l8 3 q4 2 4 6 l0 5 q0 4 -3 7 q-7 6 -15 4 q-15 -3 -28 -16 q-13 -13 -16 -28 z"
                   fill="#fff" opacity="0.95"/>
           </svg>
-        </div>
-        <div class="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-ink text-canvas p-5 rounded-[20px] shadow-xl">
-          <p class="text-3xl font-medium mb-1">+5.000</p>
-          <p class="text-xs font-medium opacity-80 uppercase tracking-wide">Clientes felices</p>
         </div>
       </div>
     </div>
