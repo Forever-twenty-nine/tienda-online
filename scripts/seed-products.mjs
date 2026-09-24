@@ -90,7 +90,7 @@ const PRODUCTS = [
       { nombre: 'Azul', hex: '#3a4a6b' },
       { nombre: 'Medianoche', hex: '#232a35' },
       { nombre: 'Luz estelar', hex: '#f4f1ec' },
-      { nombre: '(PRODUCT)RED', hex: '#bf0013' },
+      { nombre: 'Rojo', hex: '#FF3B30' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB'],
     specs: {
@@ -123,7 +123,7 @@ const PRODUCTS = [
       { nombre: 'Medianoche', hex: '#232a35' },
       { nombre: 'Luz estelar', hex: '#f4f1ec' },
       { nombre: 'Morado', hex: '#c2b5d6' },
-      { nombre: '(PRODUCT)RED', hex: '#bf0013' },
+      { nombre: 'Rojo', hex: '#FF3B30' },
     ],
     capacidades: ['128 GB', '256 GB', '512 GB'],
     specs: {

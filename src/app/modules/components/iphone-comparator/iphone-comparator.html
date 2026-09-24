@@ -1,8 +1,8 @@
 <section class="bg-mist py-16 lg:py-20">
   <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
     <div class="text-center mb-10">
-      <p class="text-xs font-medium uppercase tracking-widest text-ink-48 mb-2">Comparador</p>
-      <h2 class="text-2xl md:text-3xl font-medium tracking-tight text-ink">
+      <p class="text-xs font-medium uppercase tracking-wide text-ink-48 mb-2">Comparador</p>
+      <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-ink">
         ¿Cuál iPhone es para vos?
       </h2>
       <p class="mt-3 text-base text-ink-80 max-w-2xl mx-auto">
@@ -22,19 +22,19 @@
           <!-- Header: nombre + badge descuento -->
           <div class="p-5 pb-4 flex items-start justify-between gap-3 border-b border-hairline">
             <div>
-              <h3 class="text-lg font-medium text-ink">{{ p.nombre }}</h3>
+              <h3 class="text-lg font-semibold text-ink">{{ p.nombre }}</h3>
               @if (p.destacado) {
-                <span class="inline-block mt-1 bg-danger text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                <span class="inline-block mt-1 bg-danger text-white text-xs font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full">
                   {{ p.destacado }}
                 </span>
               }
             </div>
-            <span class="text-xs uppercase tracking-widest text-ink-48">{{ p.chip }}</span>
+            <span class="text-xs uppercase tracking-wide text-ink-48">{{ p.chip }}</span>
           </div>
 
           <!-- Precio destacado -->
           <div class="p-5 pb-3 bg-canvas">
-            <span class="text-3xl font-medium text-ink">$ {{ p.precio | number:'1.0-0':'es-AR' }}</span>
+            <span class="text-3xl font-semibold text-ink">$ {{ p.precio | number:'1.0-0':'es-AR' }}</span>
             <p class="text-sm text-ink-80 mt-1">
               12 cuotas sin interés de <strong class="text-ink">$ {{ p.cuota12 | number:'1.0-0':'es-AR' }}</strong>
             </p>
@@ -83,15 +83,15 @@
         <!-- Header: nombres de modelos -->
         <thead>
           <tr>
-            <th scope="col" class="sticky left-0 z-10 bg-mist text-left align-bottom pb-3 pr-4 w-0">
+            <th scope="col" class="sticky left-0 z-10 bg-mist text-left align-bottom pb-3 pr-4 w-0 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">
               <span class="absolute w-px h-px p-0 m-[-1px] overflow-hidden whitespace-nowrap border-0 [clip:rect(0,0,0,0)]">Modelo</span>
             </th>
             @for (p of IPHONES(); track p.nombre) {
               <th scope="col" class="align-bottom pb-3 px-3 min-w-[140px]">
                 <div class="flex flex-col items-center gap-2">
-                  <span class="text-base font-medium text-ink">{{ p.nombre }}</span>
+                  <span class="text-base font-semibold text-ink">{{ p.nombre }}</span>
                   @if (p.destacado) {
-                    <span class="bg-danger text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                    <span class="bg-danger text-white text-xs font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full">
                       {{ p.destacado }}
                     </span>
                   }
@@ -104,7 +104,7 @@
         <tbody>
           <!-- Precio -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4">Precio</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Precio</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3">
                 <span class="text-base font-medium text-ink">$ {{ p.precio | number:'1.0-0':'es-AR' }}</span>
@@ -114,7 +114,7 @@
 
           <!-- 12 cuotas -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">12 cuotas de</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">12 cuotas de</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink-80">$ {{ p.cuota12 | number:'1.0-0':'es-AR' }} sin interés</span>
@@ -124,7 +124,7 @@
 
           <!-- Chip -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Chip</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Chip</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.chip }}</span>
@@ -134,7 +134,7 @@
 
           <!-- Pantalla -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Pantalla</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Pantalla</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.pantalla }}</span>
@@ -144,7 +144,7 @@
 
           <!-- Cámara -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Cámaras</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Cámaras</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.camara }}</span>
@@ -154,7 +154,7 @@
 
           <!-- Batería -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Batería (video)</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Batería (video)</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.bateria }}</span>
@@ -164,7 +164,7 @@
 
           <!-- Conector -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Conector</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Conector</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.conector }}</span>
@@ -174,7 +174,7 @@
 
           <!-- Capacidad mínima -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Desde</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Desde</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.capacidadMin }}</span>
@@ -184,7 +184,7 @@
 
           <!-- Colores -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline">Colores</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-top py-3 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Colores</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-top py-3 px-3 border-t border-hairline">
                 <span class="text-sm text-ink">{{ p.colores }} colores</span>
@@ -194,7 +194,7 @@
 
           <!-- CTA Comprar -->
           <tr>
-            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wider text-ink-48 font-medium align-bottom pt-4 pr-4 border-t border-hairline">Comprar</th>
+            <th scope="row" class="sticky left-0 bg-mist text-left text-xs uppercase tracking-wide text-ink-48 font-medium align-bottom pt-4 pr-4 border-t border-hairline shadow-[4px_0_8px_-4px_rgba(0,0,0,0.08)]">Comprar</th>
             @for (p of IPHONES(); track p.nombre) {
               <td class="text-center align-bottom pt-4 px-3 border-t border-hairline">
                 <a

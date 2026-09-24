@@ -2,10 +2,10 @@
   <!-- Header -->
   <div class="text-center mb-8 mt-6 lg:mt-10">
     @if (productsService.searchTerm()) {
-      <p class="text-sm uppercase tracking-widest text-ink-48 mb-2">Resultados para</p>
-      <h1 class="text-3xl lg:text-4xl font-medium text-ink mb-6">"{{ productsService.searchTerm() }}"</h1>
+      <p class="text-sm uppercase tracking-wide text-ink-48 mb-2">Resultados para</p>
+      <h1 class="text-3xl lg:text-4xl font-semibold text-ink mb-6">"{{ productsService.searchTerm() }}"</h1>
     } @else {
-      <h1 class="text-2xl lg:text-4xl font-medium text-ink lg:mb-10">{{ currentTitle }}</h1>
+      <h1 class="text-2xl lg:text-4xl font-semibold text-ink lg:mb-10">{{ currentTitle }}</h1>
     }
   </div>
 
@@ -35,12 +35,12 @@
   <div class="mb-8">
     <!-- Breadcrumbs -->
     <div class="flex items-center gap-2 text-xs text-ink-48 mb-5 flex-wrap">
-      <button (click)="clearAll()" class="hover:text-ink transition-colors uppercase tracking-widest font-medium">Tienda</button>
+      <button (click)="clearAll()" class="hover:text-ink transition-colors uppercase tracking-wide font-medium">Tienda</button>
       @for (crumb of breadcrumbs(); track crumb.id; let last = $last) {
         <svg class="w-3 h-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        <button (click)="selectLevel(crumb)" [disabled]="last" [class.text-ink]="last" class="hover:text-ink transition-colors uppercase tracking-widest font-medium disabled:cursor-default">{{ crumb.label }}</button>
+        <button (click)="selectLevel(crumb)" [disabled]="last" [class.text-ink]="last" class="hover:text-ink transition-colors uppercase tracking-wide font-medium disabled:cursor-default">{{ crumb.label }}</button>
       }
     </div>
 
@@ -63,7 +63,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
         <!-- Rango de precio -->
         <div>
-          <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">Precio (ARS)</p>
+          <p class="text-xs uppercase tracking-wide text-ink-48 mb-2">Precio (ARS)</p>
           <div class="flex items-center gap-2">
             <label class="flex items-center gap-1.5 flex-1">
               <span class="text-xs text-ink-48">$</span>
@@ -74,7 +74,7 @@
                 [value]="productsService.priceMin() ?? ''"
                 (input)="onPriceMinInput($any($event.target).value)"
                 aria-label="Precio mínimo"
-                class="w-full border border-hairline rounded-lg px-2.5 py-2 text-sm bg-canvas focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[36px]" />
+                class="w-full border border-hairline rounded-xl px-2.5 py-2 text-sm bg-canvas focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[36px]" />
             </label>
             <span class="text-ink-48">–</span>
             <label class="flex items-center gap-1.5 flex-1">
@@ -86,14 +86,14 @@
                 [value]="productsService.priceMax() ?? ''"
                 (input)="onPriceMaxInput($any($event.target).value)"
                 aria-label="Precio máximo"
-                class="w-full border border-hairline rounded-lg px-2.5 py-2 text-sm bg-canvas focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[36px]" />
+                class="w-full border border-hairline rounded-xl px-2.5 py-2 text-sm bg-canvas focus:border-action focus:outline-none transition-colors placeholder:text-ink-48 min-h-[36px]" />
             </label>
           </div>
         </div>
 
         <!-- Filtros booleanos -->
         <div>
-          <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">Mostrar</p>
+          <p class="text-xs uppercase tracking-wide text-ink-48 mb-2">Mostrar</p>
           <div class="flex flex-wrap gap-2">
             <button type="button"
                     (click)="setFeatured(true)"

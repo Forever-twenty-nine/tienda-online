@@ -4,7 +4,7 @@
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Texto -->
       <div class="text-center lg:text-left animate-fade-in">
-        <p class="text-sm font-medium uppercase tracking-widest text-ink-48 mb-3">
+        <p class="text-sm font-medium uppercase tracking-wide text-ink-48 mb-3">
           Lo más nuevo
         </p>
         <h1 class="text-4xl md:text-5xl lg:text-6xl tracking-tight text-ink leading-[1.05]">
@@ -65,16 +65,16 @@
 
         <!-- Badge flotante sin animación de bounce -->
         @if (heroProduct() && (heroProduct()?.descuento || heroProduct()?.destacado)) {
-          <div class="absolute -bottom-4 -right-4 lg:-bottom-6 lg:-right-6 bg-ink text-canvas p-4 lg:px-6 lg:py-4 rounded-2xl shadow-xl z-10">
+          <div class="absolute -bottom-4 -right-4 lg:-bottom-6 lg:-right-6 bg-ink text-canvas p-4 lg:px-6 lg:py-4 rounded-[20px] shadow-xl z-10">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 lg:w-14 lg:h-14 bg-canvas text-ink rounded-full flex items-center justify-center font-bold text-xs lg:text-sm">
+              <div class="w-12 h-12 lg:w-14 lg:h-14 bg-canvas text-ink rounded-full flex items-center justify-center font-semibold text-xs lg:text-sm">
                 {{ heroProduct()?.descuento ? '-' + heroProduct()?.descuento + '%' : 'TOP' }}
               </div>
               <div>
                 <p class="text-xs lg:text-sm font-medium text-canvas">
                   {{ heroProduct()?.descuento ? 'Oferta' : 'Destacado' }}
                 </p>
-                <p class="text-[10px] lg:text-xs text-canvas/60 truncate max-w-[100px] lg:max-w-[160px]">
+                <p class="text-xs lg:text-xs text-canvas/60 truncate max-w-[100px] lg:max-w-[160px]">
                   {{ heroProduct()?.nombre }}
                 </p>
               </div>
@@ -91,7 +91,7 @@
 <section class="py-10 lg:py-12 bg-canvas border-b border-hairline">
   <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
     <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
-      <h2 class="text-lg font-medium text-ink uppercase tracking-wider">Explorá por rubro</h2>
+      <h2 class="text-lg font-medium text-ink uppercase tracking-wide">Explorá por rubro</h2>
     </div>
     <div class="flex flex-wrap gap-3">
       @for (cat of topLevelCategories(); track cat.id) {
@@ -111,7 +111,7 @@
   <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
       <div>
-        <p class="text-xs font-medium uppercase tracking-widest text-ink-48 mb-2">Top ventas</p>
+        <p class="text-xs font-medium uppercase tracking-wide text-ink-48 mb-2">Top ventas</p>
         <h2 class="text-2xl md:text-3xl tracking-tight text-ink">
           Los más <span class="font-medium text-action">pedidos</span>
         </h2>
@@ -131,7 +131,7 @@
         }
       </div>
     } @else {
-      <div class="flex flex-col items-center justify-center py-20 bg-mist rounded-2xl px-6 text-center">
+      <div class="flex flex-col items-center justify-center py-20 bg-mist rounded-[20px] px-6 text-center">
         <div class="text-5xl mb-4 opacity-50">⌛</div>
         <p class="text-ink-80 text-base font-medium">Pronto tendremos novedades destacadas para vos</p>
       </div>
@@ -147,7 +147,7 @@
   <div class="mx-auto px-5 md:px-8 lg:px-10 max-w-[1500px]">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
-        <p class="text-xs font-medium uppercase tracking-widest text-ink-48 mb-2">¿Por qué elegirnos?</p>
+        <p class="text-xs font-medium uppercase tracking-wide text-ink-48 mb-2">¿Por qué elegirnos?</p>
         <h2 class="text-2xl md:text-3xl tracking-tight text-ink mb-10">
           Compra <span class="font-medium text-action">segura</span>, atención personal
         </h2>
@@ -159,7 +159,7 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-base font-medium text-ink mb-1">Envío express</h3>
+              <h3 class="text-base font-semibold text-ink mb-1">Envío express</h3>
               <p class="text-sm text-ink-80 leading-relaxed">Recibí tu pedido en tiempo récord, con seguimiento de punta a punta.</p>
             </div>
           </div>
@@ -170,7 +170,7 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-base font-medium text-ink mb-1">Garantía oficial</h3>
+              <h3 class="text-base font-semibold text-ink mb-1">Garantía oficial</h3>
               <p class="text-sm text-ink-80 leading-relaxed">Productos originales con garantía oficial Apple. Soporte post-venta incluido.</p>
             </div>
           </div>
@@ -181,7 +181,7 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-base font-medium text-ink mb-1">Atención personal</h3>
+              <h3 class="text-base font-semibold text-ink mb-1">Atención personal</h3>
               <p class="text-sm text-ink-80 leading-relaxed">Equipo en Mendoza listo para ayudarte por WhatsApp antes y después de tu compra.</p>
             </div>
           </div>
@@ -231,9 +231,9 @@
                   fill="#fff" opacity="0.95"/>
           </svg>
         </div>
-        <div class="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-ink text-canvas p-5 rounded-2xl shadow-xl">
+        <div class="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-ink text-canvas p-5 rounded-[20px] shadow-xl">
           <p class="text-3xl font-medium mb-1">+5.000</p>
-          <p class="text-[10px] font-medium opacity-80 uppercase tracking-widest">Clientes felices</p>
+          <p class="text-xs font-medium opacity-80 uppercase tracking-wide">Clientes felices</p>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@
   font-family: "GothamSSm-Light";
   src: url("/fonts/GothamSSm-Light.woff2") format("woff2"),
     url("/fonts/GothamSSm-Light.woff") format("woff");
-  font-weight: 500;
+  font-weight: 300;
   font-display: swap;
 }
 
@@ -21,7 +21,7 @@
   font-family: "GothamSSm-Bold";
   src: url("/fonts/GothamSSm-Bold.woff2") format("woff2"),
        url("/fonts/GothamSSm-Bold.woff") format("woff");
-  font-weight: 500;
+  font-weight: 700;
   font-display: swap;
 }
 

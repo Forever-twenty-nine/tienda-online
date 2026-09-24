@@ -52,7 +52,7 @@
           @for (img of product()!.imagenes; track img) {
             <div
               (click)="selectImage(img)"
-              class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-colors duration-200"
+              class="aspect-square rounded-xl overflow-hidden cursor-pointer border-2 transition-colors duration-200"
               [class.border-action]="selectedImage() === img"
               [class.border-transparent]="selectedImage() !== img"
               [class.opacity-60]="selectedImage() !== img">
@@ -66,17 +66,17 @@
     <!-- 📝 Info -->
     <div class="flex flex-col">
       <div>
-        <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">{{ productCategory()?.nombre || 'Producto' }}</p>
-        <h1 class="text-3xl md:text-4xl font-medium text-ink mb-5 tracking-tight">{{ product()!.nombre }}</h1>
+        <p class="text-xs uppercase tracking-wide text-ink-48 mb-2">{{ productCategory()?.nombre || 'Producto' }}</p>
+        <h1 class="text-3xl md:text-4xl font-semibold text-ink mb-5 tracking-tight">{{ product()!.nombre }}</h1>
 
         <!-- 💲 Precio + 12 cuotas -->
         <div class="mb-6">
           @if (product()?.descuento && product()!.descuento! > 0) {
             <div class="flex items-baseline gap-3 mb-2">
-              <p class="text-3xl font-medium text-ink">
+              <p class="text-3xl font-semibold text-ink">
                 $ {{ (product()!.precio * (1 - product()!.descuento! / 100)).toFixed(2) }}
               </p>
-              <span class="bg-danger text-white text-[11px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+              <span class="bg-danger text-white text-[11px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wide">
                 -{{ product()!.descuento }}%
               </span>
               <span class="text-base text-ink-48 line-through">
@@ -84,7 +84,7 @@
               </span>
             </div>
           } @else {
-            <p class="text-3xl font-medium text-ink">
+            <p class="text-3xl font-semibold text-ink">
               $ {{ product()!.precio }}
             </p>
           }
@@ -96,7 +96,7 @@
         <!-- 🎨 Variant pickers — se muestran si el producto tiene esos campos. -->
         @if (product()?.colores && product()!.colores!.length > 0) {
           <div class="mb-5">
-            <p class="text-xs uppercase tracking-widest text-ink-48 mb-3">
+            <p class="text-xs uppercase tracking-wide text-ink-48 mb-3">
               Color
               @if (selectedColorIndex() !== null) {
                 <span class="ml-2 normal-case tracking-normal text-ink">— {{ product()!.colores![selectedColorIndex()!].nombre }}</span>
@@ -132,7 +132,7 @@
         }
         @if (product()?.capacidades && product()!.capacidades!.length > 0) {
           <div class="mb-5">
-            <p class="text-xs uppercase tracking-widest text-ink-48 mb-3">
+            <p class="text-xs uppercase tracking-wide text-ink-48 mb-3">
               Capacidad
               @if (selectedCapacity()) {
                 <span class="ml-2 normal-case tracking-normal text-ink">— {{ selectedCapacity() }}</span>
@@ -159,7 +159,7 @@
 
         <!-- 📝 Descripción -->
         <div class="mb-6">
-          <p class="text-xs uppercase tracking-widest text-ink-48 mb-2">Descripción</p>
+          <p class="text-xs uppercase tracking-wide text-ink-48 mb-2">Descripción</p>
           <p class="text-ink-80 leading-relaxed">{{ product()!.descripcion }}</p>
         </div>
 
@@ -179,7 +179,7 @@
         </div>
 
         <!-- 🏪 Retiro en tienda + Envío — cerca del CTA -->
-        <div class="bg-mist rounded-[16px] p-5 mb-6 space-y-3">
+        <div class="bg-mist rounded-[20px] p-5 mb-6 space-y-3">
           <div class="flex gap-3 items-start">
             <svg viewBox="0 0 20 20" focusable="false" class="w-5 h-5 text-action flex-shrink-0 mt-0.5">
               <path d="M13.2238 4.9337C13.1504 1.68636 9.32745 -0.0329918 6.56564 1.94201C3.42904 4.18502 3.42047 8.70116 5.85008 11.9883L10.4891 18.2647C12.0567 16.4701 14.5046 12.9513 15.7745 10.3471C16.5453 8.76617 16.9721 7.00668 16.5525 5.43291C16.4586 5.08077 16.3151 4.73487 16.1039 4.4181L17.0303 3.80052C17.3202 4.23531 17.5086 4.69733 17.6283 5.14605C18.1468 7.09056 17.6002 9.14313 16.7752 10.8351C15.3297 13.7995 12.4381 17.8735 10.8443 19.5261L10.3873 20L4.95474 12.6501C2.3006 9.05915 2.09757 3.76842 5.91802 1.03638C9.28618 -1.37222 14.24 0.621738 14.3369 4.90856C14.3392 5.01323 14.3404 5.11795 14.3404 5.22267C14.3404 7.6345 12.809 9.67611 10.722 9.67611C10.6154 9.67611 10.5052 9.66845 10.394 9.65515C8.64738 9.44629 7.59034 8.12336 7.39053 6.72797C7.18968 5.32541 7.85018 3.79067 9.53285 3.20839C9.91859 3.07491 10.3204 2.99595 10.722 2.99595V4.10931C10.4653 4.10931 10.1872 4.1601 9.89694 4.26053C8.78915 4.64388 8.35627 5.61781 8.49264 6.57015C8.63005 7.52968 9.34083 8.40792 10.5262 8.54966C10.6024 4.55878 10.6677 8.56275 10.722 8.56275C11.9751 8.56275 13.227 7.26428 13.227 5.22267C13.227 5.12633 13.226 5.02998 13.2238 4.9337Z" fill="currentColor"/>

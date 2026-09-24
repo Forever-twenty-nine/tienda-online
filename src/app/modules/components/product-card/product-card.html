@@ -18,15 +18,15 @@
         <!-- Etiquetas de estado (máximo 1 visible — top-left) -->
         <div class="absolute top-3 left-3 z-10 flex flex-col gap-1">
             @if ((product().descuento ?? 0) > 0) {
-            <span class="bg-danger text-white text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+            <span class="bg-danger text-white text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full">
                 -{{ product().descuento }}%
             </span>
             } @else if (product().destacado) {
-            <span class="bg-ink text-canvas text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+            <span class="bg-ink text-canvas text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full">
                 Top
             </span>
             } @else if (!product().disponibilidad) {
-            <span class="bg-ink-48 text-canvas text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+            <span class="bg-ink-48 text-canvas text-[11px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full">
                 Sin stock
             </span>
             }
@@ -41,14 +41,14 @@
 
         <div class="mt-auto flex items-baseline gap-3 pt-2">
             @if ((product().descuento ?? 0) > 0) {
-                <span class="text-xl font-bold text-ink">
+                <span class="text-xl font-semibold text-ink">
                     $ {{ (product().precio * (1 - product().descuento! / 100)).toFixed(2) }}
                 </span>
                 <span class="text-sm text-ink-48 line-through">
                     $ {{ product().precio }}
                 </span>
             } @else {
-                <span class="text-xl font-bold text-ink">
+                <span class="text-xl font-semibold text-ink">
                     $ {{ product().precio }}
                 </span>
             }
