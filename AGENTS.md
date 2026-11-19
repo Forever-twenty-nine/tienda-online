@@ -82,7 +82,7 @@ NO crear `docs/checklist.md` salvo que haya items concretos para verificar.
 
 ## Trabajo en paralelo con varias IAs
 
-Este repo puede ser tocado por más de una IA (ej: Mavis y Claude Code) en sesiones distintas o alternadas. **No hay roles rígidos** — cualquiera puede planificar o codear según el caso. La división de abajo es solo la tendencia natural cuando las dos están disponibles; si una está sola, hace lo que pueda y avisa lo que no.
+Mismo flujo que en todos los repos del dueño (`~/.claude/CLAUDE.md` y `~/.minimax/AGENTS.md`): **Claude planifica, decide con el dueño y revisa; Mavis ejecuta.** Claude le delega cada tarea con `powershell -File $HOME\bin\mcode-tarea.ps1 -PromptFile <archivo.md>` desde la raíz del repo, un ítem por vez, y revisa el resultado y `git status` antes de cerrarlo. Si una IA está sola, hace lo que pueda y avisa lo que no.
 
 ### Capacidades por agente (default, no exclusivo)
 
@@ -100,7 +100,7 @@ Si una IA está corriendo una skill que necesita una capacidad específica, **es
 1. **Antes de tocar archivos**: `git status --short`. Si hay cambios sin commitear sobre el mismo feature, **parar y avisar**. NO implementar encima.
 2. **Inbox compartido**: `docs/cambios.md` es el inbox de features planificadas. Cualquier IA puede proponer un cambio ahí (o confirmar con el user en sesión). La otra lo recoge al arrancar.
 3. **Estado compartido**: `docs/deuda-tecnica.md` y `git log` son la fuente de verdad sobre pendientes. Cualquiera puede leer y actualizar (resuelto → borrar; nunca "🟢 RESUELTO").
-4. **Cierre de ciclo**: cuando una IA termina una unidad de trabajo, deja **commit + docs actualizados** (sacar de `cambios.md`, borrar de `deuda-tecnica.md` si aplica, ajustar `funcionalidades.md` si cambió comportamiento). El siguiente agente arranca con `git status --short` y lee el estado desde ahí.
+4. **Cierre de ciclo**: cuando una IA termina una unidad de trabajo, deja **docs actualizados** (el commit lo hace Claude cuando el dueño lo pide; Mavis no commitea) (sacar de `cambios.md`, borrar de `deuda-tecnica.md` si aplica, ajustar `funcionalidades.md` si cambió comportamiento). El siguiente agente arranca con `git status --short` y lee el estado desde ahí.
 
 ### Reglas comunes (todas las IAs)
 
